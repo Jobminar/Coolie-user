@@ -1,46 +1,51 @@
-import React from 'react'
-import './Services.css'
-import ServicesScroll from './ServicesScroll'
-import { CategoryContext } from '../../context/CategoryContext'
-import { useState,useContext,useEffect } from 'react'
-
+import React, { useState, useContext, useEffect } from "react";
+import "./Services.css";
+import ServicesScroll from "./ServicesScroll";
+import { CategoryContext } from "../../context/CategoryContext";
 
 const Services = () => {
-  const {subCategoryData} = useContext(CategoryContext)
+  const { categoryData, selectedCategoryId, error } =
+    useContext(CategoryContext);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    if (subCategoryData) {
-      setData(subCategoryData);
+    if (categoryData && selectedCategoryId) {
+      const selectedCategory = categoryData.find(
+        (category) => category._id === selectedCategoryId,
+      );
+      if (selectedCategory && selectedCategory.subcategories) {
+        setData(selectedCategory.subcategories);
+      }
     }
-  }, [subCategoryData]);
+  }, [categoryData, selectedCategoryId]);
 
-  if (!subCategoryData) {
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!categoryData) {
     return <div>Loading...</div>;
   }
 
-
   return (
-    <>
-        <div className='services'>
-               <ServicesScroll/>
-               <div className='services-cart-display'>
-                   <div className='service-display'>
-                        {
-                          data.map((subcategory)=>{
-                            <div>
-                               <p>{subcategory.name}</p>
-                            </div>
-                          })
-                        }
-                   </div>
-                   <div className='cart-display'>
-                           
-                   </div>
-               </div>
+    <div className="services">
+      <ServicesScroll />
+      <div className="services-cart-display">
+        <div className="service-display">
+          {data.length > 0 ? (
+            data.map((subcategory) => (
+              <div key={subcategory._id}>
+                <p>{subcategory.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>No subcategories available.</p>
+          )}
         </div>
-    </>
-  )
-}
+        <div className="cart-display">{/* Cart display content */}</div>
+      </div>
+    </div>
+  );
+};
 
-export default Services
+export default Services;
