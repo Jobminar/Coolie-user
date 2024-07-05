@@ -1,20 +1,25 @@
-import React from 'react'
-import { Route, Routes, BrowserRouter } from "react-router-dom";
-import Home from './Home/home'
-import Header from './Header/header';
+// src/Routing.js
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { CategoryProvider } from "./context/CategoryContext";
+import Home from "./pages/Home/home";
+import Header from "./components/Header/header";
+import ServicePage from "./pages/Services/ServicePage";
 
 const Routing = () => {
   return (
-   <>
-       <BrowserRouter>
-       <Header/>
+    <>
+      <CategoryProvider>
+        <Router>
+          <Header />
           <Routes>
-            <Route path='/' element={<Home/>}/>      
+            <Route path="/" element={<Home />} />
+            <Route path="/category" element={<ServicePage />} />
           </Routes>
-         
-       </BrowserRouter>
-   </>
-  )
-}
+        </Router>
+      </CategoryProvider>
+    </>
+  );
+};
 
-export default Routing
+export default Routing;
