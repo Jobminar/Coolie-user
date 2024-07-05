@@ -1,40 +1,19 @@
-// src/components/maincategory.js
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./maincategory.css";
+import { useNavigate } from "react-router-dom";
+import { CategoryContext } from "../../context/CategoryContext";
 
-const Maincategory = ({ onCategoryClick }) => {
+const Maincategory = () => {
+  const navigate = useNavigate();
+  const { categoryData} = useContext(CategoryContext);
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://api.coolieno1.in/v1.0/core/categories",
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (categoryData) {
+      setData(categoryData);
+    }
+  }, [categoryData]);
 
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   return (
     <>
@@ -44,10 +23,9 @@ const Maincategory = ({ onCategoryClick }) => {
             <div
               key={item._id}
               className="sub-cat-con"
-              onClick={() => onCategoryClick(item._id)}
             >
-              <div className="main-cat-img">
-                <img
+              <div className="main-cat-img" onClick={() => navigate('/services')}>
+                <img  
                   src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${item.imageKey}`}
                   alt={item.name}
                 />

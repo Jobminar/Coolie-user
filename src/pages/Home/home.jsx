@@ -9,17 +9,11 @@ import Mostbookedservices from "./MOST-BOOKED-SERVICES/mostbookedservices";
 import Ourcoreservices from "./OUR-CORE-SERVICES/our-core-services";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const { setCategoryId } = useContext(CategoryContext);
 
-  const handleCategoryClick = (categoryId) => {
-    setCategoryId(categoryId);
-    navigate("/category");
-  };
 
   return (
     <div className="home-main">
-      <Maincategory onCategoryClick={handleCategoryClick} />
+      <Maincategory />
       <Mostbookedservices />
       <Howitworks />
       <Ourcoreservices />
