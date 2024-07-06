@@ -4,8 +4,7 @@ import ServicesScroll from "./ServicesScroll";
 import { CategoryContext } from "../../context/CategoryContext";
 
 const Services = () => {
-  const { categoryData, selectedCategoryId, error } =
-    useContext(CategoryContext);
+  const { categoryData, selectedCategoryId, error } = useContext(CategoryContext);
   const [data, setData] = useState([]);
 
   useEffect(() => {
