@@ -52,26 +52,36 @@ export const CategoryProvider = ({ children }) => {
     }
   }, [selectedCategoryId]);
 
-  useEffect(() => {
-    if (selectedCategoryId && selectedSubCategoryId) {
-      const fetchServices = async () => {
-        try {
-          const response = await fetch(
-            `https://api.coolieno1.in/v1.0/core/services/filter/${selectedCategoryId}/${selectedSubCategoryId}`,
-          );
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const result = await response.json();
-          setServicesData(result);
-        } catch (error) {
-          setError(error.message);
-        }
-      };
+  // checking subcategory id
 
-      fetchServices();
+  useEffect(()=>{
+    if(selectedSubCategoryId){
+      console.log(selectedSubCategoryId, 'selected sub category id in main')
     }
-  }, [selectedCategoryId, selectedSubCategoryId]);
+  },[selectedSubCategoryId])
+
+  // Fetch services
+  useEffect(()=>{
+    if(selectedSubCategoryId){
+      const fetchservice=async()=>{
+        try{
+           const responce  = await fetch(`https://api.coolieno1.in/v1.0/core/services/filter/${selectedCategoryId}/${selectedSubCategoryId}`,)
+
+           if(!responce.ok){
+            throw new Error('failed to fetch services')
+           }
+           const data = responce.json()
+           setServicesData(data)
+           console.log(servicesData,'service data in main context')
+        }
+        catch(err){
+          console.log(err)
+        }
+      }
+      fetchservice()
+    }
+  },[selectedSubCategoryId])
+ 
 
   return (
     <CategoryContext.Provider

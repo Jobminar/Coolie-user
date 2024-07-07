@@ -5,10 +5,23 @@ import { CategoryContext } from "../../context/CategoryContext";
 import CartSummary from "../../components/cart/CartSummary";
 
 const Services = () => {
-  const { categoryData, selectedCategoryId, error } =
-    useContext(CategoryContext);
+  const {
+    categoryData,
+    selectedCategoryId,
+    subCategoryData,
+    setSelectedSubCategoryId,
+    servicesData,
+    error,
+  } = useContext(CategoryContext);
   const [data, setData] = useState([]);
+  const [subData, setSubData] = useState([]);
+  const [serviceData, setServiceData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const handleSubCategoryId = (id) => {
+    setSelectedSubCategoryId(id);
+    console.log(id, "subcategory id in subcategory");
+  };
 
   useEffect(() => {
     if (categoryData) {
@@ -25,6 +38,20 @@ const Services = () => {
     }
   }, [categoryData, selectedCategoryId]);
 
+  // sub categorys destructuring
+  useEffect(() => {
+    if (subCategoryData) {
+      setSubData(subCategoryData);
+    }
+  }, [subCategoryData]);
+
+  useEffect(() => {
+    if (servicesData) {
+      setServiceData(servicesData);
+      console.log(servicesData, "service data in sub page ");
+    }
+  }, [servicesData]);
+
   if (error) {
     return <div className="error">Error: {error}</div>;
   }
@@ -37,20 +64,36 @@ const Services = () => {
     <div className="services">
       <ScrollableTabs />
       <div className="services-cart-display">
-        <div className="service-display">
-          {data.length > 0 ? (
-            data.map((subcategory) => (
-              <div key={subcategory._id} className="subcategory-item">
-                <p>{subcategory.name}</p>
+        <div className="sub-category-display">
+          {subData.length > 0 ? (
+            subData.map((subCat) => (
+              <div
+                key={subCat._id}
+                className="sub-category-item"
+                onClick={() => handleSubCategoryId(subCat._id)}
+              >
+                <p>{subCat.name}</p>
               </div>
             ))
           ) : (
-            <p>No subcategories available.</p>
+            <p>No additional subcategories available.</p>
           )}
         </div>
-        <div className="cart-display">
-          <CartSummary />
+
+        {/* service display */}
+        <div className="sub-category-display">
+          {serviceData.length > 0 ? (
+            serviceData.map((services) => (
+              <div key={services._id} className="sub-category-item">
+                <p>{services.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>No additional services available.</p>
+          )}
         </div>
+
+        <div className="cart-display">{/* Cart display content */}</div>
       </div>
     </div>
   );

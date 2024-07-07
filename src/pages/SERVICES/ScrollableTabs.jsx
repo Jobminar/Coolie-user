@@ -9,12 +9,12 @@ import "./ScrollableTabs.css";
 
 const ScrollableTabs = () => {
   const { categoryData, setSelectedCategoryId, error } =
-    useContext(CategoryContext);
-  const [selectedCategoryIdLocal, setSelectedCategoryIdLocal] = useState(null);
-  const containerRef = useRef(null);
-  const tabWidth = 200; // Width of each tab
-  const visibleTabs = 5; // Number of tabs visible at once
-  const buttonWidth = 70; // Width of the arrow buttons
+    useContext(CategoryContext); 
+  const [selectedCategoryIdLocal, setSelectedCategoryIdLocal] = useState(null); 
+  const containerRef = useRef(null); 
+  const tabWidth = 200; 
+  const visibleTabs = 5; 
+  const buttonWidth = 70; 
 
   useEffect(() => {
     if (selectedCategoryIdLocal && containerRef.current) {
@@ -32,6 +32,7 @@ const ScrollableTabs = () => {
   }, [selectedCategoryIdLocal]);
 
   const handleCategoryClick = (id) => {
+    // console.log(id)
     setSelectedCategoryId(id);
     setSelectedCategoryIdLocal(id);
   };
@@ -49,7 +50,7 @@ const ScrollableTabs = () => {
             behavior: "instant",
           });
         }
-      }, 500); // Adjust timeout to match your smooth scroll duration
+      }, 500);
     }
   };
 
