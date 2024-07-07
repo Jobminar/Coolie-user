@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import "./Services.css";
 import ScrollableTabs from "./ScrollableTabs";
 import { CategoryContext } from "../../context/CategoryContext";
+import CartSummary from "../../components/cart/CartSummary";
 
 const Services = () => {
   const { categoryData, selectedCategoryId, error } =
@@ -47,7 +48,9 @@ const Services = () => {
             <p>No subcategories available.</p>
           )}
         </div>
-        <div className="cart-display">{/* Cart display content */}</div>
+        <div className="cart-display">
+          <CartSummary />
+        </div>
       </div>
     </div>
   );

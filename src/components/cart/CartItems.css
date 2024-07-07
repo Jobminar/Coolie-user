@@ -1,0 +1,124 @@
+.cart-items {
+    margin-bottom: 20px;
+    background-color: #f4f4f4;
+    /* Adds a subtle background color for better contrast */
+    border-radius: 8px;
+    /* Softens the edges */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    /* Light shadow for depth */
+    padding: 15px;
+    /* Increased padding for better spacing */
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #fff;
+    margin: 10px 0;
+    /* Adds margin between items */
+    border-radius: 5px;
+    /* Consistent rounded edges */
+}
+
+.item-details {
+    flex: 1;
+    padding-right: 10px;
+    /* Ensures text doesn't touch the actions */
+}
+
+.item-meta {
+    display: flex;
+    flex-direction: column;
+    color: #666;
+    /* Darker font color for better readability */
+}
+
+.item-meta p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.item-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 180px;
+    /* Wider space for better touch targets */
+}
+
+.item-price {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    /* Darker color for price emphasis */
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-control button {
+    background-color: #e1e1e1;
+    border: none;
+    padding: 8px 12px;
+    /* Larger area for easier interaction */
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.quantity-control span {
+    margin: 0 10px;
+    /* More space around the number */
+    font-size: 16px;
+    /* Larger font for easier reading */
+}
+
+.delete-button {
+    background-color: transparent;
+    /* Removes background for a cleaner look */
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.delete-button img {
+    width: 24px;
+    /* Larger icon for better visibility */
+    height: 24px;
+}
+
+.cart-items .go-to-address-btn {
+    background-color: #0988CF;
+    /* Blue background color */
+    color: white;
+    /* White text color for contrast */
+    padding: 10px 15px;
+    /* Adequate padding for size */
+    border: none;
+    /* No border for a clean look */
+    border-radius: 5px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+    width: 100%;
+    /* Full width for better visibility */
+    text-align: center;
+    /* Center text */
+    font-size: 16px;
+    /* Readable font size */
+    margin-top: 20px;
+    /* Space above the button */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+    transition: background-color 0.3s;
+    /* Smooth transition for hover effect */
+}
+
+.cart-items .go-to-address-btn:hover {
+    background-color: #086fa1;
+    /* Slightly darker blue on hover for interaction feedback */
+}

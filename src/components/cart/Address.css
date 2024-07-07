@@ -1,0 +1,81 @@
+.address-container {
+    background-color: #f9f9f9;
+    /* Soft background color for contrast */
+    padding: 20px;
+    border-radius: 8px;
+    /* Rounded corners for a softer look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+    margin: 20px auto;
+    /* Centering the container with margin */
+    width: 90%;
+    /* Responsive width */
+    max-width: 500px;
+    /* Maximum width to ensure form remains manageable */
+}
+
+.radio-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    /* Spacing below the radio button group */
+}
+
+.address-form input {
+    width: 100%;
+    /* Full width for better control */
+    padding: 12px;
+    /* Comfortable padding for typing */
+    margin-bottom: 10px;
+    /* Spacing between each input field */
+    border-radius: 5px;
+    /* Consistent rounded corners */
+    border: 1px solid #ccc;
+    /* Subtle border color */
+    background-color: #fff;
+    /* White background for the inputs */
+}
+
+.address-form input:focus {
+    border-color: #0988CF;
+    /* Highlight focus with theme color */
+    outline: none;
+    /* Remove default focus outline */
+}
+
+.schedule-visit-btn {
+    background-color: #0988CF;
+    /* Theme color for the button */
+    color: #fff;
+    /* White text for readability */
+    padding: 10px 15px;
+    /* Padding for button size */
+    border: none;
+    /* No border for a cleaner look */
+    border-radius: 5px;
+    /* Rounded corners for the button */
+    cursor: pointer;
+    /* Cursor pointer to indicate clickable */
+    width: 100%;
+    /* Full width button */
+    font-weight: bold;
+    /* Bold text for button */
+    text-transform: uppercase;
+    /* Uppercase text for stylistic choice */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* Slight shadow for 3D effect */
+    margin-top: 20px;
+    /* Space above the button */
+}
+
+.schedule-visit-btn:hover {
+    background-color: #086fa1;
+    /* Darker shade on hover for interaction feedback */
+}
+
+.radio-group label {
+    font-size: 16px;
+    /* Readable font size */
+    color: #666;
+    /* Subtle text color for labels */
+}

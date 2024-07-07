@@ -1,0 +1,64 @@
+.schedule-container {
+    padding: 20px;
+}
+
+.date-selector,
+.time-selector {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.dates,
+.times {
+    display: flex;
+    overflow: hidden;
+    /* Remove scrollbar */
+    flex-wrap: wrap;
+    /* Wrap items */
+    gap: 10px;
+    /* Space between items */
+}
+
+.date,
+.time {
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+.date.active,
+.time input:checked+label {
+    background-color: #ccc;
+    /* Active state background */
+}
+
+.arrow-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.time input {
+    margin-right: 5px;
+    /* Space before label */
+}
+
+.time label {
+    font-size: 14px;
+    /* Smaller font size for timings */
+    cursor: pointer;
+}
+
+.confirm-payment-btn {
+    background-color: #0988CF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
