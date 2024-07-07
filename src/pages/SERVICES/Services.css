@@ -44,3 +44,6 @@
 .error {
     color: red;
 }
+.sub-category-item:hover{
+    cursor: pointer;
+}
