@@ -29,6 +29,8 @@ export const CategoryProvider = ({ children }) => {
     fetchCategories();
   }, []);
 
+  // fetch sub categories
+
   useEffect(() => {
     if (selectedCategoryId) {
       const fetchSubCategories = async () => {
