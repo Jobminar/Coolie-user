@@ -94,7 +94,7 @@ const Services = () => {
         </div>
 
         <div className="cart-display">
-          <CartSummary />
+          <CartSummary/>
         </div>
       </div>
     </div>
