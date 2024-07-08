@@ -2,18 +2,16 @@ import React, { useState, useContext, useEffect } from "react";
 import "./Services.css";
 import ScrollableTabs from "./ScrollableTabs";
 import { CategoryContext } from "../../context/CategoryContext";
+import dropdown from '../../assets/images/dropdown.png';
 
 const Services = () => {
-  const { categoryData, selectedCategoryId, subCategoryData, setSelectedSubCategoryId,servicesData, error } = useContext(CategoryContext);
+  const { categoryData, selectedCategoryId, subCategoryData, selectedSubCategoryId, setSelectedSubCategoryId, servicesData, error } = useContext(CategoryContext);
   const [data, setData] = useState([]);
   const [subData, setSubData] = useState([]);
-  const [serviceData,setServiceData]=useState([]);
+  const [serviceData, setServiceData] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const handleSubCategoryId = (id) => {
-    setSelectedSubCategoryId(id);
-    console.log(id, 'subcategory id in subcategory');
-  };
+  const [activeSubCategory, setActiveSubCategory] = useState(null);
+  const [descriptionVisibility, setDescriptionVisibility] = useState({});
 
   useEffect(() => {
     if (categoryData) {
@@ -30,7 +28,6 @@ const Services = () => {
     }
   }, [categoryData, selectedCategoryId]);
 
-  // sub categorys destructuring
   useEffect(() => {
     if (subCategoryData) {
       setSubData(subCategoryData);
@@ -39,10 +36,24 @@ const Services = () => {
 
   useEffect(() => {
     if (servicesData) {
-      setServiceData(servicesData)
-      console.log(servicesData,'service data in sub page ')
+      setServiceData(servicesData);
+      console.log(servicesData, 'service data in sub page');
     }
   }, [servicesData]);
+
+  useEffect(() => {
+    const findActive = () => {
+      if (subCategoryData && selectedSubCategoryId) {
+        const activeSubCat = subCategoryData.find(subCat => subCat._id === selectedSubCategoryId);
+        if (activeSubCat) {
+          setActiveSubCategory(activeSubCat);
+        } else {
+          setActiveSubCategory(subCategoryData[0]); // Clear if no matching subcategory is found
+        }
+      }
+    };
+    findActive();
+  }, [subCategoryData, selectedSubCategoryId]);
 
   if (error) {
     return <div className="error">Error: {error}</div>;
@@ -52,36 +63,82 @@ const Services = () => {
     return <div className="loading">Loading...</div>;
   }
 
+  const toggleDescription = (serviceId) => {
+    setDescriptionVisibility(prevState => ({
+      ...prevState,
+      [serviceId]: !prevState[serviceId]
+    }));
+  };
+
   return (
     <div className="services">
       <ScrollableTabs />
       <div className="services-cart-display">
-        <div className="sub-category-display">
-          {subData.length > 0 ? (
-            subData.map((subCat) => (
-              <div key={subCat._id} className="sub-category-item"  onClick={()=>handleSubCategoryId(subCat._id)}>
-                <p>{subCat.name}</p>
-              </div>
-            ))
-          ) : (
-            <p>No additional subcategories available.</p>
-          )}
-        </div>
+        <div className="services-main-dispaly">
+          <div className="sub-category-display">
+            <div className="active">
+              <p>{activeSubCategory ? ` ${activeSubCategory.name}` : 'No active subcategory'}</p>
+            </div>
+            {subData.length > 0 ? (
+              subData.map((subCat) => (
+                <div key={subCat._id} className="sub-category-item" onClick={() => setSelectedSubCategoryId(subCat._id)}>
+                  <div className="subcat-icon-container">
+                    <img
+                      src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${subCat.imageKey}`}
+                      alt={subCat.name}
+                      className="tab-image"
+                    />
+                  </div>
+                  <p>{subCat.name}</p>
+                </div>
+              ))
+            ) : (
+              <p>No additional subcategories available.</p>
+            )}
+          </div>
 
-
-        {/* service display */}
-        <div className="sub-category-display">
-          {serviceData.length > 0 ? (
-            serviceData.map((services) => (
-              <div key={services._id} className="sub-category-item" >
-                <p>{services.name}</p>
+          {/* Service display */}
+          <div className="services-display">
+            <p></p>
+            {serviceData.map(service => (
+              <div key={service._id} className="sub-category-service-item">
+                <div className="service-main-head">
+                  <div className="service-icon-container">
+                    <img
+                      src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${service.subCategoryId.imageKey}`}
+                      alt={service.subCategoryId.name}
+                      className="tab-image"
+                    />
+                  </div>
+                  <div className="service-content">  
+                    <h3>{service.name}</h3>
+                    {service.serviceVariants.map(variant => (
+                      <div key={variant._id} className="service-variant">
+                        <p>({variant.min} to {variant.max} {variant.metric})</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="dropdown" onClick={() => toggleDescription(service._id)}>
+                    <img src={dropdown} alt="dropdown"/>
+                  </div>
+                </div>
+                <div className="description" style={{ display: descriptionVisibility[service._id] ? 'block' : 'none' }}>
+                  {service.description}
+                </div>
+                <div className="price">
+                  <p></p>
+                  
+                  {service.serviceVariants.map(variant => (
+                    <div key={variant._id}>
+                      <p>&#8377; {variant.price}</p>
+                    </div>
+                  ))}
+                  <button>ADD</button>
+                </div>
               </div>
-            ))
-          ) : (
-            <p>No additional services available.</p>
-          )}
+            ))}
+          </div>
         </div>
-    
         <div className="cart-display">{/* Cart display content */}</div>
       </div>
     </div>

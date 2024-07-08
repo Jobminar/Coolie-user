@@ -9,6 +9,8 @@ export const CategoryProvider = ({ children }) => {
   const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(null);
   const [servicesData, setServicesData] = useState(null);
   const [error, setError] = useState(null);
+  console.log(selectedCategoryId,'category id')
+//  fetch categories
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -32,6 +34,7 @@ export const CategoryProvider = ({ children }) => {
   // fetch sub categories
 
   useEffect(() => {
+   
     if (selectedCategoryId) {
       const fetchSubCategories = async () => {
         try {
@@ -60,27 +63,28 @@ export const CategoryProvider = ({ children }) => {
     }
   },[selectedSubCategoryId])
 
-  // Fetch services
-  useEffect(()=>{
-    if(selectedSubCategoryId){
-      const fetchservice=async()=>{
-        try{
-           const responce  = await fetch(`https://api.coolieno1.in/v1.0/core/services/filter/${selectedCategoryId}/${selectedSubCategoryId}`,)
-
-           if(!responce.ok){
-            throw new Error('failed to fetch services')
-           }
-           const data = responce.json()
-           setServicesData(data)
-           console.log(servicesData,'service data in main context')
-        }
-        catch(err){
-          console.log(err)
-        }
-      }
-      fetchservice()
+  // fetch service
+  useEffect(() => {
+    if (selectedCategoryId && selectedSubCategoryId) {
+      const fetchService = async () => {
+        try {
+          const response = await fetch(`https://api.coolieno1.in/v1.0/core/services/filter/${selectedCategoryId}/${selectedSubCategoryId}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch services');
+          }
+          const data = await response.json();
+          setServicesData(data.data); // Assuming `data` contains the actual array
+          console.log(data, 'service data in main context');
+        } catch (err) {
+          setError(err.message);
+          console.log(err);
+        } 
+      };
+      fetchService();
     }
-  },[selectedSubCategoryId])
+  }, [selectedCategoryId, selectedSubCategoryId]);
+
+  
  
 
   return (
