@@ -78,10 +78,6 @@ const CartSummary = () => {
       {activeTab === "checkout" && (
         <Checkout onFinalize={() => handleNextStep("cart")} />
       )}
-      <div className="cart-total">
-        <p>{cartItems.length} Items</p>
-        <p>₹ {totalPrice}</p>
-      </div>
     </div>
   );
 };

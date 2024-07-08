@@ -1,7 +1,25 @@
 .schedule-container {
     padding: 20px;
-    background-color: #e6f7d4;
+    background-color: #ffffff;
     border-radius: 10px;
+    max-width: 400px;
+    margin: auto;
+}
+
+h3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h3 select {
+    padding: 5px 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    margin-left: 10px;
 }
 
 .date-selector,
@@ -23,24 +41,35 @@
 .date {
     flex: 1;
     padding: 10px;
-
     text-align: center;
     background-color: #f0f0f0;
     border-radius: 5px;
     cursor: pointer;
-    border: 1px solid #ccc
+    border: 1px solid #ccc;
 }
 
 .date.active {
+    border: 2px solid #ccc;
     background-color: #e6f7d4;
-    border: 1px solid #ccc
+}
+
+.date .day {
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 .arrow-btn {
-    background: none;
+    background: black;
+    color: white;
     border: none;
     cursor: pointer;
-    padding: 0 10px;
+    padding: 10px;
+    border-radius: 50px;
+}
+
+.arrow-btn:disabled {
+    background: #ddd;
+    cursor: not-allowed;
 }
 
 .time-selector {
@@ -58,10 +87,18 @@
     cursor: pointer;
     display: flex;
     align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    text-align: center;
+    justify-content: center;
 }
 
 .time.active {
-    background-color: #ccc;
+    background-color: transparent;
+    color: blue;
+    border-color: blue;
 }
 
 .confirm-payment-btn {
@@ -75,6 +112,10 @@
     text-align: center;
 }
 
+.confirm-payment-btn:hover {
+    background-color: #007BB5;
+}
+
 .time-selector label {
-    font-size: small;
+    font-size: smaller;
 }

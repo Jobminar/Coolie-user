@@ -1,15 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Schedule.css";
 
 const Schedule = ({ onNext }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("9AM - 10AM");
-  const [startDay, setStartDay] = useState(0); // Index to track the start day for display
+  const [dates, setDates] = useState([]);
+  const [days, setDays] = useState([]);
+  const [currentOffset, setCurrentOffset] = useState(0);
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
 
-  const daysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
-  const currentMonth = selectedDate.getMonth();
-  const currentYear = selectedDate.getFullYear();
-  const daysCount = daysInMonth(currentMonth, currentYear);
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  useEffect(() => {
+    updateDates(currentOffset, selectedMonth);
+  }, [currentOffset, selectedMonth]);
+
+  const updateDates = (offset, month) => {
+    const currentDate = new Date();
+    currentDate.setMonth(month);
+    currentDate.setDate(currentDate.getDate() + offset); // Start from the current date + offset
+    const newDates = [];
+    const newDays = [];
+    for (let i = 0; i < 4; i++) {
+      const futureDate = new Date(currentDate);
+      futureDate.setDate(currentDate.getDate() + i);
+      newDates.push(futureDate.getDate().toString().padStart(2, "0"));
+      newDays.push(
+        futureDate
+          .toLocaleDateString("en-US", { weekday: "short" })
+          .toUpperCase(),
+      );
+    }
+    setDates(newDates);
+    setDays(newDays);
+    setSelectedDate(newDates[0]);
+  };
+
+  const handlePrevious = () => {
+    if (currentOffset > 0) {
+      setCurrentOffset(currentOffset - 4); // Move backward by 4 days
+    }
+  };
+
+  const handleNext = () => {
+    setCurrentOffset(currentOffset + 4); // Move forward by 4 days
+  };
+
+  const handleMonthChange = (event) => {
+    setSelectedMonth(parseInt(event.target.value, 10));
+    setCurrentOffset(0); // Reset offset when month changes
+  };
 
   const times = [
     "9AM - 10AM",
@@ -22,55 +75,44 @@ const Schedule = ({ onNext }) => {
     "4PM - 5PM",
   ];
 
-  const handlePrevClick = () => {
-    if (startDay > 0) setStartDay(startDay - 4);
-  };
-
-  const handleNextClick = () => {
-    if (startDay + 3 < daysCount) setStartDay(startDay + 3);
-  };
-
-  const renderCalendar = () => {
-    const days = [];
-    for (let i = 1; i <= daysCount; i++) {
-      const date = new Date(currentYear, currentMonth, i);
-      days.push({
-        day: i,
-        weekday: date.toLocaleString("default", { weekday: "short" }),
-      });
-    }
-
-    return days.slice(startDay, startDay + 4).map(({ day, weekday }) => (
-      <div
-        key={day}
-        className={`date ${selectedDate.getDate() === day ? "active" : ""}`}
-        onClick={() =>
-          setSelectedDate(new Date(currentYear, currentMonth, day))
-        }
-      >
-        <div>{weekday}</div>
-        <div>{day}</div>
-      </div>
-    ));
-  };
-
   return (
     <div className="schedule-container">
       <h3>
-        {selectedDate.toLocaleString("default", { month: "long" })}{" "}
-        {currentYear}
+        <select value={selectedMonth} onChange={handleMonthChange}>
+          {months.map((month, index) => (
+            <option key={index} value={index}>
+              {month}
+            </option>
+          ))}
+        </select>{" "}
+        {new Date().getFullYear()}
       </h3>
       <p>
-        You have selected {selectedDate.getDate()}{" "}
-        {selectedDate.toLocaleString("default", { weekday: "long" })},{" "}
-        {selectedTime}
+        You have selected {months[selectedMonth]} {selectedDate},{" "}
+        {days[dates.indexOf(selectedDate)]} {selectedTime},{" "}
+        {new Date().getFullYear()}
       </p>
       <div className="date-selector">
-        <button className="arrow-btn" onClick={handlePrevClick}>
+        <button
+          className="arrow-btn"
+          onClick={handlePrevious}
+          disabled={currentOffset === 0}
+        >
           &lt;
         </button>
-        <div className="dates">{renderCalendar()}</div>
-        <button className="arrow-btn" onClick={handleNextClick}>
+        <div className="dates">
+          {dates.map((date, index) => (
+            <div
+              key={date}
+              className={`date ${selectedDate === date ? "active" : ""}`}
+              onClick={() => setSelectedDate(date)}
+            >
+              <div className="day">{days[index]}</div>
+              {date}
+            </div>
+          ))}
+        </div>
+        <button className="arrow-btn" onClick={handleNext}>
           &gt;
         </button>
       </div>
@@ -95,7 +137,7 @@ const Schedule = ({ onNext }) => {
         className="confirm-payment-btn"
         onClick={() => onNext("checkout")}
       >
-        Confirm Schedule
+        Confirm Payment
       </button>
     </div>
   );

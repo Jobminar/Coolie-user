@@ -14,15 +14,51 @@ const Checkout = ({ onFinalize }) => {
     // Here you could handle coupon validation or adjustments to final price
   };
 
+  const handleRazorpayPayment = async () => {
+    const options = {
+      key: "rzp_test_b8XfUOQ4u8dlSq", // Replace with your Razorpay API key
+      amount: 50000, // Amount in paise (50000 paise = 500 INR)
+      currency: "INR",
+      name: "Your Company Name",
+      description: "Test Transaction",
+      image: "https://your-logo-url.com", // Replace with your logo URL
+      handler: function (response) {
+        console.log("Payment successful", response);
+        onFinalize(); // Trigger finalization steps
+      },
+      prefill: {
+        name: "Your Name",
+        email: "your.email@example.com",
+        contact: "9999999999",
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  };
+
   const handleConfirmPayment = () => {
     console.log("Payment Method:", paymentMethod);
-    onFinalize(); // This would trigger any finalization steps, such as closing the modal or navigating away
+    if (
+      paymentMethod === "card" ||
+      paymentMethod === "netBanking" ||
+      paymentMethod === "upi" ||
+      paymentMethod === "wallets"
+    ) {
+      handleRazorpayPayment();
+    } else {
+      onFinalize(); // Trigger finalization steps for Cash on Delivery
+    }
   };
 
   return (
     <div className="checkout-container" style={{ backgroundColor: "#e6f7d4" }}>
-      {" "}
-      {/* Green background */}
       <h3>Payment Method</h3>
       <div className="payment-methods">
         <label>

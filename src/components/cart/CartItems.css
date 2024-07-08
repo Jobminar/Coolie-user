@@ -2,11 +2,14 @@
     margin-bottom: 20px;
     background-color: #f4f4f4;
     /* Adds a subtle background color for better contrast */
-    border-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 2px solid #e6f7d4;
     /* Softens the edges */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     /* Light shadow for depth */
     padding: 15px;
+
     /* Increased padding for better spacing */
 }
 

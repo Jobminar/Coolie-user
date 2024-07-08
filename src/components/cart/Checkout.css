@@ -2,10 +2,13 @@
     background-color: #e6f7d4;
     /* Light green background */
     padding: 20px;
-    border-radius: 8px;
+
     max-width: 500px;
     /* Adjust the width as necessary */
-    margin: 20px auto;
+    margin: 0;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 2px solid #e6f7d4;
 }
 
 .payment-methods label {
