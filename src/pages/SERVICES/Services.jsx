@@ -93,7 +93,9 @@ const Services = () => {
           )}
         </div>
 
-        <div className="cart-display">{/* Cart display content */}</div>
+        <div className="cart-display">
+          <CartSummary />
+        </div>
       </div>
     </div>
   );

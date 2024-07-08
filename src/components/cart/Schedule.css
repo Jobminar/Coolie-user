@@ -1,37 +1,39 @@
 .schedule-container {
     padding: 20px;
+    background-color: #e6f7d4;
+    border-radius: 10px;
 }
 
 .date-selector,
 .time-selector {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
 
-.dates,
-.times {
+.dates {
     display: flex;
-    overflow: hidden;
-    /* Remove scrollbar */
-    flex-wrap: wrap;
-    /* Wrap items */
+    flex-wrap: nowrap;
     gap: 10px;
-    /* Space between items */
+    width: 100%;
+    overflow: hidden;
 }
 
-.date,
-.time {
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 5px;
+.date {
+    flex: 1;
+    padding: 10px;
+
+    text-align: center;
     background-color: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #ccc
 }
 
-.date.active,
-.time input:checked+label {
-    background-color: #ccc;
-    /* Active state background */
+.date.active {
+    background-color: #e6f7d4;
+    border: 1px solid #ccc
 }
 
 .arrow-btn {
@@ -41,15 +43,25 @@
     padding: 0 10px;
 }
 
+.time-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
 .time input {
     margin-right: 5px;
-    /* Space before label */
 }
 
 .time label {
-    font-size: 14px;
-    /* Smaller font size for timings */
+    font-size: 12px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.time.active {
+    background-color: #ccc;
 }
 
 .confirm-payment-btn {
@@ -61,4 +73,8 @@
     cursor: pointer;
     width: 100%;
     text-align: center;
+}
+
+.time-selector label {
+    font-size: small;
 }
