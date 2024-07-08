@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Checkout.css";
-
+//Added razorpay
 const Checkout = ({ onFinalize }) => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [couponCode, setCouponCode] = useState("");
