@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import cartData from "../components/cart/cartData.json";
+
 
 export const CartContext = createContext();
 
@@ -7,8 +7,22 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    // Fetch cart items from the mock JSON data
-    setCartItems(cartData.cartItems);
+    const fetchcart = ()=>{
+      try{
+             const responce = fetch('https://api.coolieno1.in/v1.0/users/cart/668bc5a39ea9a691fe736632')
+             if(!responce.ok){
+              throw new Error('failed to fetch cart data')
+             }
+             const data = responce.json()
+             setCartItems(data)
+             console.log(data,'cart items')
+      }
+      catch(err){
+          console.log(err)
+      }
+    }
+    fetchcart()
+    // setCartItems(cartData.cartItems);
   }, []);
 
   const addToCart = (item) => {
@@ -40,6 +54,7 @@ export const CartProvider = ({ children }) => {
         removeFromCart,
         updateQuantity,
         totalPrice,
+        setCartItems
       }}
     >
       {children}

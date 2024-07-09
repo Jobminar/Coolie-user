@@ -1,12 +1,32 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect,useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import deleteIcon from "../../assets/images/Delete.png";
 import "./CartItems.css";
 
 const CartItems = ({ onNext }) => {
-  const { cartItems, removeFromCart, updateQuantity, totalPrice } =
+  const { removeFromCart, updateQuantity, totalPrice } =
     useContext(CartContext);
 
+    const [cartItems, setCartItems] = useState([]);
+
+    useEffect(() => {
+      const fetchcart = ()=>{
+        try{
+               const responce = fetch('https://api.coolieno1.in/v1.0/users/cart/668bc5a39ea9a691fe736632')
+               if(!responce.ok){
+                throw new Error('failed to fetch cart data')
+               }
+               const data = responce.json()
+               setCartItems(data)
+               console.log(data,'cart items')
+        }
+        catch(err){
+            console.log(err)
+        }
+      }
+      fetchcart()
+      // setCartItems(cartData.cartItems);
+    }, []);
   return (
     <div className="cart-items">
       {cartItems.map((item) => (
