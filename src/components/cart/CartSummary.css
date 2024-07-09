@@ -1,10 +1,11 @@
 .cart-summary {
-  
+
     border-radius: 10px;
     /* padding: 20px; */
     width: 380px;
     /* Reduced width by 40% */
     margin: 0 auto;
+
 }
 
 .cart-steps-container {
@@ -34,6 +35,7 @@
     width: 30px;
     height: 30px;
     margin-bottom: 5px;
+    background-color: none;
 }
 
 .badge {

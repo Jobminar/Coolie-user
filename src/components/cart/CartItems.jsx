@@ -1,72 +1,61 @@
-import React, { useContext, useEffect,useState } from "react";
+import React, { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 import deleteIcon from "../../assets/images/Delete.png";
 import "./CartItems.css";
 
 const CartItems = ({ onNext }) => {
-  const { removeFromCart, updateQuantity, totalPrice } =
+  const { cartItems, removeFromCart, updateQuantity, totalPrice } =
     useContext(CartContext);
 
-    const [cartItems, setCartItems] = useState([]);
-
-    useEffect(() => {
-      const fetchcart = ()=>{
-        try{
-               const responce = fetch('https://api.coolieno1.in/v1.0/users/cart/668bc5a39ea9a691fe736632')
-               if(!responce.ok){
-                throw new Error('failed to fetch cart data')
-               }
-               const data = responce.json()
-               setCartItems(data)
-               console.log(data,'cart items')
-        }
-        catch(err){
-            console.log(err)
-        }
-      }
-      fetchcart()
-      // setCartItems(cartData.cartItems);
-    }, []);
   return (
     <div className="cart-items">
-      {cartItems.map((item) => (
-        <div key={item.id} className="cart-item">
-          <div className="item-details">
-            <h4>{item.name}</h4>
-            <div className="item-meta">
-              <p>
-                {item.duration} min | {item.quantity} Item
+      {cartItems.map((cart) =>
+        cart.items.map((item) => (
+          <div key={item._id} className="cart-item">
+            <div className="item-details">
+              <h4>{item.serviceId.name}</h4>
+              <h6>
+                Duration: {item.serviceId.serviceVariants[0].variantName} |
+                Quantity: {item.serviceId.serviceVariants[0].min}-
+                {item.serviceId.serviceVariants[0].max}
+              </h6>
+              <p>{item.quantity} Item</p>
+            </div>
+            <div className="item-actions">
+              <p className="item-price">
+                ₹{item.serviceId.serviceVariants[0].price}
               </p>
+              <div className="quantity-control">
+                <button
+                  className="quantity-button"
+                  onClick={() =>
+                    updateQuantity(item._id, Math.max(1, item.quantity - 1))
+                  }
+                >
+                  -
+                </button>
+                <span>{item.quantity}</span>
+                <button
+                  className="quantity-button"
+                  onClick={() =>
+                    updateQuantity(item._id, Math.min(4, item.quantity + 1))
+                  }
+                >
+                  +
+                </button>
+              </div>
+              <button
+                className="delete-button"
+                onClick={() => removeFromCart(item._id)}
+              >
+                <img src={deleteIcon} alt="Delete" />
+              </button>
             </div>
           </div>
-          <div className="item-actions">
-            <p className="item-price">₹ {item.price}</p>
-            <div className="quantity-control">
-              <button
-                onClick={() =>
-                  updateQuantity(item.id, Math.max(1, item.quantity - 1))
-                }
-              >
-                -
-              </button>
-              <span>{item.quantity}</span>
-              <button
-                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-              >
-                +
-              </button>
-            </div>
-            <button
-              className="delete-button"
-              onClick={() => removeFromCart(item.id)}
-            >
-              <img src={deleteIcon} alt="Delete" />
-            </button>
-          </div>
-        </div>
-      ))}
+        )),
+      )}
       <div className="cart-total">
-        <p>Total Price: ₹{totalPrice}</p>
+        <p>Total Price: ₹{totalPrice.toFixed(2)}</p>
       </div>
       <button className="go-to-address-btn" onClick={() => onNext("address")}>
         Go to Address
