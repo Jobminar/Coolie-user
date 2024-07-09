@@ -43,20 +43,36 @@ const Maincategory = () => {
         </h1>
         <div className="covered-you-main-flow">
           <div className="covered-you-sub-flow first-sub">
-            <img className="coverdyou-show-icon" src={coverdyou1} alt="coveredyou icon" />
+            <div className="covered-you-img">
+             <img className="coverdyou-show-icon" src={coverdyou1} alt="coveredyou icon" />
+            </div>
             <div className="coveredyou-content">
               <h1>Explore top Services</h1>
               <p>
-                Lorem Ipsum has been the industry's standard dummy text ever
-                since the 1500s.
+              Explore top services" typically refers to discovering or investigating prominent. 
               </p>
             </div>
           </div>
           <div className="covered-you-sub-flow second-sub">
-            <img className="coverdyou-show-icon" src={coverdyou2} alt="coveredyou icon" />
+          <div className="covered-you-img">
+             <img className="coverdyou-show-icon" src={coverdyou2} alt="coveredyou icon" />
+            </div>
+            <div className="coveredyou-content">
+              <h1>Fast and Flexible</h1>
+              <p>
+              Explore top services" typically refers to discovering or investigating prominent .</p>
+            </div>
           </div>
           <div className="covered-you-sub-flow third-sub">
-            <img className="coverdyou-show-icon" src={coverdyou3} alt="coveredyou icon" />
+          <div className="covered-you-img">
+             <img className="coverdyou-show-icon" src={coverdyou3} alt="coveredyou icon" />
+            </div>
+            <div className="coveredyou-content">
+              <h1>Support when you need it</h1>
+              <p>
+              Explore top services" typically refers to discovering or investigating prominent .
+              </p>
+            </div>
           </div>
         </div>
       </div>
