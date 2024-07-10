@@ -1,3 +1,5 @@
+// File: CartContext.js
+
 import React, { createContext, useState, useEffect } from "react";
 
 export const CartContext = createContext();
@@ -55,21 +57,7 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // remove dayta from cart
-
-  // setCartItems((prevItems) => {
-  //   const newItems = prevItems
-  //     .map((cart) => ({
-  //       ...cart,
-  //       items: cart.items.filter((item) => item._id !== itemId),
-  //     }))
-  //     .filter((cart) => cart.items.length > 0);
-  //   calculateTotalPrice(newItems);
-  //   return newItems;
-  // });
-
   const removeFromCart = (userId, itemId) => {
-    console.log(userId, itemId, "cart item id");
     setItemIdToRemove(itemId);
     setUserIdToRemoveItem(userId);
   };
@@ -77,17 +65,25 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     if (itemIdToRemove !== null) {
       fetch(
-        `https://api.coolieno1.in/v1.0/users/cart/${userIdToRemoveItem}${itemIdToRemove}`,
+        `https://api.coolieno1.in/v1.0/users/cart/${userIdToRemoveItem}/${itemIdToRemove}`,
         {
           method: "DELETE",
         },
       )
         .then((response) => {
           if (response.ok) {
-            alert("item del");
-            setCartItems((prevItems) =>
-              prevItems.filter((item) => item.id !== itemIdToRemove),
-            );
+            setCartItems((prevItems) => {
+              const newItems = prevItems
+                .map((cart) => ({
+                  ...cart,
+                  items: cart.items.filter(
+                    (item) => item._id !== itemIdToRemove,
+                  ),
+                }))
+                .filter((cart) => cart.items.length > 0);
+              calculateTotalPrice(newItems);
+              return newItems;
+            });
           } else {
             console.error("Error deleting cart item:", response.statusText);
           }
