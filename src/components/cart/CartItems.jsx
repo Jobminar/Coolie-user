@@ -46,7 +46,7 @@ const CartItems = ({ onNext }) => {
               </div>
               <button
                 className="delete-button"
-                onClick={() => removeFromCart(item._id)}
+                onClick={() => removeFromCart(cart._id, item._id)}
               >
                 <img src={deleteIcon} alt="Delete" />
               </button>

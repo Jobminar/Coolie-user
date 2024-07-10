@@ -7,29 +7,32 @@
 .services-cart-display {
     display: flex;
     flex-direction: column;
-    width: 95%;
+    width: 85%;
     /* border: 1px solid black; */
     min-height: 20rem;
     display: grid;
     grid-template-columns: 65% 30%;
     justify-content: space-between;
-    margin: 2rem 1rem ;
+    margin: 2rem 1rem;
 
 }
-.services-main-dispaly{
+
+.services-main-dispaly {
     display: grid;
     grid-template-columns: 45% 55%;
     justify-content: space-between;
     border: 1px solid red;
     border-radius: 10px;
 }
-.sub-category-display{
+
+.sub-category-display {
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
     /* border: 1px solid black; */
 }
-.sub-category-item{
+
+.sub-category-item {
     display: grid;
     grid-template-columns: 20% 80%;
     align-items: center;
@@ -37,14 +40,16 @@
     padding-left: 5px;
     min-height: 3rem;
 }
- .subcat-services-dispaly{
+
+.subcat-services-dispaly {
     display: grid;
-    grid-template-columns:45% 55% ;
- }
-.services-display{
-   background-color: #E3E4EA;
-   /* opacity: 33%; */
-   border-radius:0px 10px 10px 10px;
+    grid-template-columns: 45% 55%;
+}
+
+.services-display {
+    background-color: #E3E4EA;
+    /* opacity: 33%; */
+    border-radius: 0px 10px 10px 10px;
     display: flex;
     flex-direction: column;
     justify-content: top;
@@ -69,22 +74,26 @@
 .error {
     color: red;
 }
-.sub-category-item:hover{
+
+.sub-category-item:hover {
     cursor: pointer;
 }
-.sub-category-item p{
+
+.sub-category-item p {
     font-family: Roboto;
-font-size: 16px;
-font-weight: 600;
-line-height: 18.75px;
-text-align: left;
-margin: 0px;
-padding: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18.75px;
+    text-align: left;
+    margin: 0px;
+    padding: 10px;
 }
-.cart-display{
+
+.cart-display {
     /* border: 1px solid black; */
 }
-.active{
+
+.active {
     background-color: #E3E4EA;
     margin: 0px;
     border-radius: 10px 0px 0px 10px;
@@ -92,7 +101,8 @@ padding: 10px;
     justify-content: space-evenly;
     align-items: center;
 }
-.active p{
+
+.active p {
     font-family: Roboto;
     font-size: 16px;
     font-weight: 600;
@@ -100,42 +110,49 @@ padding: 10px;
     text-align: center;
     color: #CD2E28;
 }
-.subcat-icon-container{
+
+.subcat-icon-container {
     width: 2.5rem;
     height: 2.5rem;
 }
-.subcat-icon-container img{
+
+.subcat-icon-container img {
     width: 100%;
     height: 100%;
 }
+
 .sub-category-service-item {
     width: 90%;
     min-height: 4rem;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-   display: flex;
-   flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-  }
-  
-.sub-category-service-item:hover{
+}
+
+.sub-category-service-item:hover {
     cursor: pointer;
 }
-.service-icon-container{
+
+.service-icon-container {
     width: auto;
     height: 4rem;
 }
-.service-main-head{
-  display: grid;
-  height: 4rem;
-  grid-template-columns: 20% 65% 15%;
-  align-items: center;
+
+.service-main-head {
+    display: grid;
+    height: 4rem;
+    grid-template-columns: 20% 65% 15%;
+    align-items: center;
 }
-.service-main-head div{
+
+.service-main-head div {
     /* border: 1px solid black; */
 }
-.service-content h3{
+
+.service-content h3 {
     font-family: Roboto;
     font-size: 15px;
     font-weight: 700;
@@ -143,25 +160,29 @@ padding: 10px;
     text-align: left;
     margin: 10px 0px;
 }
-.service-variant p{
+
+.service-variant p {
     margin: 0px;
     padding: 0px;
     font-family: Roboto;
-font-size: 13px;
-font-weight: 300;
-line-height: 15.23px;
-text-align: left;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 15.23px;
+    text-align: left;
 
 }
-.dropdown{
+
+.dropdown {
     /* border: 1px solid black; */
     margin-right: 1rem;
 }
-.dropdown img{
+
+.dropdown img {
     width: 100%;
     height: 100%;
 }
-.price{
+
+.price {
     font-family: Roboto;
     font-size: 16px;
     font-weight: 600;
@@ -171,23 +192,26 @@ text-align: left;
     grid-template-columns: 20% 50% 30%;
     align-items: center;
 }
-.price button{
+
+.price button {
     width: 5rem;
     height: 2rem;
     background-color: white;
     border-radius: 10px;
 }
-.price button:hover{
+
+.price button:hover {
     cursor: pointer;
 
 }
-.description{
+
+.description {
     font-family: Roboto;
-font-size: 13.33px;
-font-weight: 200;
-line-height: 17px;
-text-align: left;
-/* border: 1px solid black; */
-padding-left: 3rem;
-padding-top: 1rem
+    font-size: 13.33px;
+    font-weight: 200;
+    line-height: 17px;
+    text-align: left;
+    /* border: 1px solid black; */
+    padding-left: 3rem;
+    padding-top: 1rem
 }

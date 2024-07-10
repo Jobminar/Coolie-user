@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './MOSTBOOKEDSERVICES.css'; // import your styling
+import React, { useState, useEffect } from "react";
+import "./MOSTBOOKEDSERVICES.css"; // import your styling
 
 const Mostbookedservices = () => {
   const [mostBooked, setMostBooked] = useState([]);
@@ -9,7 +9,9 @@ const Mostbookedservices = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://api.coolieno1.in/v1.0/admin/most-booked');
+        const response = await fetch(
+          "https://api.coolieno1.in/v1.0/admin/most-booked",
+        );
         const data = await response.json();
         setMostBooked(data);
         setLoading(false);
@@ -31,20 +33,21 @@ const Mostbookedservices = () => {
   }
 
   return (
-    <div className='mostbooked-main-con'>
-      <h2>Most Booked <span>Services</span></h2>
-      <div className='most-booked'>
+    <div className="mostbooked-main-con">
+      <h2>
+        Most Booked <span>Services</span>
+      </h2>
+      <div className="most-booked">
         {mostBooked.map((service, index) => (
-          <div key={index} className='sub-booked'>
-            <div className='sub-booked-image'>
+          <div key={index} className="sub-booked">
+            <div className="sub-booked-image">
               <img
-                  src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${service.image}`}
-                  
-                />
+                src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${service.image}`}
+              />
             </div>
-           
-            <h3 className='most-booked-name'>{service.name}</h3>
-            <p className='most-booked-price'>Rs : {service.price}</p>
+
+            <h3 className="most-booked-name">{service.name}</h3>
+            {/* <p className='most-booked-price'>Rs : {service.price}</p> */}
           </div>
         ))}
       </div>

@@ -5,6 +5,9 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [cartId, setCartId] = useState("");
+  const [userIdToRemoveItem, setUserIdToRemoveItem] = useState("");
+  const [itemIdToRemove, setItemIdToRemove] = useState(null);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -52,18 +55,46 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const removeFromCart = (itemId) => {
-    setCartItems((prevItems) => {
-      const newItems = prevItems
-        .map((cart) => ({
-          ...cart,
-          items: cart.items.filter((item) => item._id !== itemId),
-        }))
-        .filter((cart) => cart.items.length > 0);
-      calculateTotalPrice(newItems);
-      return newItems;
-    });
+  // remove dayta from cart
+
+  // setCartItems((prevItems) => {
+  //   const newItems = prevItems
+  //     .map((cart) => ({
+  //       ...cart,
+  //       items: cart.items.filter((item) => item._id !== itemId),
+  //     }))
+  //     .filter((cart) => cart.items.length > 0);
+  //   calculateTotalPrice(newItems);
+  //   return newItems;
+  // });
+
+  const removeFromCart = (userId, itemId) => {
+    console.log(userId, itemId, "cart item id");
+    setItemIdToRemove(itemId);
+    setUserIdToRemoveItem(userId);
   };
+
+  useEffect(() => {
+    if (itemIdToRemove !== null) {
+      fetch(
+        `https://api.coolieno1.in/v1.0/users/cart/delete-cart-item/${userIdToRemoveItem}${itemIdToRemove}`,
+        {
+          method: "DELETE",
+        },
+      )
+        .then((response) => {
+          if (response.ok) {
+            alert("item del");
+            setCartItems((prevItems) =>
+              prevItems.filter((item) => item.id !== itemIdToRemove),
+            );
+          } else {
+            console.error("Error deleting cart item:", response.statusText);
+          }
+        })
+        .catch((error) => console.error("Error deleting cart item:", error));
+    }
+  }, [itemIdToRemove, userIdToRemoveItem]);
 
   const updateQuantity = (itemId, newQuantity) => {
     setCartItems((prevItems) => {
@@ -87,6 +118,7 @@ export const CartProvider = ({ children }) => {
         updateQuantity,
         totalPrice,
         setCartItems,
+        cartId,
       }}
     >
       {children}
