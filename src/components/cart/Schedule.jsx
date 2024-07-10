@@ -8,7 +8,7 @@ const Schedule = ({ onNext }) => {
   const [days, setDays] = useState([]);
   const [currentOffset, setCurrentOffset] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
-
+  //this is slected date
   const months = [
     "January",
     "February",
