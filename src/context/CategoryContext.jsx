@@ -9,8 +9,8 @@ export const CategoryProvider = ({ children }) => {
   const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(null);
   const [servicesData, setServicesData] = useState(null);
   const [error, setError] = useState(null);
-  console.log(selectedCategoryId,'category id')
-//  fetch categories
+  console.log(selectedCategoryId, "category id");
+  //  fetch categories
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -34,7 +34,6 @@ export const CategoryProvider = ({ children }) => {
   // fetch sub categories
 
   useEffect(() => {
-   
     if (selectedCategoryId) {
       const fetchSubCategories = async () => {
         try {
@@ -57,35 +56,34 @@ export const CategoryProvider = ({ children }) => {
 
   // checking subcategory id
 
-  useEffect(()=>{
-    if(selectedSubCategoryId){
-      console.log(selectedSubCategoryId, 'selected sub category id in main')
+  useEffect(() => {
+    if (selectedSubCategoryId) {
+      console.log(selectedSubCategoryId, "selected sub category id in main");
     }
-  },[selectedSubCategoryId])
+  }, [selectedSubCategoryId]);
 
   // fetch service
   useEffect(() => {
     if (selectedCategoryId && selectedSubCategoryId) {
       const fetchService = async () => {
         try {
-          const response = await fetch(`https://api.coolieno1.in/v1.0/core/services/filter/${selectedCategoryId}/${selectedSubCategoryId}`);
+          const response = await fetch(
+            `https://api.coolieno1.in/v1.0/core/services/filter/${selectedCategoryId}/${selectedSubCategoryId}`,
+          );
           if (!response.ok) {
-            throw new Error('Failed to fetch services');
+            throw new Error("Failed to fetch services");
           }
           const data = await response.json();
           setServicesData(data.data); // Assuming `data` contains the actual array
-          console.log(data, 'service data in main context');
+          console.log(data, "service data in main context");
         } catch (err) {
           setError(err.message);
           console.log(err);
-        } 
+        }
       };
       fetchService();
     }
   }, [selectedCategoryId, selectedSubCategoryId]);
-
-  
- 
 
   return (
     <CategoryContext.Provider

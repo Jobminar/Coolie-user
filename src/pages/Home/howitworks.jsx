@@ -64,7 +64,7 @@ const Howitworks = () => {
               <div className="how-image">
                 <img src={howitworks5} alt="how-it-works" />
               </div>
-              <p>Repeat</p>
+              <p>Keep Booking</p>
             </div>
           </div>
         </div>

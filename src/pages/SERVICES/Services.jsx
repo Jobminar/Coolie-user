@@ -2,12 +2,20 @@ import React, { useState, useContext, useEffect } from "react";
 import "./Services.css";
 import ScrollableTabs from "./ScrollableTabs";
 import { CategoryContext } from "../../context/CategoryContext";
-import dropdown from '../../assets/images/dropdown.png';
-import CartSummary from '../../components/cart/CartSummary';
+import dropdown from "../../assets/images/dropdown.png";
+import CartSummary from "../../components/cart/CartSummary";
 import { CartContext } from "../../context/CartContext";
 
 const Services = ({ userId }) => {
-  const { categoryData, selectedCategoryId, subCategoryData, selectedSubCategoryId, setSelectedSubCategoryId, servicesData, error } = useContext(CategoryContext);
+  const {
+    categoryData,
+    selectedCategoryId,
+    subCategoryData,
+    selectedSubCategoryId,
+    setSelectedSubCategoryId,
+    servicesData,
+    error,
+  } = useContext(CategoryContext);
   // const {handleCart}=useContext(CartContext)
   const [data, setData] = useState([]);
   const [subData, setSubData] = useState([]);
@@ -17,11 +25,11 @@ const Services = ({ userId }) => {
   const [descriptionVisibility, setDescriptionVisibility] = useState({});
   const [items, setItems] = useState([
     {
-      userId: '',
-      serviceId: '',
-      categoryId: '',
-      subCategoryId: ''
-    }
+      userId: "",
+      serviceId: "",
+      categoryId: "",
+      subCategoryId: "",
+    },
   ]);
 
   useEffect(() => {
@@ -48,21 +56,27 @@ const Services = ({ userId }) => {
   useEffect(() => {
     if (servicesData) {
       setServiceData(servicesData);
-      console.log(servicesData, 'service data in sub page');
+      console.log(servicesData, "service data in sub page");
     }
-  }, [servicesData]);
+  }, [servicesData, activeSubCategory]);
 
   useEffect(() => {
     const findActive = () => {
-      if (subCategoryData && selectedSubCategoryId) {
-        const activeSubCat = subCategoryData.find(subCat => subCat._id === selectedSubCategoryId);
+      if (subCategoryData && subCategoryData.length > 0) {
+        const activeSubCat = selectedSubCategoryId
+          ? subCategoryData.find(
+              (subCat) => subCat._id === selectedSubCategoryId,
+            )
+          : null;
+
         if (activeSubCat) {
           setActiveSubCategory(activeSubCat);
         } else {
-          setActiveSubCategory(subCategoryData[0]); // Clear if no matching subcategory is found
+          setActiveSubCategory(subCategoryData[0]);
         }
       }
     };
+
     findActive();
   }, [subCategoryData, selectedSubCategoryId]);
 
@@ -75,62 +89,74 @@ const Services = ({ userId }) => {
   }
 
   const toggleDescription = (serviceId) => {
-    setDescriptionVisibility(prevState => ({
+    setDescriptionVisibility((prevState) => ({
       ...prevState,
-      [serviceId]: !prevState[serviceId]
+      [serviceId]: !prevState[serviceId],
     }));
   };
 
   // handle cart
   const handleCart = async (serviceId, categoryId, subCategoryId) => {
     const newItem = {
-      userId:'668bc5a39ea9a691fe736632',
-      items: [{
-        serviceId,
-        categoryId,
-        subCategoryId,
-        quantity: 1,
-      }],
-    };
-  
-    try {
-      const response = await fetch('https://api.coolieno1.in/v1.0/users/cart/create-cart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      userId: "668bc5a39ea9a691fe736632",
+      items: [
+        {
+          serviceId,
+          categoryId,
+          subCategoryId,
+          quantity: 1,
         },
-        body: JSON.stringify(newItem),
-      });
-  
+      ],
+    };
+
+    try {
+      const response = await fetch(
+        "https://api.coolieno1.in/v1.0/users/cart/create-cart",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newItem),
+        },
+      );
+
       if (response.ok) {
-        alert('items added to cart')
+        alert("items added to cart");
         const responseData = await response.json();
-        setItems(prevItems => [...prevItems, newItem.items[0]]);
-        console.log('Item added to cart:', responseData);
+        setItems((prevItems) => [...prevItems, newItem.items[0]]);
+        console.log("Item added to cart:", responseData);
       } else {
-        console.error('Failed to add item to cart:', response.statusText);
+        console.error("Failed to add item to cart:", response.statusText);
       }
     } catch (error) {
-      console.error('Error adding item to cart:', error);
+      console.error("Error adding item to cart:", error);
     }
   };
-  
 
-  console.log(items, 'items');
+  console.log(items, "items");
 
   return (
     <div className="services">
       <ScrollableTabs />
-      
+
       <div className="services-cart-display">
         <div className="subcat-services-dispaly">
           <div className="sub-category-display">
             <div className="active">
-              <p>{activeSubCategory ? ` ${activeSubCategory.name}` : 'No active subcategory'}</p>
+              <p>
+                {activeSubCategory
+                  ? ` ${activeSubCategory.name}`
+                  : "No active subcategory"}
+              </p>
             </div>
             {subData.length > 0 ? (
               subData.map((subCat) => (
-                <div key={subCat._id} className="sub-category-item" onClick={() => setSelectedSubCategoryId(subCat._id)}>
+                <div
+                  key={subCat._id}
+                  className="sub-category-item"
+                  onClick={() => setSelectedSubCategoryId(subCat._id)}
+                >
                   <div className="subcat-icon-container">
                     <img
                       src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${subCat.imageKey}`}
@@ -149,7 +175,7 @@ const Services = ({ userId }) => {
           {/* Service display */}
           <div className="services-display">
             <p></p>
-            {serviceData.map(service => (
+            {serviceData.map((service) => (
               <div key={service._id} className="sub-category-service-item">
                 <div className="service-main-head">
                   <div className="service-icon-container">
@@ -159,29 +185,51 @@ const Services = ({ userId }) => {
                       className="tab-image"
                     />
                   </div>
-                  <div className="service-content">  
+                  <div className="service-content">
                     <h3>{service.name}</h3>
-                    {service.serviceVariants.map(variant => (
+                    {service.serviceVariants.map((variant) => (
                       <div key={variant._id} className="service-variant">
-                        <p>({variant.min} to {variant.max} {variant.metric})</p>
+                        <p>
+                          ({variant.min} to {variant.max} {variant.metric})
+                        </p>
                       </div>
                     ))}
                   </div>
-                  <div className="dropdown" onClick={() => toggleDescription(service._id)}>
-                    <img src={dropdown} alt="dropdown"/>
+                  <div
+                    className="dropdown"
+                    onClick={() => toggleDescription(service._id)}
+                  >
+                    <img src={dropdown} alt="dropdown" />
                   </div>
                 </div>
-                <div className="description" style={{ display: descriptionVisibility[service._id] ? 'block' : 'none' }}>
+                <div
+                  className="description"
+                  style={{
+                    display: descriptionVisibility[service._id]
+                      ? "block"
+                      : "none",
+                  }}
+                >
                   {service.description}
                 </div>
                 <div className="price">
                   <p></p>
-                  {service.serviceVariants.map(variant => (
+                  {service.serviceVariants.map((variant) => (
                     <div key={variant._id}>
                       <p>&#8377; {variant.price}</p>
                     </div>
                   ))}
-                  <button onClick={() => handleCart(service._id, service.categoryId._id, service.subCategoryId._id)}>ADD</button>
+                  <button
+                    onClick={() =>
+                      handleCart(
+                        service._id,
+                        service.categoryId._id,
+                        service.subCategoryId._id,
+                      )
+                    }
+                  >
+                    ADD
+                  </button>
                 </div>
               </div>
             ))}
