@@ -46,7 +46,7 @@ const Mostbookedservices = () => {
               />
             </div>
 
-            <h3 className="most-booked-name">{service.name}</h3>
+            <h6 className="most-booked-name">{service.name}</h6>
             {/* <p className='most-booked-price'>Rs : {service.price}</p> */}
           </div>
         ))}

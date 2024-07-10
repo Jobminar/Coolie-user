@@ -77,7 +77,7 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     if (itemIdToRemove !== null) {
       fetch(
-        `https://api.coolieno1.in/v1.0/users/cart/delete-cart-item/${userIdToRemoveItem}${itemIdToRemove}`,
+        `https://api.coolieno1.in/v1.0/users/cart/${userIdToRemoveItem}${itemIdToRemove}`,
         {
           method: "DELETE",
         },

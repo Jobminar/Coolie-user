@@ -2,8 +2,8 @@
     /* border: 1px solid black; */
     border-radius: 10px;
     min-height: 10rem;
-    background-color: #E3E5FF;
-    /* opacity: 50%; */
+    background-color: rgba(227, 229, 255, 0.35);
+    /* Adjusted to only affect background color opacity */
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -13,6 +13,7 @@
     padding: 2rem 3rem;
     margin: 2rem 0rem;
 }
+
 
 .sub-cat-con {
     display: flex;
@@ -39,6 +40,7 @@
     align-items: center;
 }
 
+
 .sub-cat-con p {
     font-family: Roboto;
     font-size: 16px;
@@ -54,6 +56,16 @@
     height: 3.5rem;
     border-radius: 50%;
 }
+
+.main-cat-img:hover {
+    background-color: #FFB800;
+}
+
+.main-cat-img img:hover {
+    width: 6.5rem;
+    height: 6.5rem;
+}
+
 
 .coveredyou-con {
     /* border: 1px solid black; */

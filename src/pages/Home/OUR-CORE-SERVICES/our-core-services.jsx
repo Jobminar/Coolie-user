@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './our-core-services.css'; // import your styling
+import React, { useState, useEffect } from "react";
+import "./our-core-services.css"; // import your styling
 
 const Ourcoreservices = () => {
   const [coreServices, setCoreServices] = useState([]);
@@ -9,7 +9,9 @@ const Ourcoreservices = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://api.coolieno1.in/v1.0/admin/most-booked');
+        const response = await fetch(
+          "https://api.coolieno1.in/v1.0/admin/most-booked",
+        );
         const data = await response.json();
         setCoreServices(data);
         setLoading(false);
@@ -31,20 +33,22 @@ const Ourcoreservices = () => {
   }
 
   return (
-    <div className='ourcore-main-con'>
-      <h2>Our Core <span>Services</span></h2>
-      <div className='ourcore-services'>
+    <div className="ourcore-main-con">
+      <h2>
+        Our Core <span>Services</span>
+      </h2>
+      <div className="ourcore-services">
         {coreServices.map((service, index) => (
-          <div key={index} className='sub-core'>
-            <div className='sub-core-image'>
+          <div key={index} className="sub-core">
+            <div className="sub-core-image">
               <img
                 src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${service.image}`}
                 alt={service.name}
               />
             </div>
-            <h3 className='ourcore-service-name'>{service.name}</h3>
-            <p className='ourcore-service-price'>{service.description}</p>
-            <button className='book-now'>BOOK NOW </button>
+            <h6 className="ourcore-service-name">{service.name}</h6>
+            <h4 className="ourcore-service-price">{service.description}</h4>
+            <button className="book-now">BOOK NOW </button>
           </div>
         ))}
       </div>
