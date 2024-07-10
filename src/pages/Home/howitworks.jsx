@@ -16,40 +16,55 @@ const Howitworks = () => {
         </h1>
         <div className="how-main-flow">
           <div className="how-sub-flow">
-            <div className="how-image">
-              <img src={howitworks1} alt="how-it-works" />
+            <div className="how-flow">
+              <div className="how-image">
+                <img src={howitworks1} alt="how-it-works" />
+              </div>
+              <p>Choose a Service</p>
             </div>
             <div className="arrow-container">
               <img src={rightarrow} alt="rightarrow" />
             </div>
           </div>
           <div className="how-sub-flow">
-            <div className="how-image">
-              <img src={howitworks2} alt="how-it-works" />
+            <div className="how-flow">
+              <div className="how-image">
+                <img src={howitworks2} alt="how-it-works" />
+              </div>
+              <p>Get Conformation</p>
             </div>
             <div className="arrow-container">
               <img src={rightarrow} alt="rightarrow" />
             </div>
           </div>
           <div className="how-sub-flow">
-            <div className="how-image">
-              <img src={howitworks3} alt="how-it-works" />
+            <div className="how-flow">
+              <div className="how-image">
+                <img src={howitworks3} alt="how-it-works" />
+              </div>
+              <p>Professional Arrival</p>
             </div>
             <div className="arrow-container">
               <img src={rightarrow} alt="rightarrow" />
             </div>
           </div>
           <div className="how-sub-flow">
-            <div className="how-image">
-              <img src={howitworks4} alt="how-it-works" />
+            <div className="how-flow">
+              <div className="how-image">
+                <img src={howitworks4} alt="how-it-works" />
+              </div>
+              <p>Get the Service Done</p>
             </div>
             <div className="arrow-container">
               <img src={rightarrow} alt="rightarrow" />
             </div>
           </div>
           <div className="how-sub-flow final-flow">
-            <div className="how-image">
-              <img src={howitworks5} alt="how-it-works" />
+            <div className="how-flow">
+              <div className="how-image">
+                <img src={howitworks5} alt="how-it-works" />
+              </div>
+              <p>Repeat</p>
             </div>
           </div>
         </div>
