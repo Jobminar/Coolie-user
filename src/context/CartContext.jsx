@@ -1,21 +1,20 @@
-// File: CartContext.js
-
 import React, { createContext, useState, useEffect } from "react";
 
 export const CartContext = createContext();
 
-export const CartProvider = ({ children }) => {
+export const CartProvider = ({ children, cartId }) => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [cartId, setCartId] = useState("");
-  const [userIdToRemoveItem, setUserIdToRemoveItem] = useState("");
   const [itemIdToRemove, setItemIdToRemove] = useState(null);
 
+
+
+// fetch cart
   useEffect(() => {
     const fetchCart = async () => {
       try {
         const response = await fetch(
-          "https://api.coolieno1.in/v1.0/users/cart/668bc5a39ea9a691fe736632",
+          `https://api.coolieno1.in/v1.0/users/cart/668bc5a39ea9a691fe736632`,
         );
         if (!response.ok) {
           throw new Error("Failed to fetch cart data");
@@ -28,7 +27,7 @@ export const CartProvider = ({ children }) => {
       }
     };
     fetchCart();
-  }, []);
+  }, [cartId]);
 
   useEffect(() => {
     calculateTotalPrice(cartItems);
@@ -49,6 +48,8 @@ export const CartProvider = ({ children }) => {
     setTotalPrice(total);
   };
 
+
+
   const addToCart = (item) => {
     setCartItems((prevItems) => {
       const newItems = [...prevItems, item];
@@ -57,21 +58,25 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const removeFromCart = (userId, itemId) => {
-    setItemIdToRemove(itemId);
-    setUserIdToRemoveItem(userId);
+
+
+  // delete cart items
+  const removeFromCart = (itemId) => {
+    console.log(itemId, 'itemId')
+    setItemIdToRemove(itemId)
   };
 
   useEffect(() => {
     if (itemIdToRemove !== null) {
       fetch(
-        `https://api.coolieno1.in/v1.0/users/cart/${userIdToRemoveItem}/${itemIdToRemove}`,
+        `https://api.coolieno1.in/v1.0/users/cart/668bc5a39ea9a691fe736632/${itemIdToRemove}`,
         {
           method: "DELETE",
         },
       )
         .then((response) => {
           if (response.ok) {
+            alert('item deleted')
             setCartItems((prevItems) => {
               const newItems = prevItems
                 .map((cart) => ({
@@ -90,7 +95,7 @@ export const CartProvider = ({ children }) => {
         })
         .catch((error) => console.error("Error deleting cart item:", error));
     }
-  }, [itemIdToRemove, userIdToRemoveItem]);
+  }, [itemIdToRemove]);
 
   const updateQuantity = (itemId, newQuantity) => {
     setCartItems((prevItems) => {
@@ -114,7 +119,6 @@ export const CartProvider = ({ children }) => {
         updateQuantity,
         totalPrice,
         setCartItems,
-        cartId,
       }}
     >
       {children}

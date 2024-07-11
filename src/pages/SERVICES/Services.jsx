@@ -97,6 +97,7 @@ const Services = ({ userId }) => {
 
   // handle cart
   const handleCart = async (serviceId, categoryId, subCategoryId) => {
+    console.log(serviceId,categoryId,selectedCategoryId,'ids from services.jsx to send cartdata')
     const newItem = {
       userId: "668bc5a39ea9a691fe736632",
       items: [
