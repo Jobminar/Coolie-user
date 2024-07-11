@@ -13,7 +13,6 @@ const CartItems = ({ onNext }) => {
           <div key={item._id} className="cart-item">
             <div className="item-details">
               <h4>{item.serviceId.name}</h4>
-              <p>item id : {item._id}</p>
               <h6>
                 Duration: {item.serviceId.serviceVariants[0].variantName} |
                 Quantity: {item.serviceId.serviceVariants[0].min}-

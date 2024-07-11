@@ -215,3 +215,10 @@
     padding-left: 3rem;
     padding-top: 1rem
 }
+.sub-category-item {
+    color: black;
+  }
+  
+  .sub-category-item p.active{
+    color: red;
+  }

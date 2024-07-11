@@ -60,26 +60,6 @@ const Services = ({ userId }) => {
     }
   }, [servicesData, activeSubCategory]);
 
-  useEffect(() => {
-    const findActive = () => {
-      if (subCategoryData && subCategoryData.length > 0) {
-        const activeSubCat = selectedSubCategoryId
-          ? subCategoryData.find(
-              (subCat) => subCat._id === selectedSubCategoryId,
-            )
-          : null;
-
-        if (activeSubCat) {
-          setActiveSubCategory(activeSubCat);
-        } else {
-          setActiveSubCategory(subCategoryData[0]);
-        }
-      }
-    };
-
-    findActive();
-  }, [subCategoryData, selectedSubCategoryId]);
-
   if (error) {
     return <div className="error">Error: {error}</div>;
   }
@@ -143,35 +123,29 @@ const Services = ({ userId }) => {
 
       <div className="services-cart-display">
         <div className="subcat-services-dispaly">
-          <div className="sub-category-display">
-            <div className="active">
-              <p>
-                {activeSubCategory
-                  ? ` ${activeSubCategory.name}`
-                  : "No active subcategory"}
-              </p>
-            </div>
-            {subData.length > 0 ? (
-              subData.map((subCat) => (
-                <div
-                  key={subCat._id}
-                  className="sub-category-item"
-                  onClick={() => setSelectedSubCategoryId(subCat._id)}
-                >
-                  <div className="subcat-icon-container">
-                    <img
-                      src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${subCat.imageKey}`}
-                      alt={subCat.name}
-                      className="tab-image"
-                    />
-                  </div>
-                  <p>{subCat.name}</p>
+        <div className="sub-category-display">
+          {subData.length > 0 ? (
+            subData.map((subCat) => (
+              <div
+                key={subCat._id}
+                className={`sub-category-item ${selectedSubCategoryId === subCat._id ? 'active' : ''}`}
+                onClick={() => setSelectedSubCategoryId(subCat._id)}
+              >
+                <div className="subcat-icon-container">
+                  <img
+                    src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${subCat.imageKey}`}
+                    alt={subCat.name}
+                    className="tab-image"
+                  />
                 </div>
-              ))
-            ) : (
-              <p>No additional subcategories available.</p>
-            )}
-          </div>
+                <p>{subCat.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>No additional subcategories available.</p>
+          )}
+        </div>
+      
 
           {/* Service display */}
           <div className="services-display">
@@ -235,6 +209,7 @@ const Services = ({ userId }) => {
               </div>
             ))}
           </div>
+
         </div>
         <div className="cart-display">
           <CartSummary />

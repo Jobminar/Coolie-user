@@ -7,8 +7,9 @@ import coverdyou2 from "../../assets/images/coveredyou-2.svg";
 import coverdyou3 from "../../assets/images/coveredyou-3.svg";
 
 const Maincategory = () => {
+  
   const navigate = useNavigate();
-  const { categoryData } = useContext(CategoryContext);
+  const { categoryData , setSelectedCategoryId } = useContext(CategoryContext);
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -16,6 +17,12 @@ const Maincategory = () => {
       setData(categoryData);
     }
   }, [categoryData]);
+
+  const handleCategory = (id) => {
+    console.log('category id', id);
+    setSelectedCategoryId(id);
+    navigate('/services');
+  };
 
   return (
     <>
@@ -25,7 +32,7 @@ const Maincategory = () => {
             <div key={item._id} className="sub-cat-con">
               <div
                 className="main-cat-img"
-                onClick={() => navigate("/services")}
+                onClick={()=>{handleCategory(item._id)}}
               >
                 <img
                   src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${item.imageKey}`}
@@ -36,6 +43,9 @@ const Maincategory = () => {
             </div>
           ))}
       </div>
+
+
+
       <div className="coveredyou-con">
         <h1 className="covered-you-headdig">
           Coolie No 1<span> covered you</span>
