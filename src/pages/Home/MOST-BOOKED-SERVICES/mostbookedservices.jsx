@@ -42,7 +42,7 @@ const Mostbookedservices = () => {
           <div key={index} className="sub-booked">
             <div className="sub-booked-image">
               <img
-                src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${service.image}`}
+                src={service.image}
               />
             </div>
 
