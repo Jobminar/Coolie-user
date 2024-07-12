@@ -7,11 +7,11 @@
 .services-cart-display {
     display: flex;
     flex-direction: column;
-    width: 85%;
+    width: 90%;
     /* border: 1px solid black; */
     min-height: 20rem;
     display: grid;
-    grid-template-columns: 65% 30%;
+    grid-template-columns: 65% 34%;
     justify-content: space-between;
     margin: 2rem 1rem;
 
@@ -91,6 +91,7 @@
 
 .cart-display {
     /* border: 1px solid black; */
+    width: 100%;
 }
 
 .active {

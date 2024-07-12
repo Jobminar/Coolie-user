@@ -119,7 +119,7 @@ const Services = ({ userId }) => {
 
   return (
     <div className="services">
-      <ScrollableTabs />
+      {/* <ScrollableTabs /> */}
 
       <div className="services-cart-display">
         <div className="subcat-services-dispaly">
