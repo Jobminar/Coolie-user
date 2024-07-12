@@ -77,7 +77,12 @@ const Services = ({ userId }) => {
 
   // handle cart
   const handleCart = async (serviceId, categoryId, subCategoryId) => {
-    console.log(serviceId,categoryId,selectedCategoryId,'ids from services.jsx to send cartdata')
+    console.log(
+      serviceId,
+      categoryId,
+      selectedCategoryId,
+      "ids from services.jsx to send cartdata",
+    );
     const newItem = {
       userId: "668bc5a39ea9a691fe736632",
       items: [
@@ -119,33 +124,34 @@ const Services = ({ userId }) => {
 
   return (
     <div className="services">
-      {/* <ScrollableTabs /> */}
+      <ScrollableTabs />
 
       <div className="services-cart-display">
         <div className="subcat-services-dispaly">
-        <div className="sub-category-display">
-          {subData.length > 0 ? (
-            subData.map((subCat) => (
-              <div
-                key={subCat._id}
-                className={`sub-category-item ${selectedSubCategoryId === subCat._id ? 'active' : ''}`}
-                onClick={() => setSelectedSubCategoryId(subCat._id)}
-              >
-                <div className="subcat-icon-container">
-                  <img
-                    src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${subCat.imageKey}`}
-                    alt={subCat.name}
-                    className="tab-image"
-                  />
+          <div className="sub-category-display">
+            {subData.length > 0 ? (
+              subData.map((subCat) => (
+                <div
+                  key={subCat._id}
+                  className={`sub-category-item ${
+                    selectedSubCategoryId === subCat._id ? "active" : ""
+                  }`}
+                  onClick={() => setSelectedSubCategoryId(subCat._id)}
+                >
+                  <div className="subcat-icon-container">
+                    <img
+                      src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${subCat.imageKey}`}
+                      alt={subCat.name}
+                      className="tab-image"
+                    />
+                  </div>
+                  <p>{subCat.name}</p>
                 </div>
-                <p>{subCat.name}</p>
-              </div>
-            ))
-          ) : (
-            <p>No additional subcategories available.</p>
-          )}
-        </div>
-      
+              ))
+            ) : (
+              <p>No additional subcategories available.</p>
+            )}
+          </div>
 
           {/* Service display */}
           <div className="services-display">
@@ -209,7 +215,6 @@ const Services = ({ userId }) => {
               </div>
             ))}
           </div>
-
         </div>
         <div className="cart-display">
           <CartSummary />

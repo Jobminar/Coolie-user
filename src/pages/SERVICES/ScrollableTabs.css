@@ -1,14 +1,22 @@
+:root {
+    font-size: 16px;
+    /* 1rem = 16px */
+}
+
 .scrollable-tabs-wrapper {
     display: flex;
     align-items: center;
     position: relative;
     width: 100%;
-    max-width: 1200px;
+    max-width: 75rem;
+    /* 1200px */
     margin: 0 auto;
     overflow: hidden;
-    padding: 10px 20px;
+    padding: 0.625rem 1.25rem;
+    /* 10px 20px */
     background-color: #E3E5FF;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
+    /* 5px */
 }
 
 .scroll-button {
@@ -16,19 +24,21 @@
     border: none;
     cursor: pointer;
     font-size: 1.5rem;
-    padding: 10px 15px;
+    padding: 0.625rem 0.9375rem;
+    /* 10px 15px */
     border-radius: 50%;
-
     transition: background-color 0.3s, transform 0.3s;
     z-index: 1;
 }
 
 .scroll-button.left {
-    left: 10px;
+    left: 0.625rem;
+    /* 10px */
 }
 
 .scroll-button.right {
-    right: 10px;
+    right: 0.625rem;
+    /* 10px */
 }
 
 .scroll-button:hover {
@@ -41,27 +51,29 @@
     overflow-x: hidden;
     scroll-behavior: smooth;
     white-space: nowrap;
-    padding: 10px 50px;
-    /* Adjust padding to create space for navigation buttons */
+    padding: 0.625rem 3.125rem;
+    /* 10px 50px */
 }
 
 .scrollable-tabs-container::-webkit-scrollbar {
     display: none;
-    /* Hide scrollbar */
 }
 
 .scrollable-tab {
     display: inline-flex;
     flex-shrink: 0;
     flex-grow: 0;
-    width: 200px;
-    /* Fixed width for each tab */
-    margin: 0 10px;
-    padding: 10px;
+    width: 8.5rem;
+    /* 200px */
+    margin: 0 1.5rem;
+    /* 10px */
+    padding: 0.625rem;
+    /* 10px */
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
     text-align: center;
-    border-radius: 12px;
+    border-radius: 0.75rem;
+    /* 12px */
     background-color: #E3E5FF;
     align-items: center;
     justify-content: center;
@@ -81,20 +93,26 @@
 }
 
 .tab-image-container {
-    width: 70px;
-    height: 70px;
+    width: 4.375rem;
+    /* 70px */
+    height: 4.375rem;
+    /* 70px */
     border-radius: 50%;
     background-color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0.625rem;
+    /* 10px */
+    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+    /* 0 4px 6px */
 }
 
 .tab-image {
-    width: 60px;
-    height: 60px;
+    width: 3.75rem;
+    /* 60px */
+    height: 3.75rem;
+    /* 60px */
     object-fit: cover;
     border-radius: 50%;
 }
@@ -111,9 +129,56 @@
 
 .dropdown-icon {
     position: absolute;
-    bottom: -10px;
+    bottom: -0.35rem;
+    /* -10px */
     left: 50%;
     transform: translateX(-50%);
     font-size: 1rem;
     color: red;
+}
+
+/* Responsive styles */
+@media (max-width: 48rem) {
+
+    /* 768px */
+    .scrollable-tab {
+        width: 10rem;
+        /* 160px */
+    }
+}
+
+@media (max-width: 30rem) {
+
+    /* 480px */
+    .scrollable-tabs-container {
+        padding: 0.625rem 1.25rem;
+        /* 10px 20px */
+    }
+
+    .scrollable-tab {
+        width: 8rem;
+        /* 128px */
+        margin: 0 0.3125rem;
+        /* 5px */
+    }
+
+    .tab-image-container {
+        width: 3.125rem;
+        /* 50px */
+        height: 3.125rem;
+        /* 50px */
+    }
+
+    .tab-image {
+        width: 2.5rem;
+        /* 40px */
+        height: 2.5rem;
+        /* 40px */
+    }
+
+    .scroll-button {
+        font-size: 1.25rem;
+        padding: 0.5rem 0.75rem;
+        /* 8px 12px */
+    }
 }
