@@ -8,14 +8,21 @@ import {
 import "./ScrollableTabs.css";
 
 const ScrollableTabs = () => {
-  const { categoryData, setSelectedCategoryId, selectedCategoryId, error } =
+  const { categoryData, selectedCategoryId, setSelectedCategoryId, error } =
     useContext(CategoryContext);
-  const [selectedCategoryIdLocal, setSelectedCategoryIdLocal] = useState(null);
+  const [selectedCategoryIdLocal, setSelectedCategoryIdLocal] =
+    useState(selectedCategoryId);
   const containerRef = useRef(null);
   const tabWidth = 200;
   const visibleTabs = 5;
   const buttonWidth = 70;
 
+  // Sync local state with global state
+  useEffect(() => {
+    setSelectedCategoryIdLocal(selectedCategoryId);
+  }, [selectedCategoryId]);
+
+  // Scroll to the selected tab
   useEffect(() => {
     if (selectedCategoryIdLocal && containerRef.current) {
       const selectedTab = document.getElementById(
@@ -32,7 +39,6 @@ const ScrollableTabs = () => {
   }, [selectedCategoryIdLocal]);
 
   const handleCategoryClick = (id) => {
-    // console.log(id)
     setSelectedCategoryId(id);
     setSelectedCategoryIdLocal(id);
   };
@@ -70,7 +76,7 @@ const ScrollableTabs = () => {
             behavior: "instant",
           });
         }
-      }, 500); // Adjust timeout to match your smooth scroll duration
+      }, 500);
     }
   };
 

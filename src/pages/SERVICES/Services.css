@@ -7,14 +7,14 @@
 .services-cart-display {
     display: flex;
     flex-direction: column;
-    width: 85%;
+    width: 88%;
     /* border: 1px solid black; */
     min-height: 20rem;
     display: grid;
-    grid-template-columns: 65% 30%;
+    grid-template-columns: 2fr 1fr;
     justify-content: space-between;
     margin: 2rem 1rem;
-
+    gap: 1.2rem;
 }
 
 .services-main-dispaly {
@@ -215,10 +215,11 @@
     padding-left: 3rem;
     padding-top: 1rem
 }
+
 .sub-category-item {
     color: black;
-  }
-  
-  .sub-category-item p.active{
+}
+
+.sub-category-item p.active {
     color: red;
-  }
+}
