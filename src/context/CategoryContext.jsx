@@ -18,9 +18,9 @@ export const CategoryProvider = ({ children }) => {
         const response = await fetch(
           "https://api.coolieno1.in/v1.0/core/categories",
         );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+        // if (!response.ok) {
+        //   throw new Error("Network response was not ok");
+        // }
         const result = await response.json();
         setCategoryData(result);
       } catch (error) {
@@ -40,9 +40,9 @@ export const CategoryProvider = ({ children }) => {
           const response = await fetch(
             `https://api.coolieno1.in/v1.0/core/sub-categories/category/${selectedCategoryId}`,
           );
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
+          // if (!response.ok) {
+          //   throw new Error("Network response was not ok");
+          // }
           const result = await response.json();
           setSubCategoryData(result);
         } catch (error) {
@@ -70,9 +70,9 @@ export const CategoryProvider = ({ children }) => {
           const response = await fetch(
             `https://api.coolieno1.in/v1.0/core/services/filter/${selectedCategoryId}/${selectedSubCategoryId}`,
           );
-          if (!response.ok) {
-            throw new Error("Failed to fetch services");
-          }
+          // if (!response.ok) {
+          //   throw new Error("Failed to fetch services");
+          // }
           const data = await response.json();
           setServicesData(data.data); // Assuming `data` contains the actual array
           console.log(data, "service data in main context");
@@ -84,6 +84,25 @@ export const CategoryProvider = ({ children }) => {
       fetchService();
     }
   }, [selectedCategoryId, selectedSubCategoryId]);
+
+
+  // Set first category ID as selectedCategoryId once categoryData is fetched
+  useEffect(() => {
+    if (categoryData && categoryData.length > 0) {
+      setSelectedCategoryId(categoryData[0]._id);
+    }
+  }, [categoryData]);
+
+
+  // Set first subcategory ID as selectedCategoryId once categoryData is fetched
+  useEffect(() => {
+    if (subCategoryData && subCategoryData.length > 0) {
+      setSelectedSubCategoryId(subCategoryData[0]._id);
+    }
+  }, [subCategoryData]);
+
+
+
 
   return (
     <CategoryContext.Provider
