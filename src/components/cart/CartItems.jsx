@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 import deleteIcon from "../../assets/images/Delete.png";
+import DurationLogo from "../../assets/images/timer.svg";
 import "./CartItems.css";
 
 const CartItems = ({ onNext }) => {
@@ -13,12 +14,12 @@ const CartItems = ({ onNext }) => {
           <div key={item._id} className="cart-item">
             <div className="item-details">
               <h4>{item.serviceId.name}</h4>
-              <h6>
-                Duration: {item.serviceId.serviceVariants[0].variantName} |
-                Quantity: {item.serviceId.serviceVariants[0].min}-
-                {item.serviceId.serviceVariants[0].max}
-              </h6>
-              <p>{item.quantity} Item</p>
+
+              <h5>
+                <img src={DurationLogo} alt="clock" />:{" "}
+                {item.serviceId.serviceVariants[0].serviceTime}min |
+                {item.quantity} Item
+              </h5>
             </div>
             <div className="item-actions">
               <p className="item-price">
