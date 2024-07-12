@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import { CartContext } from "../../context/CartContext";
+import CartFooter from "./CartFooter";
 import deleteIcon from "../../assets/images/Delete.png";
 import DurationLogo from "../../assets/images/timer.svg";
 import "./CartItems.css";
 
 const CartItems = ({ onNext }) => {
-  const { cartItems, removeFromCart, updateQuantity, totalPrice } =
-    useContext(CartContext);
+  const { cartItems, removeFromCart, updateQuantity } = useContext(CartContext);
+
   return (
     <div className="cart-items">
       {cartItems.map((cart) =>
@@ -55,12 +56,7 @@ const CartItems = ({ onNext }) => {
           </div>
         )),
       )}
-      <div className="cart-total">
-        <p>Total Price: ₹{totalPrice.toFixed(2)}</p>
-      </div>
-      <button className="go-to-address-btn" onClick={() => onNext("address")}>
-        Go to Address
-      </button>
+      <CartFooter onNext={onNext} />
     </div>
   );
 };
