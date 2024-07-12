@@ -151,7 +151,7 @@
     padding-bottom: 10px;
     cursor: pointer;
     position: absolute;
-    left: 75%;
+    left: 60%;
     bottom: 0
         /* Add space above the delete button */
 }
