@@ -8,13 +8,13 @@ import {
 import "./ScrollableTabs.css";
 
 const ScrollableTabs = () => {
-  const { categoryData, setSelectedCategoryId, error } =
-    useContext(CategoryContext); 
-  const [selectedCategoryIdLocal, setSelectedCategoryIdLocal] = useState(null); 
-  const containerRef = useRef(null); 
-  const tabWidth = 200; 
-  const visibleTabs = 5; 
-  const buttonWidth = 70; 
+  const { categoryData, setSelectedCategoryId, selectedCategoryId, error } =
+    useContext(CategoryContext);
+  const [selectedCategoryIdLocal, setSelectedCategoryIdLocal] = useState(null);
+  const containerRef = useRef(null);
+  const tabWidth = 200;
+  const visibleTabs = 5;
+  const buttonWidth = 70;
 
   useEffect(() => {
     if (selectedCategoryIdLocal && containerRef.current) {
