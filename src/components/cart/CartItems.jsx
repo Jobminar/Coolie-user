@@ -13,30 +13,37 @@ const CartItems = ({ onNext }) => {
         cart.items.map((item) => (
           <div key={item._id} className="cart-item">
             <div className="item-details">
-              <h4>{item.serviceId.name}</h4>
-
-              <h5>
-                <img src={DurationLogo} alt="clock" />:{" "}
-                {item.serviceId.serviceVariants[0].serviceTime}min |
-                {item.quantity} Item
-              </h5>
+              <h4 id="service-name">{item.serviceId.name}</h4>
+              <span className="duration-items">
+                <img id="timer" src={DurationLogo} alt="clock" />
+                <h4> {item.serviceId.serviceVariants[0].serviceTime} min</h4>
+                <h4> {item.quantity} Item</h4>
+              </span>
             </div>
             <div className="item-actions">
-              <p className="item-price">
-                ₹{item.serviceId.serviceVariants[0].price}
-              </p>
-              <div className="quantity-control">
+              <div className="item-action-top">
+                <p className="item-price">
+                  ₹{item.serviceId.serviceVariants[0].price}
+                </p>
                 <button
-                  className="quantity-button"
+                  className="delete-btn"
+                  onClick={() => removeFromCart(item._id)}
+                >
+                  <img src={deleteIcon} alt="Delete" />
+                </button>
+              </div>
+              <div className="quantity">
+                <button
+                  id="quantitybtn"
                   onClick={() =>
                     updateQuantity(item._id, Math.max(1, item.quantity - 1))
                   }
                 >
                   -
                 </button>
-                <span>{item.quantity}</span>
+                <span id="quantity-text">{item.quantity}</span>
                 <button
-                  className="quantity-button"
+                  id="quantitybtn"
                   onClick={() =>
                     updateQuantity(item._id, Math.min(4, item.quantity + 1))
                   }
@@ -44,12 +51,6 @@ const CartItems = ({ onNext }) => {
                   +
                 </button>
               </div>
-              <button
-                className="delete-button"
-                onClick={() => removeFromCart(item._id)}
-              >
-                <img src={deleteIcon} alt="Delete" />
-              </button>
             </div>
           </div>
         )),
