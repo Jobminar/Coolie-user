@@ -29,15 +29,22 @@
 }
 
 .step img {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     margin-bottom: 5px;
     background-color: transparent;
 }
 
 .step.active img {
+    padding: 0;
     background-color: none;
+    width: 40px;
+    height: 40px;
     /* Ensure no background color for active step images */
+}
+
+.step.active {
+    color: green;
 }
 
 .badge {

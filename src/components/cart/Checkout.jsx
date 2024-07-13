@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "./Checkout.css";
-//Added razorpay
+
 const Checkout = ({ onFinalize }) => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [couponCode, setCouponCode] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handlePaymentMethodChange = (event) => {
     setPaymentMethod(event.target.value);
@@ -14,7 +15,28 @@ const Checkout = ({ onFinalize }) => {
     // Here you could handle coupon validation or adjustments to final price
   };
 
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+
   const handleRazorpayPayment = async () => {
+    const res = await loadRazorpayScript();
+
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+
     const options = {
       key: "rzp_test_b8XfUOQ4u8dlSq", // Replace with your Razorpay API key
       amount: 50000, // Amount in paise (50000 paise = 500 INR)
@@ -39,21 +61,35 @@ const Checkout = ({ onFinalize }) => {
       },
     };
 
-    const rzp1 = new window.Razorpay(options);
-    rzp1.open();
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!paymentMethod) {
+      newErrors.paymentMethod = "Please select a payment method.";
+    }
+    return newErrors;
   };
 
   const handleConfirmPayment = () => {
-    console.log("Payment Method:", paymentMethod);
-    if (
-      paymentMethod === "card" ||
-      paymentMethod === "netBanking" ||
-      paymentMethod === "upi" ||
-      paymentMethod === "wallets"
-    ) {
-      handleRazorpayPayment();
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
     } else {
-      onFinalize(); // Trigger finalization steps for Cash on Delivery
+      setErrors({});
+      console.log("Payment Method:", paymentMethod);
+      if (
+        paymentMethod === "card" ||
+        paymentMethod === "netBanking" ||
+        paymentMethod === "upi" ||
+        paymentMethod === "wallets"
+      ) {
+        handleRazorpayPayment();
+      } else {
+        onFinalize(); // Trigger finalization steps for Cash on Delivery
+      }
     }
   };
 
@@ -111,6 +147,9 @@ const Checkout = ({ onFinalize }) => {
           />
           Cash on Delivery
         </label>
+        {errors.paymentMethod && (
+          <em className="errors">{errors.paymentMethod}</em>
+        )}
       </div>
       <div className="coupon-section">
         <h4>Use a Coupon Code while payment</h4>

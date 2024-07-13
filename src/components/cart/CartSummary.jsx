@@ -6,22 +6,27 @@ import Schedule from "./Schedule";
 import Checkout from "./Checkout";
 import "./CartSummary.css";
 import cartIcon from "../../assets/images/cart.svg";
-import cartIconActive from "../../assets/images/cart-active.png";
+import cartIconActive from "../../assets/images/cart-active.svg";
 import locationMarker from "../../assets/images/marker.svg";
-import locationMarkerActive from "../../assets/images/location-marker-active.png";
+import locationMarkerActive from "../../assets/images/location-marker-active.svg";
 import calendarIcon from "../../assets/images/calender.svg";
-import calendarIconActive from "../../assets/images/calender-active.png";
+import calendarIconActive from "../../assets/images/calender-active.svg";
 import checkoutIcon from "../../assets/images/checkout.svg";
 import checkoutIconActive from "../../assets/images/checkout-active.png";
-import arrowIcon from "../../assets/images/Arrows.png";
+import arrowIcon from "../../assets/images/Arrows.svg";
+import arrowIconActive from "../../assets/images/Arrows-active.svg";
 
 const CartSummary = () => {
   const { cartItems } = useContext(CartContext);
-  const [activeTab, setActiveTab] = useState("cart");
+  const [activeTabs, setActiveTabs] = useState([]);
 
   // Function to change tabs, called by child components
   const handleNextStep = (nextTab) => {
-    setActiveTab(nextTab);
+    setActiveTabs((prevActiveTabs) =>
+      prevActiveTabs.includes(nextTab)
+        ? prevActiveTabs
+        : [...prevActiveTabs, nextTab],
+    );
   };
 
   return (
@@ -29,11 +34,11 @@ const CartSummary = () => {
       <div className="cart-steps-container">
         <div className="cart-steps">
           <div
-            className={`step ${activeTab === "cart" ? "active" : ""}`}
+            className={`step ${activeTabs.includes("cart") ? "active" : ""}`}
             style={{ backgroundColor: "transparent" }}
           >
             <img
-              src={activeTab === "cart" ? cartIconActive : cartIcon}
+              src={activeTabs.includes("cart") ? cartIconActive : cartIcon}
               alt="Cart"
             />
             <span>Cart</span>
@@ -41,54 +46,92 @@ const CartSummary = () => {
               <span className="badge">{cartItems.length}</span>
             )}
           </div>
-          <img src={arrowIcon} alt="Arrow" className="arrow-icon" />
+          <img
+            src={
+              activeTabs.includes("cart") && activeTabs.includes("address")
+                ? arrowIconActive
+                : arrowIcon
+            }
+            alt="Arrow"
+            className="arrow-icon"
+          />
           <div
-            className={`step ${activeTab === "address" ? "active" : ""}`}
+            className={`step ${activeTabs.includes("address") ? "active" : ""}`}
             style={{ backgroundColor: "transparent" }}
           >
             <img
               src={
-                activeTab === "address" ? locationMarkerActive : locationMarker
+                activeTabs.includes("address")
+                  ? locationMarkerActive
+                  : locationMarker
               }
               alt="Address"
             />
             <span>Address</span>
           </div>
-          <img src={arrowIcon} alt="Arrow" className="arrow-icon" />
+          <img
+            src={
+              activeTabs.includes("address") && activeTabs.includes("schedule")
+                ? arrowIconActive
+                : arrowIcon
+            }
+            alt="Arrow"
+            className="arrow-icon"
+          />
           <div
-            className={`step ${activeTab === "schedule" ? "active" : ""}`}
+            className={`step ${
+              activeTabs.includes("schedule") ? "active" : ""
+            }`}
             style={{ backgroundColor: "transparent" }}
           >
             <img
-              src={activeTab === "schedule" ? calendarIconActive : calendarIcon}
+              src={
+                activeTabs.includes("schedule")
+                  ? calendarIconActive
+                  : calendarIcon
+              }
               alt="Schedule"
             />
             <span>Schedule</span>
           </div>
-          <img src={arrowIcon} alt="Arrow" className="arrow-icon" />
+          <img
+            src={
+              activeTabs.includes("schedule") && activeTabs.includes("checkout")
+                ? arrowIconActive
+                : arrowIcon
+            }
+            alt="Arrow"
+            className="arrow-icon"
+          />
           <div
-            className={`step ${activeTab === "checkout" ? "active" : ""}`}
+            className={`step ${
+              activeTabs.includes("checkout") ? "active" : ""
+            }`}
             style={{ backgroundColor: "transparent" }}
           >
             <img
-              src={activeTab === "checkout" ? checkoutIconActive : checkoutIcon}
+              src={
+                activeTabs.includes("checkout")
+                  ? checkoutIconActive
+                  : checkoutIcon
+              }
               alt="Checkout"
             />
             <span>Checkout</span>
           </div>
         </div>
       </div>
-      {activeTab === "cart" && (
-        <CartItems onNext={() => handleNextStep("address")} />
+      {!activeTabs.length && (
+        <CartItems onNext={() => handleNextStep("cart")} />
       )}
-      {activeTab === "address" && (
-        <Address onNext={() => handleNextStep("schedule")} />
+      {activeTabs.includes("cart") && !activeTabs.includes("address") && (
+        <Address onNext={() => handleNextStep("address")} />
       )}
-      {activeTab === "schedule" && (
-        <Schedule onNext={() => handleNextStep("checkout")} />
+      {activeTabs.includes("address") && !activeTabs.includes("schedule") && (
+        <Schedule onNext={() => handleNextStep("schedule")} />
       )}
-      {activeTab === "checkout" && (
-        <Checkout onFinalize={() => handleNextStep("cart")} />
+      {activeTabs.includes("schedule") && !activeTabs.includes("checkout") && (
+        <Checkout onFinalize={() => handleNextStep("checkout")} />
       )}
     </div>
   );

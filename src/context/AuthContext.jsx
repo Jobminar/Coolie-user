@@ -1,15 +1,50 @@
+// src/contexts/AuthContext.js
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "../config/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
+// Create AuthContext
 const AuthContext = createContext();
 
+// AuthProvider component
 export const AuthProvider = ({ children }) => {
+  // State variables to manage user information and authentication status
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [googleUser, setGoogleUser] = useState(null);
   const [timeoutId, setTimeoutId] = useState(null);
 
+  // Fetch user info based on userId
+  const fetchUserInfo = async (userId) => {
+    try {
+      const response = await fetch(
+        `https://api.coolieno1.in/v1.0/users/userAuth/${userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.user;
+      } else {
+        const errorData = await response.json();
+        console.error(
+          "Error fetching user info:",
+          response.status,
+          response.statusText,
+          errorData,
+        ); // Log error details
+      }
+    } catch (error) {
+      console.error("Error fetching user info:", error); // Log error
+    }
+  };
+
+  // Effect to handle user authentication status and session timeout
   useEffect(() => {
     const storedJwtToken = sessionStorage.getItem("jwtToken");
     const storedUserId = sessionStorage.getItem("userId");
@@ -50,35 +85,7 @@ export const AuthProvider = ({ children }) => {
     };
   }, [timeoutId]);
 
-  const fetchUserInfo = async (userId) => {
-    try {
-      const response = await fetch(
-        `https://api.coolieno1.in/v1.0/users/userAuth/${userId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Fetched user info:", data);
-        return data.user;
-      } else {
-        const errorData = await response.json();
-        console.error(
-          "Error fetching user info:",
-          response.status,
-          response.statusText,
-          errorData,
-        );
-      }
-    } catch (error) {
-      console.error("Error fetching user info:", error);
-    }
-  };
-
+  // Send OTP to the user
   const sendOtp = async (userInfo) => {
     try {
       const response = await fetch(
@@ -94,18 +101,19 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("OTP sent successfully:", data);
+        console.log("OTP sent successfully:", data); // Log OTP sent status
         setUser({ ...userInfo, phone: data.phone });
         sessionStorage.setItem("phone", data.phone);
       } else {
         const errorData = await response.json();
-        console.error("Failed to send OTP:", errorData);
+        console.error("Failed to send OTP:", errorData); // Log OTP send failure
       }
     } catch (error) {
-      console.error("Error during OTP sending:", error);
+      console.error("Error during OTP sending:", error); // Log error
     }
   };
 
+  // Login function to authenticate user
   const login = async ({
     phone,
     otp,
@@ -140,9 +148,10 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Login successful:", data);
+        console.log("the backend data after login", data);
+        console.log("line 151 Login successful:", data); // Log successful login
         const expirationTime = Date.now() + 60 * 60 * 1000; // Assuming token expires in 1 hour
-        sessionStorage.setItem("jwtToken", data.jwtToken);
+        sessionStorage.setItem("jwtToken", data.token);
         sessionStorage.setItem("userId", data.user._id);
         sessionStorage.setItem("expirationTime", expirationTime);
         setSessionTimeout(60 * 60 * 1000); // 1 hour
@@ -156,14 +165,15 @@ export const AuthProvider = ({ children }) => {
           response.status,
           response.statusText,
           errorData,
-        );
+        ); // Log login failure
       }
     } catch (error) {
-      console.error("Error during login:", error);
+      console.error("Error during login:", error); // Log error
     }
     return false;
   };
 
+  // Logout function to clear user session
   const logout = () => {
     sessionStorage.removeItem("jwtToken");
     sessionStorage.removeItem("userId");
@@ -173,6 +183,7 @@ export const AuthProvider = ({ children }) => {
     if (timeoutId) clearTimeout(timeoutId);
   };
 
+  // Set session timeout for user
   const setSessionTimeout = (expiresIn) => {
     if (timeoutId) clearTimeout(timeoutId);
     const newTimeoutId = setTimeout(() => {
@@ -181,6 +192,7 @@ export const AuthProvider = ({ children }) => {
     setTimeoutId(newTimeoutId);
   };
 
+  // Google login using Firebase
   const loginWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -197,10 +209,11 @@ export const AuthProvider = ({ children }) => {
 
       setGoogleUser(userInfo);
     } catch (error) {
-      console.error("Google Sign-In error:", error);
+      console.error("Google Sign-In error:", error); // Log Google Sign-In error
     }
   };
 
+  // Provide context values to children components
   return (
     <AuthContext.Provider
       value={{
@@ -219,4 +232,5 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// Custom hook to use AuthContext
 export const useAuth = () => useContext(AuthContext);
