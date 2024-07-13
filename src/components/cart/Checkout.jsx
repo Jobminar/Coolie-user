@@ -1,3 +1,5 @@
+// src/components/Checkout.jsx
+
 import React, { useState, useEffect, useContext } from "react";
 import coolieLogo from "../../assets/images/coolie-logo.png";
 import { useAuth } from "../../context/AuthContext"; // Import useAuth hook
@@ -9,11 +11,7 @@ const Checkout = ({ onFinalize }) => {
   const { totalPrice } = useContext(CartContext); // Get total price from CartContext
   const [couponCode, setCouponCode] = useState("");
 
-  useEffect(() => {
-    if (user) {
-      console.log("Prefilling with user data:", user);
-    }
-  }, [user]);
+  const RazorKey = import.meta.env.VITE_RZP_KEY_ID;
 
   const handleCouponApply = () => {
     console.log("Coupon Applied:", couponCode);
@@ -43,7 +41,7 @@ const Checkout = ({ onFinalize }) => {
     }
 
     const options = {
-      key: "rzp_test_b8XfUOQ4u8dlSq", // Replace with your Razorpay API key
+      key: RazorKey, // Use the environment variable
       amount: totalPrice * 100, // Amount in paise
       currency: "INR",
       name: "Coolie NO-1",
@@ -56,7 +54,7 @@ const Checkout = ({ onFinalize }) => {
       prefill: {
         name: user?.name || "",
         email: user?.email || "",
-        contact: user?.mobile || "",
+        contact: user?.phone || "",
       },
       notes: {
         address: user?.address || "",

@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "../config/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import useUserLocation from "../hooks/useUserLocation"; // Import the custom hook
 
 // Create AuthContext
 const AuthContext = createContext();
@@ -14,6 +15,9 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [googleUser, setGoogleUser] = useState(null);
   const [timeoutId, setTimeoutId] = useState(null);
+
+  // Get user location using the custom hook
+  const userLocation = useUserLocation();
 
   // Fetch user info based on userId
   const fetchUserInfo = async (userId) => {
@@ -157,6 +161,10 @@ export const AuthProvider = ({ children }) => {
         setSessionTimeout(60 * 60 * 1000); // 1 hour
         setUser(data.user);
         setIsAuthenticated(true);
+
+        // Log user location after successful login
+        console.log("User location:", userLocation);
+
         return true;
       } else {
         const errorData = await response.json();
@@ -218,6 +226,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        userLocation, // Provide userLocation here
         login,
         isAuthenticated,
         sendOtp,

@@ -1,4 +1,7 @@
+// src/components/Address.jsx
+
 import React, { useState } from "react";
+import LocationModal from "./LocationModal";
 import "./Address.css";
 
 const Address = ({ onNext }) => {
@@ -11,6 +14,8 @@ const Address = ({ onNext }) => {
     landmark: "",
     state: "",
   });
+
+  const [showModal, setShowModal] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +55,11 @@ const Address = ({ onNext }) => {
           />{" "}
           Booking for Others
         </label>
+      </div>
+      <div className="location-options">
+        <p onClick={() => setShowModal(true)} className="location-option">
+          📍 Choose Location
+        </p>
       </div>
       <div className="address-form">
         <input
@@ -98,6 +108,20 @@ const Address = ({ onNext }) => {
           SCHEDULE YOUR VISIT
         </button>
       </div>
+      {showModal && (
+        <LocationModal
+          onClose={() => setShowModal(false)}
+          onLocationSelect={(location) => {
+            setAddressData((prevState) => ({
+              ...prevState,
+              address: location.address,
+              city: location.city,
+              pincode: location.pincode,
+              state: location.state,
+            }));
+          }}
+        />
+      )}
     </div>
   );
 };
