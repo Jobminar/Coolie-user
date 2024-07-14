@@ -13,7 +13,7 @@ import {
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 const LocationModal = ({ onClose, onLocationSelect, lat, lng }) => {
-  const { userLocation, setUserLocation } = useAuth(); // Get userLocation and setUserLocation from context
+  const { userLocation } = useAuth(); // Get userLocation from context
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
   const [popup, setPopup] = useState(null); // State to manage the popup
@@ -59,7 +59,6 @@ const LocationModal = ({ onClose, onLocationSelect, lat, lng }) => {
   };
 
   const handleUseMarkedLocation = async () => {
-    await updateLocation(currentLat, currentLng);
     if (popup) {
       popup.remove(); // Remove any existing popup
     }
@@ -145,7 +144,7 @@ const LocationModal = ({ onClose, onLocationSelect, lat, lng }) => {
       document.getElementById("map").appendChild(mapContainer);
       initializeMap({ setMap, mapContainer });
     }
-  }, [map, marker, currentLat, currentLng, setUserLocation, zoom]);
+  }, [map, marker, currentLat, currentLng, zoom]);
 
   useEffect(() => {
     if (userLocation) {

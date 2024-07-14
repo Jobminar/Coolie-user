@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import { faCrosshairs, faEdit } from "@fortawesome/free-solid-svg-icons"; // Import the crosshairs icon
 import "./Address.css";
 import LocationModal from "./LocationModal"; // Ensure LocationModal is properly imported
 
@@ -10,17 +10,19 @@ const Address = ({ onNext }) => {
   const initialLocation = cookies.location || {};
   const [addressData, setAddressData] = useState({
     bookingType: "self",
+    name: "",
     mobileNumber: "",
     address: "",
-    city: initialLocation.city || "",
-    pincode: initialLocation.pincode || "",
-    landmark: initialLocation.landmark || "",
-    state: initialLocation.state || "",
+    city: initialLocation.city || "Hyderabad",
+    pincode: initialLocation.pincode || "500072",
+    landmark: initialLocation.landmark || "Medchal-Malkajgiri",
+    state: initialLocation.state || "Telangana",
     latitude: initialLocation.latitude || 0,
     longitude: initialLocation.longitude || 0,
   });
 
   const [showModal, setShowModal] = useState(false);
+  const [showForm, setShowForm] = useState(false); // State to toggle form display
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,8 +75,11 @@ const Address = ({ onNext }) => {
 
   return (
     <div className="address-container">
-      <h3>Current Location</h3>
+      <p className="location-option" onClick={() => setShowModal(true)}>
+        <FontAwesomeIcon icon={faCrosshairs} /> Use Current LOCATION
+      </p>
       <div className="radio-group">
+        <p>Contact:</p>
         <label>
           <input
             type="radio"
@@ -96,94 +101,79 @@ const Address = ({ onNext }) => {
           Booking for Others
         </label>
       </div>
-      <div className="location-options">
-        <p onClick={() => setShowModal(true)} className="location-option">
-          <FontAwesomeIcon icon={faMapMarkerAlt} /> Choose Location
-        </p>
+      <div className="add-new-address" onClick={() => setShowForm(!showForm)}>
+        <FontAwesomeIcon icon={faEdit} />
+        <span>Add New Address & Mobile Number</span>
       </div>
-      <div className="address-form">
-        <label>
-          Mobile Number:
-          <input
-            type="text"
-            name="mobileNumber"
-            value={addressData.mobileNumber}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Address:
+      {showForm && (
+        <div className="address-form">
+          <div className="form-row">
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              value={addressData.name}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="mobileNumber"
+              placeholder="Mobile Number"
+              value={addressData.mobileNumber}
+              onChange={handleChange}
+            />
+          </div>
           <input
             type="text"
             name="address"
+            className="full-width"
+            placeholder="Address (House#, Street)"
             value={addressData.address}
             onChange={handleChange}
           />
-        </label>
-        <label>
-          City:
-          <input
-            type="text"
-            name="city"
-            value={addressData.city}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Pincode:
-          <input
-            type="text"
-            name="pincode"
-            value={addressData.pincode}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Landmark:
-          <input
-            type="text"
-            name="landmark"
-            value={addressData.landmark}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          State:
-          <input
-            type="text"
-            name="state"
-            value={addressData.state}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Latitude:
-          <input
-            type="text"
-            name="latitude"
-            value={addressData.latitude}
-            readOnly
-          />
-        </label>
-        <label>
-          Longitude:
-          <input
-            type="text"
-            name="longitude"
-            value={addressData.longitude}
-            readOnly
-          />
-        </label>
-        <button className="schedule-visit-btn" onClick={handleSubmit}>
-          SCHEDULE YOUR VISIT
-        </button>
-      </div>
+          <div className="form-row">
+            <input
+              type="text"
+              name="city"
+              placeholder="City / Dist"
+              value={addressData.city}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="pincode"
+              placeholder="Pincode"
+              value={addressData.pincode}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-row">
+            <input
+              type="text"
+              name="landmark"
+              placeholder="Landmark (Optional)"
+              value={addressData.landmark}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="state"
+              placeholder="State"
+              value={addressData.state}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+      )}
+      <button className="schedule-visit-btn" onClick={handleSubmit}>
+        SCHEDULE YOUR VISIT
+      </button>
       {showModal && (
         <LocationModal
           onClose={() => setShowModal(false)}
           onLocationSelect={handleLocationSelect}
-          lat={addressData.latitude || 0} // Default to 0 if no lat/lon available
-          lng={addressData.longitude || 0}
+          lat={initialLocation.latitude || 0} // Default to 0 if no lat/lon available
+          lng={initialLocation.longitude || 0}
         />
       )}
     </div>
