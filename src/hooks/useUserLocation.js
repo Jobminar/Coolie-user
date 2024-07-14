@@ -1,34 +1,42 @@
-// src/hooks/useUserLocation.js
-
-import { useGeolocated } from "react-geolocated";
+import { useState, useEffect } from "react";
 
 const useUserLocation = () => {
-  const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-    useGeolocated({
-      positionOptions: {
-        enableHighAccuracy: true,
-      },
-      userDecisionTimeout: 5000,
-    });
+  const [location, setLocation] = useState(null);
+  const [error, setError] = useState(null);
 
-  if (!isGeolocationAvailable) {
-    console.error("Geolocation is not supported by this browser.");
-    return null;
-  }
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by your browser.");
+      return;
+    }
 
-  if (!isGeolocationEnabled) {
-    console.error("Geolocation is not enabled.");
-    return null;
-  }
-
-  if (coords) {
-    return {
-      latitude: coords.latitude,
-      longitude: coords.longitude,
+    const success = (position) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      setLocation({ latitude, longitude });
     };
-  }
 
-  return null;
+    const handleError = (error) => {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          setError("User denied the request for Geolocation.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          setError("Location information is unavailable.");
+          break;
+        case error.TIMEOUT:
+          setError("The request to get user location timed out.");
+          break;
+        default:
+          setError("An unknown error occurred.");
+          break;
+      }
+    };
+
+    navigator.geolocation.getCurrentPosition(success, handleError);
+  }, []);
+
+  return { location, error };
 };
 
 export default useUserLocation;

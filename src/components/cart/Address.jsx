@@ -1,18 +1,23 @@
-// src/components/Address.jsx
-
-import React, { useState } from "react";
-import LocationModal from "./LocationModal";
+import React, { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import "./Address.css";
+import LocationModal from "./LocationModal"; // Ensure LocationModal is properly imported
 
 const Address = ({ onNext }) => {
+  const [cookies, setCookie] = useCookies(["location"]);
+  const initialLocation = cookies.location || {};
   const [addressData, setAddressData] = useState({
     bookingType: "self",
     mobileNumber: "",
     address: "",
-    city: "",
-    pincode: "",
-    landmark: "",
-    state: "",
+    city: initialLocation.city || "",
+    pincode: initialLocation.pincode || "",
+    landmark: initialLocation.landmark || "",
+    state: initialLocation.state || "",
+    latitude: initialLocation.latitude || 0,
+    longitude: initialLocation.longitude || 0,
   });
 
   const [showModal, setShowModal] = useState(false);
@@ -27,8 +32,43 @@ const Address = ({ onNext }) => {
 
   const handleSubmit = () => {
     console.log("Address Data:", addressData);
-    // Call API to submit data or move to next step
-    onNext("schedule"); // Triggering the next step
+    onNext("schedule");
+  };
+
+  useEffect(() => {
+    setCookie(
+      "location",
+      {
+        city: addressData.city,
+        pincode: addressData.pincode,
+        state: addressData.state,
+        landmark: addressData.landmark,
+        latitude: addressData.latitude,
+        longitude: addressData.longitude,
+      },
+      { path: "/" },
+    );
+  }, [addressData, setCookie]);
+
+  const parseAddress = (addressString) => {
+    const parts = addressString.split(", ");
+    return {
+      address: parts.slice(0, 2).join(", "), // "Street Number 2, Jal Vayu Vihar"
+      pincode: parts[2], // "500072"
+      city: "Hyderabad", // Always "Hyderabad"
+      landmark: "Medchal-Malkajgiri", // Always "Medchal-Malkajgiri"
+      state: parts[6] || "Telangana", // "Telangana"
+    };
+  };
+
+  const handleLocationSelect = (location) => {
+    const parsedAddress = parseAddress(location.address);
+    setAddressData((prevState) => ({
+      ...prevState,
+      ...parsedAddress,
+      latitude: location.latitude,
+      longitude: location.longitude,
+    }));
   };
 
   return (
@@ -42,7 +82,7 @@ const Address = ({ onNext }) => {
             value="self"
             checked={addressData.bookingType === "self"}
             onChange={handleChange}
-          />{" "}
+          />
           My Self
         </label>
         <label>
@@ -52,58 +92,88 @@ const Address = ({ onNext }) => {
             value="others"
             checked={addressData.bookingType === "others"}
             onChange={handleChange}
-          />{" "}
+          />
           Booking for Others
         </label>
       </div>
       <div className="location-options">
         <p onClick={() => setShowModal(true)} className="location-option">
-          📍 Choose Location
+          <FontAwesomeIcon icon={faMapMarkerAlt} /> Choose Location
         </p>
       </div>
       <div className="address-form">
-        <input
-          type="text"
-          name="mobileNumber"
-          placeholder="Mobile number"
-          value={addressData.mobileNumber}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="address"
-          placeholder="Address (House#, Street)"
-          value={addressData.address}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="city"
-          placeholder="City"
-          value={addressData.city}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="pincode"
-          placeholder="Pincode"
-          value={addressData.pincode}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="landmark"
-          placeholder="Landmark (Optional)"
-          value={addressData.landmark}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="state"
-          placeholder="State"
-          value={addressData.state}
-          onChange={handleChange}
-        />
+        <label>
+          Mobile Number:
+          <input
+            type="text"
+            name="mobileNumber"
+            value={addressData.mobileNumber}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Address:
+          <input
+            type="text"
+            name="address"
+            value={addressData.address}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          City:
+          <input
+            type="text"
+            name="city"
+            value={addressData.city}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Pincode:
+          <input
+            type="text"
+            name="pincode"
+            value={addressData.pincode}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Landmark:
+          <input
+            type="text"
+            name="landmark"
+            value={addressData.landmark}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          State:
+          <input
+            type="text"
+            name="state"
+            value={addressData.state}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Latitude:
+          <input
+            type="text"
+            name="latitude"
+            value={addressData.latitude}
+            readOnly
+          />
+        </label>
+        <label>
+          Longitude:
+          <input
+            type="text"
+            name="longitude"
+            value={addressData.longitude}
+            readOnly
+          />
+        </label>
         <button className="schedule-visit-btn" onClick={handleSubmit}>
           SCHEDULE YOUR VISIT
         </button>
@@ -111,15 +181,9 @@ const Address = ({ onNext }) => {
       {showModal && (
         <LocationModal
           onClose={() => setShowModal(false)}
-          onLocationSelect={(location) => {
-            setAddressData((prevState) => ({
-              ...prevState,
-              address: location.address,
-              city: location.city,
-              pincode: location.pincode,
-              state: location.state,
-            }));
-          }}
+          onLocationSelect={handleLocationSelect}
+          lat={addressData.latitude || 0} // Default to 0 if no lat/lon available
+          lng={addressData.longitude || 0}
         />
       )}
     </div>

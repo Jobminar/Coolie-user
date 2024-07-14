@@ -1,5 +1,3 @@
-// src/contexts/AuthContext.js
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "../config/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -10,16 +8,18 @@ const AuthContext = createContext();
 
 // AuthProvider component
 export const AuthProvider = ({ children }) => {
-  // State variables to manage user information and authentication status
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [googleUser, setGoogleUser] = useState(null);
   const [timeoutId, setTimeoutId] = useState(null);
 
   // Get user location using the custom hook
-  const userLocation = useUserLocation();
+  const {
+    location: userLocation,
+    error: locationError,
+    setLocation: setUserLocation,
+  } = useUserLocation();
 
-  // Fetch user info based on userId
   const fetchUserInfo = async (userId) => {
     try {
       const response = await fetch(
@@ -41,14 +41,13 @@ export const AuthProvider = ({ children }) => {
           response.status,
           response.statusText,
           errorData,
-        ); // Log error details
+        );
       }
     } catch (error) {
-      console.error("Error fetching user info:", error); // Log error
+      console.error("Error fetching user info:", error);
     }
   };
 
-  // Effect to handle user authentication status and session timeout
   useEffect(() => {
     const storedJwtToken = sessionStorage.getItem("jwtToken");
     const storedUserId = sessionStorage.getItem("userId");
@@ -89,7 +88,6 @@ export const AuthProvider = ({ children }) => {
     };
   }, [timeoutId]);
 
-  // Send OTP to the user
   const sendOtp = async (userInfo) => {
     try {
       const response = await fetch(
@@ -105,19 +103,18 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("OTP sent successfully:", data); // Log OTP sent status
+        console.log("OTP sent successfully:", data);
         setUser({ ...userInfo, phone: data.phone });
         sessionStorage.setItem("phone", data.phone);
       } else {
         const errorData = await response.json();
-        console.error("Failed to send OTP:", errorData); // Log OTP send failure
+        console.error("Failed to send OTP:", errorData);
       }
     } catch (error) {
-      console.error("Error during OTP sending:", error); // Log error
+      console.error("Error during OTP sending:", error);
     }
   };
 
-  // Login function to authenticate user
   const login = async ({
     phone,
     otp,
@@ -153,16 +150,15 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         console.log("the backend data after login", data);
-        console.log("line 151 Login successful:", data); // Log successful login
-        const expirationTime = Date.now() + 60 * 60 * 1000; // Assuming token expires in 1 hour
+        console.log("line 151 Login successful:", data);
+        const expirationTime = Date.now() + 60 * 60 * 1000;
         sessionStorage.setItem("jwtToken", data.token);
         sessionStorage.setItem("userId", data.user._id);
         sessionStorage.setItem("expirationTime", expirationTime);
-        setSessionTimeout(60 * 60 * 1000); // 1 hour
+        setSessionTimeout(60 * 60 * 1000);
         setUser(data.user);
         setIsAuthenticated(true);
 
-        // Log user location after successful login
         console.log("User location:", userLocation);
 
         return true;
@@ -173,15 +169,14 @@ export const AuthProvider = ({ children }) => {
           response.status,
           response.statusText,
           errorData,
-        ); // Log login failure
+        );
       }
     } catch (error) {
-      console.error("Error during login:", error); // Log error
+      console.error("Error during login:", error);
     }
     return false;
   };
 
-  // Logout function to clear user session
   const logout = () => {
     sessionStorage.removeItem("jwtToken");
     sessionStorage.removeItem("userId");
@@ -191,7 +186,6 @@ export const AuthProvider = ({ children }) => {
     if (timeoutId) clearTimeout(timeoutId);
   };
 
-  // Set session timeout for user
   const setSessionTimeout = (expiresIn) => {
     if (timeoutId) clearTimeout(timeoutId);
     const newTimeoutId = setTimeout(() => {
@@ -200,7 +194,6 @@ export const AuthProvider = ({ children }) => {
     setTimeoutId(newTimeoutId);
   };
 
-  // Google login using Firebase
   const loginWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -217,16 +210,16 @@ export const AuthProvider = ({ children }) => {
 
       setGoogleUser(userInfo);
     } catch (error) {
-      console.error("Google Sign-In error:", error); // Log Google Sign-In error
+      console.error("Google Sign-In error:", error);
     }
   };
 
-  // Provide context values to children components
   return (
     <AuthContext.Provider
       value={{
         user,
-        userLocation, // Provide userLocation here
+        userLocation,
+        setUserLocation, // Include setUserLocation in context
         login,
         isAuthenticated,
         sendOtp,
@@ -237,9 +230,9 @@ export const AuthProvider = ({ children }) => {
       }}
     >
       {children}
+      {locationError && <p>{locationError}</p>}
     </AuthContext.Provider>
   );
 };
 
-// Custom hook to use AuthContext
 export const useAuth = () => useContext(AuthContext);
