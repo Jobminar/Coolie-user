@@ -155,6 +155,7 @@ export const AuthProvider = ({ children }) => {
         sessionStorage.setItem("jwtToken", data.token);
         sessionStorage.setItem("userId", data.user._id);
         sessionStorage.setItem("expirationTime", expirationTime);
+        sessionStorage.setItem("phone", data.user.phone); // Store phone number
         setSessionTimeout(60 * 60 * 1000);
         setUser(data.user);
         setIsAuthenticated(true);
@@ -181,6 +182,7 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.removeItem("jwtToken");
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("expirationTime");
+    sessionStorage.removeItem("phone");
     setUser(null);
     setIsAuthenticated(false);
     if (timeoutId) clearTimeout(timeoutId);

@@ -17,36 +17,48 @@ const LocationModal = ({ onClose, onLocationSelect, lat, lng }) => {
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
   const [popup, setPopup] = useState(null); // State to manage the popup
-  const [currentLng, setCurrentLng] = useState(lng);
-  const [currentLat, setCurrentLat] = useState(lat);
+  const [currentLng, setCurrentLng] = useState(
+    parseFloat(sessionStorage.getItem("markedLng")) || lng,
+  );
+  const [currentLat, setCurrentLat] = useState(
+    parseFloat(sessionStorage.getItem("markedLat")) || lat,
+  );
   const [zoom, setZoom] = useState(12); // Adjusted zoom level for better initial focus
   const [address, setAddress] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state to manage API calls
+  const [tempLocation, setTempLocation] = useState({
+    latitude: currentLat,
+    longitude: currentLng,
+  });
 
   const fetchAddress = async (latitude, longitude) => {
-    const response = await fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${mapboxgl.accessToken}`,
-    );
-    const data = await response.json();
-    if (data.features.length > 0) {
-      return data.features[0].place_name;
+    try {
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${mapboxgl.accessToken}`,
+      );
+      const data = await response.json();
+      if (data.features.length > 0) {
+        return data.features[0].place_name;
+      }
+      return "Unknown location";
+    } catch (error) {
+      console.error("Failed to fetch address:", error);
+      return "Error fetching address";
     }
-    return "Unknown location";
   };
 
   const updateLocation = async (latitude, longitude) => {
-    setCurrentLng(longitude);
-    setCurrentLat(latitude);
     const fetchedAddress = await fetchAddress(latitude, longitude);
     setAddress(fetchedAddress);
   };
 
   const handleUseCurrentLocation = async () => {
     const { latitude, longitude } = userLocation;
-    setCurrentLng(longitude);
-    setCurrentLat(latitude);
-    marker.setLngLat([longitude, latitude]);
-    map.flyTo({ center: [longitude, latitude], zoom: 14 });
-
+    setLoading(true);
+    setTempLocation({ latitude, longitude });
+    sessionStorage.removeItem("markedLat");
+    sessionStorage.removeItem("markedLng");
+    await reloadMap(latitude, longitude);
     await updateLocation(latitude, longitude);
     onLocationSelect({
       address,
@@ -56,95 +68,104 @@ const LocationModal = ({ onClose, onLocationSelect, lat, lng }) => {
       latitude,
       longitude,
     });
+    setLoading(false);
   };
 
   const handleUseMarkedLocation = async () => {
+    const { latitude, longitude } = tempLocation;
     if (popup) {
       popup.remove(); // Remove any existing popup
     }
+    setLoading(true);
+    const fetchedAddress = await fetchAddress(latitude, longitude);
     const newPopup = new mapboxgl.Popup({ closeOnClick: true })
-      .setLngLat([currentLng, currentLat])
-      .setHTML(`<p><strong>Address:</strong> ${address}</p>`)
+      .setLngLat([latitude, longitude])
+      .setHTML(`<p><strong>Address:</strong> ${fetchedAddress}</p>`)
       .addTo(map);
     setPopup(newPopup); // Set the new popup to state
+    sessionStorage.setItem("markedLat", latitude);
+    sessionStorage.setItem("markedLng", longitude);
+    setCurrentLng(longitude);
+    setCurrentLat(latitude);
     onLocationSelect({
-      address,
+      address: fetchedAddress,
       city: "Marked City",
       pincode: "00000",
       state: "Marked State",
-      latitude: currentLat,
-      longitude: currentLng,
+      latitude,
+      longitude,
+    });
+    setAddress(fetchedAddress);
+    setLoading(false);
+  };
+
+  const reloadMap = async (latitude, longitude) => {
+    if (map) {
+      map.remove();
+      setMap(null);
+    }
+
+    const mapContainer = document.createElement("div");
+    mapContainer.id = "map-container"; // Set an id for the map container
+    mapContainer.style.height = "100%";
+    mapContainer.style.width = "100%";
+    document.getElementById("map").appendChild(mapContainer);
+
+    const newMap = new mapboxgl.Map({
+      container: mapContainer,
+      style: "mapbox://styles/mapbox/streets-v11", // Mapbox street style map
+      center: [longitude, latitude],
+      zoom: zoom,
+    });
+
+    newMap.on("load", async () => {
+      setMap(newMap);
+      newMap.resize();
+
+      // Add a marker to the map
+      const newMarker = new mapboxgl.Marker({
+        draggable: true,
+        element: document.createElement("div"),
+      })
+        .setLngLat([longitude, latitude])
+        .addTo(newMap);
+
+      const markerElement = newMarker.getElement();
+      markerElement.style.backgroundImage = `url(${markerImage})`;
+      markerElement.style.width = "50px";
+      markerElement.style.height = "50px";
+      markerElement.style.backgroundSize = "100%";
+
+      // Event listener for marker drag end
+      newMarker.on("dragend", async () => {
+        const lngLat = newMarker.getLngLat();
+        setTempLocation({ latitude: lngLat.lat, longitude: lngLat.lng });
+        await updateLocation(lngLat.lat, lngLat.lng);
+      });
+
+      setMarker(newMarker);
+
+      // Fetch initial address
+      await updateLocation(latitude, longitude);
+    });
+
+    // Add map click event
+    newMap.on("click", async (e) => {
+      const longitude = e.lngLat.lng;
+      const latitude = e.lngLat.lat;
+      setTempLocation({ latitude, longitude });
+
+      // Move the marker to the clicked position
+      if (marker) {
+        marker.setLngLat([longitude, latitude]);
+      }
+      await updateLocation(latitude, longitude);
     });
   };
 
   useEffect(() => {
-    const initializeMap = ({ setMap, mapContainer }) => {
-      const newMap = new mapboxgl.Map({
-        container: mapContainer,
-        style: "mapbox://styles/mapbox/streets-v11", // Mapbox street style map
-        center: [currentLng, currentLat],
-        zoom: zoom,
-      });
-
-      newMap.on("load", () => {
-        setMap(newMap);
-        newMap.resize();
-
-        // Add a marker to the map
-        const newMarker = new mapboxgl.Marker({
-          draggable: true,
-          element: document.createElement("div"),
-        })
-          .setLngLat([currentLng, currentLat])
-          .addTo(newMap);
-
-        const markerElement = newMarker.getElement();
-        markerElement.style.backgroundImage = `url(${markerImage})`;
-        markerElement.style.width = "50px";
-        markerElement.style.height = "50px";
-        markerElement.style.backgroundSize = "100%";
-
-        // Event listener for marker drag end
-        newMarker.on("dragend", async () => {
-          const lngLat = newMarker.getLngLat();
-          await updateLocation(lngLat.lat, lngLat.lng);
-        });
-
-        // Update address while dragging the marker
-        newMarker.on("drag", async () => {
-          const lngLat = newMarker.getLngLat();
-          const fetchedAddress = await fetchAddress(lngLat.lat, lngLat.lng);
-          setAddress(fetchedAddress);
-        });
-
-        setMarker(newMarker);
-      });
-
-      // Add map click event
-      newMap.on("click", async (e) => {
-        const longitude = e.lngLat.lng;
-        const latitude = e.lngLat.lat;
-        setCurrentLng(longitude);
-        setCurrentLat(latitude);
-
-        // Move the marker to the clicked position
-        if (marker) {
-          marker.setLngLat([longitude, latitude]);
-        }
-
-        await updateLocation(latitude, longitude);
-      });
-    };
-
-    if (!map) {
-      const mapContainer = document.createElement("div");
-      mapContainer.id = "map-container"; // Set an id for the map container
-      mapContainer.style.height = "100%";
-      mapContainer.style.width = "100%";
-      document.getElementById("map").appendChild(mapContainer);
-      initializeMap({ setMap, mapContainer });
-    }
-  }, [map, marker, currentLat, currentLng, zoom]);
+    reloadMap(currentLat, currentLng);
+  }, [currentLng, currentLat, zoom]);
 
   useEffect(() => {
     if (userLocation) {
@@ -155,6 +176,11 @@ const LocationModal = ({ onClose, onLocationSelect, lat, lng }) => {
   return (
     <div className="location-modal">
       <div className="modal-content">
+        {loading && (
+          <div className="loading-overlay">
+            <div className="spinner"></div>
+          </div>
+        )}
         <div className="header">
           <div className="location-info">
             <p>
@@ -191,12 +217,14 @@ const LocationModal = ({ onClose, onLocationSelect, lat, lng }) => {
               <button
                 onClick={handleUseCurrentLocation}
                 className="use-location-button"
+                disabled={loading}
               >
                 <FaMapMarkerAlt /> Use Current Location
               </button>
               <button
                 onClick={handleUseMarkedLocation}
                 className="use-location-button"
+                disabled={loading}
               >
                 <FaRegCheckCircle /> Use Marked Location
               </button>
