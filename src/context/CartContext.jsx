@@ -1,22 +1,35 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import { TailSpin } from "react-loader-spinner";
+import "./CartProvider.css"; // Import the CSS file
+import { useAuth } from "./AuthContext"; // Ensure you have this line to use Auth context
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children, cartId }) => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [totalItems, setTotalItems] = useState(0); // New state for total items
+  const [totalItems, setTotalItems] = useState(0);
   const [itemIdToRemove, setItemIdToRemove] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [cartNotFound, setCartNotFound] = useState(false);
+  const { user } = useAuth(); // Get the user from AuthContext
 
-  // Fetch cart data from API
   useEffect(() => {
     const fetchCart = async () => {
+      if (!user || !user._id) return; // Exit if user is not available
+
       try {
+        setLoading(true);
         console.log("Fetching cart data...");
         const response = await fetch(
-          `https://api.coolieno1.in/v1.0/users/cart/668bc5a39ea9a691fe736632`,
+          `https://api.coolieno1.in/v1.0/users/cart/${user._id}`,
         );
         if (!response.ok) {
+          if (response.status === 404) {
+            setCartNotFound(true);
+          }
           throw new Error("Failed to fetch cart data");
         }
         const data = await response.json();
@@ -26,10 +39,13 @@ export const CartProvider = ({ children, cartId }) => {
         calculateTotalItems(data);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchCart();
-  }, [cartId]);
+  }, [user, cartId]);
 
   useEffect(() => {
     console.log("Cart items updated:", cartItems);
@@ -62,28 +78,84 @@ export const CartProvider = ({ children, cartId }) => {
     setTotalItems(total);
   };
 
-  const addToCart = (item) => {
-    console.log("Adding item to cart:", item);
-    setCartItems((prevItems) => {
-      const newItems = [...prevItems, item];
-      console.log("New cart items after adding:", newItems);
-      calculateTotalPrice(newItems);
-      calculateTotalItems(newItems);
-      return newItems;
+  const addToCart = async (item) => {
+    confirmAlert({
+      title: "Confirm to add",
+      message: "Are you sure you want to add this item to the cart?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: async () => {
+            setLoading(true);
+            console.log("Adding item to cart:", item);
+            try {
+              const response = await fetch(
+                "https://api.coolieno1.in/v1.0/users/cart/create-cart",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(item),
+                },
+              );
+
+              if (response.ok) {
+                const responseData = await response.json();
+                setCartItems((prevItems) => {
+                  const newItems = [...prevItems, responseData];
+                  console.log("New cart items after adding:", newItems);
+                  calculateTotalPrice(newItems);
+                  calculateTotalItems(newItems);
+                  return newItems;
+                });
+                console.log("Item added to cart:", responseData);
+              } else {
+                console.error(
+                  "Failed to add item to cart:",
+                  response.statusText,
+                );
+              }
+            } catch (error) {
+              console.error("Error adding item to cart:", error);
+            } finally {
+              setLoading(false);
+            }
+          },
+        },
+        {
+          label: "No",
+          onClick: () => console.log("Add to cart canceled"),
+        },
+      ],
     });
   };
 
-  // Remove item from cart
   const removeFromCart = (itemId) => {
-    console.log("Removing item from cart:", itemId);
-    setItemIdToRemove(itemId);
+    confirmAlert({
+      title: "Confirm to delete",
+      message: "Are you sure you want to remove this item from the cart?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            console.log("Removing item from cart:", itemId);
+            setItemIdToRemove(itemId);
+          },
+        },
+        {
+          label: "No",
+          onClick: () => console.log("Delete from cart canceled"),
+        },
+      ],
+    });
   };
 
   useEffect(() => {
     if (itemIdToRemove !== null) {
       console.log("Deleting item from cart:", itemIdToRemove);
       fetch(
-        `https://api.coolieno1.in/v1.0/users/cart/668bc5a39ea9a691fe736632/${itemIdToRemove}`,
+        `https://api.coolieno1.in/v1.0/users/cart/${user._id}/${itemIdToRemove}`,
         {
           method: "DELETE",
         },
@@ -111,7 +183,7 @@ export const CartProvider = ({ children, cartId }) => {
         })
         .catch((error) => console.error("Error deleting cart item:", error));
     }
-  }, [itemIdToRemove]);
+  }, [itemIdToRemove, user]);
 
   const updateQuantity = (itemId, newQuantity) => {
     console.log(
@@ -146,7 +218,22 @@ export const CartProvider = ({ children, cartId }) => {
         setCartItems,
       }}
     >
-      {children}
+      {loading && (
+        <div className="loading-overlay">
+          <TailSpin
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="tail-spin-loading"
+            radius="1"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+          />
+        </div>
+      )}
+      {cartNotFound && !loading && <div>No items in cart</div>}
+      {!loading && children}
     </CartContext.Provider>
   );
 };

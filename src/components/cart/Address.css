@@ -1,7 +1,8 @@
 .address-container {
     background-color: #f9f9f9;
     padding: 20px;
-    border-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
     border: 1px solid #e6f7d4;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     width: 88%;
@@ -145,13 +146,11 @@
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 2rem;
-    /* Align with input fields */
 }
 
 .save-address-btn span {
     margin-left: 0.5rem;
     margin-top: 0.1rem;
-    /* Adds space between icon and text */
 }
 
 .saved-address {
@@ -178,7 +177,7 @@
     font-size: 12px;
 }
 
-.saved-address input[type="checkbox"] {
+.saved-address input[type="radio"] {
     margin-top: 5px;
 }
 
@@ -192,4 +191,49 @@
     left: 0;
     color: red;
     font-size: 12px;
+}
+
+.address-totals {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0;
+    padding: 0 0.1rem
+}
+
+.address-totals-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.address-totals-info h5 {
+    margin-bottom: 0;
+    color: #666;
+}
+
+.address-totals-info p {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 0.1rem;
+}
+
+.address-totals-button {
+    display: flex;
+    justify-content: start;
+}
+
+.go-to-address-btn {
+    background-color: #0988cf;
+    color: white;
+    font-weight: 600;
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.go-to-address-btn:hover {
+    background-color: #086fa1;
 }

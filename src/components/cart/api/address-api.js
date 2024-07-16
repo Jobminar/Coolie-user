@@ -49,7 +49,6 @@ export const saveAddress = async (addressData) => {
 
 export const getSavedAddresses = async (userId) => {
   try {
-    console.log("Fetching saved addresses for userId:", userId);
     const response = await fetch(
       `https://api.coolieno1.in/v1.0/users/user-address/${userId}`,
       {
@@ -62,7 +61,7 @@ export const getSavedAddresses = async (userId) => {
 
     if (response.ok) {
       const data = await response.json();
-      console.log("Fetched saved addresses:", data);
+
       return data;
     } else {
       const errorData = await response.json();

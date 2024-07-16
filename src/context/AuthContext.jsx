@@ -1,7 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import { auth } from "../config/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 import useUserLocation from "../hooks/useUserLocation"; // Import the custom hook
+import CaptchaComponent from "../components/Security/CaptchaComponent"; // Import CaptchaComponent
 
 // Create AuthContext
 const AuthContext = createContext();
@@ -12,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [googleUser, setGoogleUser] = useState(null);
   const [timeoutId, setTimeoutId] = useState(null);
+  const [captchaVerified, setCaptchaVerified] = useState(false); // State to track CAPTCHA verification
 
   // Get user location using the custom hook
   const {
@@ -66,27 +70,7 @@ export const AuthProvider = ({ children }) => {
         logout();
       }
     }
-
-    const resetTimeout = () => {
-      if (timeoutId) clearTimeout(timeoutId);
-      const newTimeoutId = setTimeout(() => {
-        logout();
-      }, 30 * 60 * 1000); // 30 minutes of inactivity
-      setTimeoutId(newTimeoutId);
-    };
-
-    const events = ["click", "mousemove", "keypress", "scroll"];
-
-    events.forEach((event) => {
-      window.addEventListener(event, resetTimeout);
-    });
-
-    return () => {
-      events.forEach((event) => {
-        window.removeEventListener(event, resetTimeout);
-      });
-    };
-  }, [timeoutId]);
+  }, []);
 
   const sendOtp = async (userInfo) => {
     try {
@@ -191,9 +175,39 @@ export const AuthProvider = ({ children }) => {
   const setSessionTimeout = (expiresIn) => {
     if (timeoutId) clearTimeout(timeoutId);
     const newTimeoutId = setTimeout(() => {
-      logout();
-    }, expiresIn);
+      if (!captchaVerified) {
+        showCaptcha(); // Show CAPTCHA 20 seconds before session expiration
+      } else {
+        logout();
+      }
+    }, expiresIn - 20000);
     setTimeoutId(newTimeoutId);
+  };
+
+  const showCaptcha = () => {
+    confirmAlert({
+      title: "Verify You're Human",
+      message: (
+        <CaptchaComponent
+          onVerify={(isVerified) => {
+            setCaptchaVerified(isVerified);
+            if (isVerified) {
+              // Extend the session if CAPTCHA is verified
+              const newExpirationTime = Date.now() + 60 * 60 * 1000;
+              sessionStorage.setItem("expirationTime", newExpirationTime);
+              setSessionTimeout(60 * 60 * 1000);
+            }
+          }}
+        />
+      ),
+      buttons: [
+        {
+          label: "Close",
+          onClick: () => logout(),
+        },
+      ],
+      closeOnClickOutside: false,
+    });
   };
 
   const loginWithGoogle = async () => {

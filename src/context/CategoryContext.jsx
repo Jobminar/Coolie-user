@@ -85,7 +85,6 @@ export const CategoryProvider = ({ children }) => {
     }
   }, [selectedCategoryId, selectedSubCategoryId]);
 
-
   // Set first category ID as selectedCategoryId once categoryData is fetched
   useEffect(() => {
     if (categoryData && categoryData.length > 0) {
@@ -93,16 +92,12 @@ export const CategoryProvider = ({ children }) => {
     }
   }, [categoryData]);
 
-
   // Set first subcategory ID as selectedCategoryId once categoryData is fetched
   useEffect(() => {
     if (subCategoryData && subCategoryData.length > 0) {
       setSelectedSubCategoryId(subCategoryData[0]._id);
     }
   }, [subCategoryData]);
-
-
-
 
   return (
     <CategoryContext.Provider

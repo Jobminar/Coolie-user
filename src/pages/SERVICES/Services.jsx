@@ -5,8 +5,12 @@ import { CategoryContext } from "../../context/CategoryContext";
 import dropdown from "../../assets/images/dropdown.png";
 import CartSummary from "../../components/cart/CartSummary";
 import { CartContext } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext"; // Import AuthContext
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import { TailSpin } from "react-loader-spinner";
 
-const Services = ({ userId }) => {
+const Services = () => {
   const {
     categoryData,
     selectedCategoryId,
@@ -16,21 +20,16 @@ const Services = ({ userId }) => {
     servicesData,
     error,
   } = useContext(CategoryContext);
-  // const {handleCart}=useContext(CartContext)
+
+  const { setCartItems, calculateTotalPrice, calculateTotalItems } =
+    useContext(CartContext);
+  const { user } = useAuth(); // Get user from AuthContext
+
   const [data, setData] = useState([]);
   const [subData, setSubData] = useState([]);
   const [serviceData, setServiceData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeSubCategory, setActiveSubCategory] = useState(null);
   const [descriptionVisibility, setDescriptionVisibility] = useState({});
-  const [items, setItems] = useState([
-    {
-      userId: "",
-      serviceId: "",
-      categoryId: "",
-      subCategoryId: "",
-    },
-  ]);
 
   useEffect(() => {
     if (categoryData) {
@@ -58,7 +57,7 @@ const Services = ({ userId }) => {
       setServiceData(servicesData);
       console.log(servicesData, "service data in sub page");
     }
-  }, [servicesData, activeSubCategory]);
+  }, [servicesData]);
 
   if (error) {
     return <div className="error">Error: {error}</div>;
@@ -75,52 +74,80 @@ const Services = ({ userId }) => {
     }));
   };
 
-  // handle cart
-  const handleCart = async (serviceId, categoryId, subCategoryId) => {
-    console.log(
-      serviceId,
-      categoryId,
-      selectedCategoryId,
-      "ids from services.jsx to send cartdata",
-    );
-    const newItem = {
-      userId: "668bc5a39ea9a691fe736632",
-      items: [
+  const handleCart = (serviceId, categoryId, subCategoryId) => {
+    confirmAlert({
+      title: "Confirm to add",
+      message: "Are you sure you want to add this item to the cart?",
+      buttons: [
         {
-          serviceId,
-          categoryId,
-          subCategoryId,
-          quantity: 1,
+          label: "Yes",
+          onClick: async () => {
+            if (!user) {
+              console.error("User not authenticated");
+              return;
+            }
+
+            setLoading(true);
+            console.log(
+              serviceId,
+              categoryId,
+              selectedCategoryId,
+              "ids from services.jsx to send cartdata",
+            );
+            const newItem = {
+              userId: user._id, // Use user ID from context
+              items: [
+                {
+                  serviceId,
+                  categoryId,
+                  subCategoryId,
+                  quantity: 1,
+                },
+              ],
+            };
+
+            try {
+              const response = await fetch(
+                "https://api.coolieno1.in/v1.0/users/cart/create-cart",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(newItem),
+                },
+              );
+
+              if (response.ok) {
+                const responseData = await response.json();
+                setCartItems((prevItems) => {
+                  const newItems = [...prevItems, newItem.items[0]];
+                  calculateTotalPrice(newItems);
+                  calculateTotalItems(newItems);
+                  return newItems;
+                });
+                console.log("Item added to cart:", responseData);
+                window.location.reload();
+              } else {
+                console.error(
+                  "Failed to add item to cart:",
+                  response.statusText,
+                );
+              }
+            } catch (error) {
+              console.error("Error adding item to cart:", error);
+            } finally {
+              setLoading(false);
+            }
+          },
+        },
+        {
+          label: "No",
+          onClick: () => console.log("Add to cart canceled"),
         },
       ],
-    };
-
-    try {
-      const response = await fetch(
-        "https://api.coolieno1.in/v1.0/users/cart/create-cart",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newItem),
-        },
-      );
-
-      if (response.ok) {
-        alert("items added to cart");
-        const responseData = await response.json();
-        setItems((prevItems) => [...prevItems, newItem.items[0]]);
-        console.log("Item added to cart:", responseData);
-      } else {
-        console.error("Failed to add item to cart:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error adding item to cart:", error);
-    }
+    });
   };
-
-  console.log(items, "items");
 
   return (
     <div className="services">
@@ -153,7 +180,6 @@ const Services = ({ userId }) => {
             )}
           </div>
 
-          {/* Service display */}
           <div className="services-display">
             <p></p>
             {serviceData.map((service) => (
@@ -220,6 +246,20 @@ const Services = ({ userId }) => {
           <CartSummary />
         </div>
       </div>
+      {loading && (
+        <div className="loading-overlay">
+          <TailSpin
+            height="80"
+            width="80"
+            color="#4fa94d"
+            ariaLabel="tail-spin-loading"
+            radius="1"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+          />
+        </div>
+      )}
     </div>
   );
 };

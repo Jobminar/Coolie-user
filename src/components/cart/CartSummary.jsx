@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { CartContext } from "../../context/CartContext";
 import CartItems from "./CartItems";
 import Address from "./Address";
@@ -18,23 +18,91 @@ import arrowIconActive from "../../assets/images/Arrows-active.svg";
 
 const CartSummary = () => {
   const { cartItems } = useContext(CartContext);
-  const [activeTabs, setActiveTabs] = useState([]);
+  const [activeTabs, setActiveTabs] = useState(["cart"]);
+  const [error, setError] = useState(null);
 
-  // Function to change tabs, called by child components
+  const initialRender = useRef(true); // To track the initial render
+  const activeTabsRef = useRef(activeTabs);
+  const errorRef = useRef(error);
+
+  useEffect(() => {
+    try {
+      const savedActiveTabs = localStorage.getItem("activeTabs");
+      if (savedActiveTabs) {
+        setActiveTabs(JSON.parse(savedActiveTabs));
+        activeTabsRef.current = JSON.parse(savedActiveTabs);
+      }
+    } catch (err) {
+      console.error("Failed to retrieve active tabs from localStorage:", err);
+    }
+
+    const savedError = localStorage.getItem("error");
+    if (savedError) {
+      setError(JSON.parse(savedError));
+      errorRef.current = JSON.parse(savedError);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Skip the initial render to avoid overwriting the saved state
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+
+    try {
+      localStorage.setItem("activeTabs", JSON.stringify(activeTabs));
+      activeTabsRef.current = activeTabs;
+    } catch (err) {
+      console.error("Failed to save active tabs to localStorage:", err);
+    }
+  }, [activeTabs]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("error", JSON.stringify(error));
+      errorRef.current = error;
+    } catch (err) {
+      console.error("Failed to save error to localStorage:", err);
+    }
+  }, [error]);
+
   const handleNextStep = (nextTab) => {
-    setActiveTabs((prevActiveTabs) =>
-      prevActiveTabs.includes(nextTab)
-        ? prevActiveTabs
-        : [...prevActiveTabs, nextTab],
-    );
+    setActiveTabs((prevActiveTabs) => {
+      const currentIndex = prevActiveTabs.indexOf(nextTab);
+      if (currentIndex === -1) {
+        return [...prevActiveTabs, nextTab];
+      } else {
+        return prevActiveTabs.slice(0, currentIndex + 1);
+      }
+    });
+  };
+
+  const renderActiveComponent = () => {
+    try {
+      if (activeTabs.includes("checkout")) {
+        return <Checkout />;
+      } else if (activeTabs.includes("schedule")) {
+        return <Schedule onNext={() => handleNextStep("checkout")} />;
+      } else if (activeTabs.includes("address")) {
+        return <Address onNext={() => handleNextStep("schedule")} />;
+      } else {
+        return <CartItems onNext={() => handleNextStep("address")} />;
+      }
+    } catch (err) {
+      setError("An error occurred while rendering the component.");
+      console.error("Error in renderActiveComponent:", err);
+    }
   };
 
   return (
     <div className="cart-summary">
+      {error && <div className="error-message">{error}</div>}
       <div className="cart-steps-container">
         <div className="cart-steps">
           <div
             className={`step ${activeTabs.includes("cart") ? "active" : ""}`}
+            onClick={() => handleNextStep("cart")}
             style={{ backgroundColor: "transparent" }}
           >
             <img
@@ -57,6 +125,7 @@ const CartSummary = () => {
           />
           <div
             className={`step ${activeTabs.includes("address") ? "active" : ""}`}
+            onClick={() => handleNextStep("address")}
             style={{ backgroundColor: "transparent" }}
           >
             <img
@@ -82,6 +151,7 @@ const CartSummary = () => {
             className={`step ${
               activeTabs.includes("schedule") ? "active" : ""
             }`}
+            onClick={() => handleNextStep("schedule")}
             style={{ backgroundColor: "transparent" }}
           >
             <img
@@ -107,6 +177,7 @@ const CartSummary = () => {
             className={`step ${
               activeTabs.includes("checkout") ? "active" : ""
             }`}
+            onClick={() => handleNextStep("checkout")}
             style={{ backgroundColor: "transparent" }}
           >
             <img
@@ -121,18 +192,7 @@ const CartSummary = () => {
           </div>
         </div>
       </div>
-      {!activeTabs.length && (
-        <CartItems onNext={() => handleNextStep("cart")} />
-      )}
-      {activeTabs.includes("cart") && !activeTabs.includes("address") && (
-        <Address onNext={() => handleNextStep("address")} />
-      )}
-      {activeTabs.includes("address") && !activeTabs.includes("schedule") && (
-        <Schedule onNext={() => handleNextStep("schedule")} />
-      )}
-      {activeTabs.includes("schedule") && !activeTabs.includes("checkout") && (
-        <Checkout onFinalize={() => handleNextStep("checkout")} />
-      )}
+      {renderActiveComponent()}
     </div>
   );
 };

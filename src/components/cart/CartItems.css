@@ -5,10 +5,14 @@
     border-bottom-right-radius: 8px;
     border: 2px solid #e6f7d4;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-
 }
 
-
+.cart-items-container {
+    max-height: 300px;
+    /* Set the max-height to your desired value */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+}
 
 .cart-item {
     display: flex;
@@ -37,7 +41,6 @@
 }
 
 .duration-items h4 {
-
     color: #666;
     margin: 0 10px 0 0;
     /* Adds spacing to the right of each h4 */
@@ -59,7 +62,6 @@
     margin-top: 0;
     margin-bottom: 1.2rem;
 }
-
 
 .item-action-top {
     height: 3rem;
@@ -106,8 +108,6 @@
     /* Add space below the price */
 }
 
-
-
 .quantity {
     display: flex;
     color: rgb(0, 137, 235);
@@ -117,10 +117,6 @@
     border-radius: 50px;
     padding: 4px 6px;
 }
-
-
-
-
 
 #quantitybtn {
     border: 2px solid rgb(123, 123, 123);
@@ -161,20 +157,20 @@
     height: 24px;
 }
 
-
-background-color: #0988CF;
-color: white;
-padding: 10px 12px;
-border: none;
-border-radius: 50px;
-cursor: pointer;
-width: 50%;
-text-align: center;
-font-size: 15px;
-font-weight: 520;
-margin-top: 20px;
-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-transition: background-color 0.3s;
+.go-to-address-btn {
+    background-color: #0988CF;
+    color: white;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 50%;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 520;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
 }
 
 .cart-items .go-to-address-btn:hover {
