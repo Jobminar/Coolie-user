@@ -60,18 +60,19 @@ export const getSavedAddresses = async (userId) => {
     );
 
     if (response.ok) {
+      console.log("the response", response);
       const data = await response.json();
-
+      console.log("the address fetched", data);
       return data;
     } else {
       const errorData = await response.json();
       console.error("Failed to fetch saved addresses:", errorData);
-      toast.error(`Failed to fetch saved addresses: ${errorData.message}`);
+      console.error(`Failed to fetch saved addresses: ${errorData.message}`);
       throw new Error(`Error: ${errorData.message}`);
     }
   } catch (error) {
     console.error("Error during fetching saved addresses:", error);
-    toast.error(`Error during fetching saved addresses: ${error.message}`);
+    console.error(`Error during fetching saved addresses: ${error.message}`);
     throw error;
   }
 };
