@@ -1,29 +1,27 @@
-// src/components/Schedule.jsx
 import React, { useState } from "react";
+import { FaEdit, FaSave } from "react-icons/fa";
 import Calendar from "./Calendar"; // Import the Calendar component
+import ItemSchedule from "./ItemSchedule"; // Import the ItemSchedule component
+import ScheduleFooter from "./ScheduleFooter";
 import "./Schedule.css";
 
-const Schedule = ({ onDateTimeSelect }) => {
-  const [selectedDateTime, setSelectedDateTime] = useState({
-    selectedDate: "",
-    selectedTime: "9AM - 10AM",
-    selectedMonth: new Date().getMonth(),
-  });
+const Schedule = ({ onNext }) => {
+  const [isEditing, setIsEditing] = useState(false); // State to toggle between Calendar and ItemSchedule
 
-  const handleDateTimeSelect = (dateTime) => {
-    setSelectedDateTime(dateTime);
-    if (onDateTimeSelect) {
-      onDateTimeSelect(dateTime);
-    }
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
   };
 
   return (
     <div className="schedule-container">
-      <Calendar onDateTimeSelect={handleDateTimeSelect} />
-      <p>
-        You have selected {selectedDateTime.selectedDate}{" "}
-        {selectedDateTime.selectedTime}
-      </p>
+      <button className="editing-btn" onClick={toggleEdit}>
+        {isEditing ? <FaSave /> : <FaEdit />}
+        <span>
+          I would like to have individual & different slots for services choosen
+        </span>
+      </button>
+      {isEditing ? <ItemSchedule /> : <Calendar />}
+      <ScheduleFooter onNext={onNext} />
     </div>
   );
 };

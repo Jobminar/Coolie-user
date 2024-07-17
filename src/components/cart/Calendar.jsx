@@ -1,13 +1,16 @@
-// src/components/Calendar.jsx
 import React from "react";
+import ArrowIconLeft from "../../assets/images/CalenderLeft-arrows.svg";
+import ArrowIconRight from "../../assets/images/CalenderRight-arrows.svg";
 
 const Calendar = ({ onDateTimeSelect }) => {
-  const [selectedDate, setSelectedDate] = React.useState("");
+  const today = new Date();
+  const todayDate = today.getDate().toString().padStart(2, "0");
+  const todayMonth = today.getMonth();
+
+  const [selectedDate, setSelectedDate] = React.useState(todayDate);
   const [selectedTime, setSelectedTime] = React.useState("9AM - 10AM");
   const [currentOffset, setCurrentOffset] = React.useState(0);
-  const [selectedMonth, setSelectedMonth] = React.useState(
-    new Date().getMonth(),
-  );
+  const [selectedMonth, setSelectedMonth] = React.useState(todayMonth);
 
   const months = [
     "January",
@@ -93,13 +96,17 @@ const Calendar = ({ onDateTimeSelect }) => {
         </select>{" "}
         {new Date().getFullYear()}
       </h3>
+      <p className="scheduled-date">
+        You have selected {months[selectedMonth]} {selectedDate},{" "}
+        {new Date().getFullYear()} {selectedTime}
+      </p>
       <div className="date-selector">
         <button
           className="arrow-btn"
           onClick={handlePrevious}
           disabled={currentOffset === 0}
         >
-          &lt;
+          <img src={ArrowIconLeft} alt="Previous" />
         </button>
         <div className="dates">
           {dates.map((date, index) => (
@@ -114,7 +121,7 @@ const Calendar = ({ onDateTimeSelect }) => {
           ))}
         </div>
         <button className="arrow-btn" onClick={handleNext}>
-          &gt;
+          <img src={ArrowIconRight} alt="Next" />
         </button>
       </div>
       <div className="time-selector">

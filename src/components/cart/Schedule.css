@@ -1,28 +1,44 @@
 .schedule-container {
-    padding: 20px;
+    padding: 0.9375rem;
+    /* 15px */
     background-color: #ffffff;
-    max-width: 400px;
+    max-width: 25rem;
+    /* 400px */
     margin: auto;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border: 1px solid #e6f7d4;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 0.5rem;
+    /* 8px */
+    border-bottom-right-radius: 0.5rem;
+    /* 8px */
+    border: 0.0625rem solid #e6f7d4;
+    /* 1px */
+    box-shadow: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.1);
+    /* 1px 2px */
+    z-index: 10;
+    /* Ensure it stays above other content */
 }
 
 h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 0.9375rem;
+    /* 15px */
+    font-size: 0.75rem;
+    /* 12px */
 }
 
 h3 select {
-    padding: 5px 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    padding: 0.234375rem 0.46875rem;
+    /* 3.75px 7.5px */
+    font-size: 0.75rem;
+    /* 12px */
+    border-radius: 0.3125rem;
+    /* 5px */
+    border: 0.0625rem solid #ccc;
+    /* 1px */
     background-color: #ffffff;
-    margin-left: 10px;
+    margin-right: 0.46875rem;
+    /* 7.5px */
 }
 
 .date-selector,
@@ -30,44 +46,66 @@ h3 select {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 0.9375rem;
+    /* 15px */
 }
 
 .dates {
     display: flex;
     flex-wrap: nowrap;
-    gap: 10px;
-    width: 100%;
+    gap: 1rem;
+    /* 7.5px */
+    width: 90%;
+    margin: 0.5rem;
     overflow: hidden;
+    height: 3.25rem;
+    font-weight: 600;
 }
 
 .date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     flex: 1;
-    padding: 10px;
+    padding: 0.6rem 0.49375rem;
+    /* 9.5px */
     text-align: center;
     background-color: #f0f0f0;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
+    /* 5px */
     cursor: pointer;
-    border: 1px solid #ccc;
+    border: 0.0625rem solid #ccc;
+    /* 1px */
+    font-size: 0.6625rem;
+
+    /* 9px */
 }
 
 .date.active {
-    border: 2px solid #ccc;
+    border: 0.09375rem solid #ccc;
+    /* 1.5px */
     background-color: #e6f7d4;
 }
 
 .date .day {
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 0.234375rem;
+    /* 3.75px */
+    font-size: 0.5625rem;
+    /* 9px */
 }
 
 .arrow-btn {
-    background: black;
+
     color: white;
     border: none;
     cursor: pointer;
-    padding: 10px;
-    border-radius: 50px;
+    padding: 0;
+    /* 7.5px */
+    border-radius: 50%;
+    font-size: 0.5625rem;
+    margin: 0;
+    /* 9px */
 }
 
 .arrow-btn:disabled {
@@ -78,47 +116,80 @@ h3 select {
 .time-selector {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 0.46875rem;
+    /* 7.5px */
 }
 
 .time input {
-    margin-right: 5px;
+    margin-right: 0.15625rem;
+    /* 2.5px */
 }
 
 .time label {
-    font-size: 12px;
+    font-size: 0.65rem;
+    /* 6px */
     cursor: pointer;
     display: flex;
     align-items: center;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    text-align: center;
     justify-content: center;
+    padding: 0.15625rem;
+    /* 2.5px */
+    border-radius: 0.3125rem;
+    /* 5px */
+    background-color: #f0f0f0;
+    border: 0.0625rem solid #ccc;
+    /* 1px */
+    text-align: center;
+    height: 1.5rem;
+    /* Fixed height */
+    width: 5rem;
+    /* Fixed width */
+
+    /* Smooth transition for the transform */
 }
 
 .time.active {
     background-color: transparent;
     color: blue;
     border-color: blue;
+    padding: 0;
+    width: 5rem;
+
+    /* Move slightly to the left (4.8px) */
 }
 
 .confirm-payment-btn {
-    background-color: #0988CF;
+    background-color: #0988cf;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 0.46875rem 0.9375rem;
+    /* 7.5px 15px */
+    border-radius: 0.3125rem;
+    /* 5px */
     cursor: pointer;
     width: 100%;
     text-align: center;
 }
 
 .confirm-payment-btn:hover {
-    background-color: #007BB5;
+    background-color: #007bb5;
 }
 
 .time-selector label {
-    font-size: smaller;
+    font-size: 0.65rem;
+    /* 6px */
+}
+
+
+.scheduled-date {
+    font-size: 0.75rem;
+    color: #039F54;
+    position: relative;
+    left: 12.5%;
+}
+
+.editing-btn {
+    color: #0000ff;
+    background-color: transparent;
+    border: none;
 }
