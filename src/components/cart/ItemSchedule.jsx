@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { CartContext } from "../../context/CartContext";
+import { OrdersContext } from "../../context/OrdersContext"; // Import OrdersContext
 import calendarIcon from "../../assets/images/calender.svg";
 import DurationLogo from "../../assets/images/timer.svg";
 import ScheduleFooter from "./ScheduleFooter";
@@ -7,17 +7,21 @@ import Calendar from "./Calendar"; // Ensure Calendar is imported correctly
 import "./ItemSchedule.css"; // Ensure you have appropriate CSS styles
 
 const ItemSchedule = ({ onNext }) => {
-  const { cartItems, updateQuantity } = useContext(CartContext);
+  const { orderDetails, updateItemSchedule } = useContext(OrdersContext); // Use updateItemSchedule from OrdersContext
   const [editingItemId, setEditingItemId] = useState(null); // State to track which item's calendar is being edited
 
   const toggleCalendar = (itemId) => {
     setEditingItemId(editingItemId === itemId ? null : itemId);
   };
 
+  const handleDateTimeSelect = (dateTime) => {
+    updateItemSchedule(dateTime.itemId, dateTime); // Update the item schedule
+  };
+
   return (
     <div className="item-schedule">
       <div className="cart-items-container">
-        {cartItems.map((cart) =>
+        {orderDetails.map((cart) =>
           Array.isArray(cart.items)
             ? cart.items.map((item) => (
                 <div key={item._id} className="cart-item-card">
@@ -51,7 +55,8 @@ const ItemSchedule = ({ onNext }) => {
                   {editingItemId === item._id && (
                     <div className="item-schedule-selector">
                       <Calendar
-                        onDateTimeSelect={(dateTime) => console.log(dateTime)}
+                        itemId={item._id}
+                        onDateTimeSelect={handleDateTimeSelect}
                       />
                     </div>
                   )}

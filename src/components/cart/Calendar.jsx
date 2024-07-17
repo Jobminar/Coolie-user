@@ -1,16 +1,32 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import ArrowIconLeft from "../../assets/images/CalenderLeft-arrows.svg";
 import ArrowIconRight from "../../assets/images/CalenderRight-arrows.svg";
+import { OrdersContext } from "../../context/OrdersContext"; // Import OrdersContext
 
-const Calendar = ({ onDateTimeSelect }) => {
+const Calendar = ({ itemId, onDateTimeSelect }) => {
+  const { orderDetails } = useContext(OrdersContext); // Use orderDetails from OrdersContext
   const today = new Date();
   const todayDate = today.getDate().toString().padStart(2, "0");
   const todayMonth = today.getMonth();
 
-  const [selectedDate, setSelectedDate] = React.useState(todayDate);
-  const [selectedTime, setSelectedTime] = React.useState("9AM - 10AM");
+  const itemSchedule = orderDetails
+    .flatMap((cart) => cart.items)
+    .find((item) => item._id === itemId);
+
+  const initialDate = itemSchedule?.selectedDate || todayDate;
+  const initialTime = itemSchedule?.selectedTime || "9AM - 10AM";
+  const initialMonth = itemSchedule?.selectedMonth || todayMonth;
+
+  const [selectedDate, setSelectedDate] = React.useState(initialDate);
+  const [selectedTime, setSelectedTime] = React.useState(initialTime);
   const [currentOffset, setCurrentOffset] = React.useState(0);
-  const [selectedMonth, setSelectedMonth] = React.useState(todayMonth);
+  const [selectedMonth, setSelectedMonth] = React.useState(initialMonth);
+
+  useEffect(() => {
+    setSelectedDate(initialDate);
+    setSelectedTime(initialTime);
+    setSelectedMonth(initialMonth);
+  }, [itemId]);
 
   const months = [
     "January",
@@ -62,14 +78,24 @@ const Calendar = ({ onDateTimeSelect }) => {
   const handleDateSelect = (date) => {
     setSelectedDate(date);
     if (onDateTimeSelect) {
-      onDateTimeSelect({ selectedDate: date, selectedTime, selectedMonth });
+      onDateTimeSelect({
+        itemId,
+        selectedDate: date,
+        selectedTime,
+        selectedMonth,
+      });
     }
   };
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
     if (onDateTimeSelect) {
-      onDateTimeSelect({ selectedDate, selectedTime: time, selectedMonth });
+      onDateTimeSelect({
+        itemId,
+        selectedDate,
+        selectedTime: time,
+        selectedMonth,
+      });
     }
   };
 

@@ -1,14 +1,14 @@
-// src/components/Checkout.jsx
-
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import coolieLogo from "../../assets/images/coolie-logo.png";
 import { useAuth } from "../../context/AuthContext"; // Import useAuth hook
 import { CartContext } from "../../context/CartContext"; // Import CartContext
+import { OrdersContext } from "../../context/OrdersContext"; // Import OrdersContext
 import "./Checkout.css";
 
 const Checkout = ({ onFinalize }) => {
   const { user } = useAuth(); // Get user data from AuthContext
-  const { totalPrice } = useContext(CartContext); // Get total price from CartContext
+  const { totalItems, totalPrice } = useContext(CartContext); // Get total items and total price from CartContext
+  const { createOrder } = useContext(OrdersContext); // Get createOrder from OrdersContext
   const [couponCode, setCouponCode] = useState("");
 
   const RazorKey = import.meta.env.VITE_RZP_KEY_ID;
@@ -49,12 +49,19 @@ const Checkout = ({ onFinalize }) => {
       image: coolieLogo, // Replace with your logo URL
       handler: function (response) {
         console.log("Payment successful", response);
+        // Log the payment details
+        console.log("Payment ID:", response.razorpay_payment_id);
+        console.log("Order ID:", response.razorpay_order_id);
+        console.log("Signature:", response.razorpay_signature);
+        createOrder(response.razorpay_payment_id); // Call createOrder with the payment ID
         onFinalize(); // Trigger finalization steps
       },
       prefill: {
         name: user?.name || "",
         email: user?.email || "",
         contact: user?.phone || "",
+        method: "upi", // Prefill UPI with phone number
+        vpa: `${user?.phone}@upi`,
       },
       notes: {
         address: user?.address || "",
@@ -74,8 +81,7 @@ const Checkout = ({ onFinalize }) => {
   };
 
   return (
-    <div className="checkout-container" style={{ backgroundColor: "#e6f7d4" }}>
-      <h3>Payment Method</h3>
+    <div className="checkout-container">
       <div className="coupon-section">
         <h4>Use a Coupon Code while payment</h4>
         <div className="coupon-code">
@@ -90,9 +96,20 @@ const Checkout = ({ onFinalize }) => {
           </button>
         </div>
       </div>
-      <button className="confirm-payment-btn" onClick={handleConfirmPayment}>
-        CONFIRM PAYMENT
-      </button>
+      <div className="checkout-summary">
+        <div className="checkout-total-info">
+          <h5>{totalItems} Items</h5>
+          <p>₹{totalPrice.toFixed(2)}</p>
+        </div>
+        <div className="checkout-total-button">
+          <button
+            className="confirm-payment-btn"
+            onClick={handleConfirmPayment}
+          >
+            CONFIRM PAYMENT
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

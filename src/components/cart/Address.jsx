@@ -12,12 +12,16 @@ import { useAuth } from "../../context/AuthContext";
 import { saveAddress, getSavedAddresses } from "./api/address-api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 import AddressForm from "./AddressForm";
-import { CartContext } from "../../context/CartContext"; // Import the CartContext
+import { CartContext } from "../../context/CartContext";
+import { OrdersContext } from "../../context/OrdersContext"; // Import OrdersContext
 
 const Address = ({ onNext }) => {
   const { user } = useAuth();
-  const { totalItems, totalPrice } = useContext(CartContext); // Destructure totalItems and totalPrice
+  const { totalItems, totalPrice } = useContext(CartContext);
+  const { updateSelectedAddressId } = useContext(OrdersContext); // Destructure updateSelectedAddressId from OrdersContext
   const [cookies, setCookie] = useCookies(["location"]);
   const initialLocation = cookies.location || {};
 
@@ -140,8 +144,26 @@ const Address = ({ onNext }) => {
   };
 
   const handleSubmit = () => {
+    if (!selectedAddress) {
+      confirmAlert({
+        title: "No Address Selected",
+        message: "Please select an address before proceeding.",
+        buttons: [
+          {
+            label: "OK",
+            onClick: () => {},
+          },
+        ],
+      });
+      return;
+    }
     console.log("Address Data on submit:", addressData);
-    const requestBody = { ...addressData, userId: user?._id };
+    const requestBody = {
+      ...addressData,
+      userId: user?._id,
+      username: addressData.name,
+    };
+    delete requestBody.name; // Remove the 'name' field as it should be 'username'
     console.log("Request Body on submit:", requestBody);
     onNext("schedule");
   };
@@ -149,8 +171,10 @@ const Address = ({ onNext }) => {
   const handleSaveAddress = async (addressData) => {
     try {
       console.log("Address Data before save:", addressData);
-      await saveAddress(addressData);
-      setSavedAddresses((prevAddresses) => [...prevAddresses, addressData]);
+      const requestBody = { ...addressData, username: addressData.name };
+      delete requestBody.name; // Remove the 'name' field as it should be 'username'
+      await saveAddress(requestBody);
+      setSavedAddresses((prevAddresses) => [...prevAddresses, requestBody]);
     } catch (error) {
       console.error("Error in handleSaveAddress:", error);
     }
@@ -163,6 +187,9 @@ const Address = ({ onNext }) => {
   const handleRadioChange = (address) => {
     setSelectedAddress(address);
     setAddressData(address);
+    updateSelectedAddressId(address._id); // Store selected address ID in OrdersContext
+    console.log("Selected Address:", address);
+    console.log("Selected Address ID:", address._id);
   };
 
   useEffect(() => {
@@ -224,6 +251,8 @@ const Address = ({ onNext }) => {
                 onChange={() => handleRadioChange(address)}
               />
               <p>
+                {" "}
+                <strong>Name:</strong> {address.username} <br />
                 <strong>Mobile:</strong> {address.mobileNumber} <br />
                 <strong>Booking Type:</strong> {address.bookingType} <br />
                 <strong>Address:</strong> {address.address}, {address.city},{" "}

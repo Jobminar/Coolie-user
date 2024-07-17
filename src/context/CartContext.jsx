@@ -26,6 +26,7 @@ export const CartProvider = ({ children, cartId }) => {
         const response = await fetch(
           `https://api.coolieno1.in/v1.0/users/cart/${user._id}`,
         );
+        console.log("API Response:", response);
         if (!response.ok) {
           if (response.status === 404) {
             setCartNotFound(true);
@@ -100,8 +101,11 @@ export const CartProvider = ({ children, cartId }) => {
                 },
               );
 
+              console.log("Add to Cart Response:", response);
+
               if (response.ok) {
                 const responseData = await response.json();
+                console.log("Response Data:", responseData);
                 setCartItems((prevItems) => {
                   const newItems = [...prevItems, responseData];
                   console.log("New cart items after adding:", newItems);
@@ -161,6 +165,7 @@ export const CartProvider = ({ children, cartId }) => {
         },
       )
         .then((response) => {
+          console.log("Delete Response:", response);
           if (response.ok) {
             console.log("Item deleted successfully:", itemIdToRemove);
             setCartItems((prevItems) => {

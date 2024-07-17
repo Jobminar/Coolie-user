@@ -8,23 +8,26 @@ import Services from "./pages/SERVICES/Services";
 import { AuthProvider } from "./context/AuthContext";
 import LoginComponent from "./components/LoginComponent";
 import ProtectedRoute from "./ProtectedRoute";
+import { OrdersProvider } from "./context/OrdersContext";
 
 const Routing = () => {
   return (
     <AuthProvider>
-    <CartProvider>
-      <CategoryProvider>
-        <Router>
-          <Header />
-          <Routes>
-            <Route path="/login" element={<LoginComponent />} />
-            <Route path="/" element={<ProtectedRoute />}/>
-            <Route path="/home" element={<Home />} />
-            <Route path="/services" element={<Services />} />
-          </Routes>
-        </Router>
-      </CategoryProvider>
-    </CartProvider>
+      <CartProvider>
+        <CategoryProvider>
+          <OrdersProvider>
+            <Router>
+              <Header />
+              <Routes>
+                <Route path="/login" element={<LoginComponent />} />
+                <Route path="/" element={<ProtectedRoute />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/services" element={<Services />} />
+              </Routes>
+            </Router>
+          </OrdersProvider>
+        </CategoryProvider>
+      </CartProvider>
     </AuthProvider>
   );
 };

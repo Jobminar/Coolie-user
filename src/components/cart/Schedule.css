@@ -192,4 +192,18 @@ h3 select {
     color: #0000ff;
     background-color: transparent;
     border: none;
+    font-size: 0.8rem;
+}
+
+
+.apply-to-all-checkbox {
+    color: #0000ff;
+    background-color: transparent;
+    border: none;
+    margin: 0.8rem 0.1rem;
+}
+
+.apply-to-all-checkbox span {
+    color: #0000ff;
+    font-size: 0.8rem;
 }

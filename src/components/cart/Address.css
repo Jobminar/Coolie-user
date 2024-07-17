@@ -232,6 +232,7 @@
     border-radius: 50px;
     cursor: pointer;
     width: 100%;
+    margin-top: 0.1rem
 }
 
 .go-to-address-btn:hover {
