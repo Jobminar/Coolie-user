@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import "./maincategory.css";
 import { useNavigate } from "react-router-dom";
 import { CategoryContext } from "../../context/CategoryContext";
-import coverdyou1 from "../../assets/images/coveredyou-1.svg";
-import coverdyou2 from "../../assets/images/coveredyou-2.svg";
-import coverdyou3 from "../../assets/images/coveredyou-3.svg";
+import coverdyou1 from "../../assets/images/coverd-you-1.png";
+import coverdyou2 from "../../assets/images/covered-you-2.png";
+import coverdyou3 from "../../assets/images/covered-you-3.png";
+
 
 const Maincategory = () => {
   
@@ -47,58 +48,46 @@ const Maincategory = () => {
 
 
       <div className="coveredyou-con">
-        <h1 className="covered-you-headdig">
+        {/* <h1 className="covered-you-headdig">
           Coolie No 1<span> covered you</span>
-        </h1>
+        </h1> */}
         <div className="covered-you-main-flow">
           <div className="covered-you-sub-flow first-sub">
-            <div className="covered-you-img">
-              <img
-                className="coverdyou-show-icon"
-                src={coverdyou1}
-                alt="coveredyou icon"
-              />
-            </div>
-            <div className="coveredyou-content">
-              <h1>Explore top Services</h1>
-              <p>
-                Explore top services" typically refers to discovering or
-                investigating prominent.
-              </p>
-            </div>
+             <div className="coveredyou-content">
+                 <h1>Relax & rejuvenate<br/>
+                 at home</h1>
+                 <p>Massage for men</p>
+                 <button onClick={()=>navigate('/services')} className="covered-book-button">Book now</button>
+             </div>
+             <div className="subflow-image">
+                <img  src={coverdyou1} alt="covered you"/>
+             </div>
           </div>
           <div className="covered-you-sub-flow second-sub">
-            <div className="covered-you-img">
-              <img
-                className="coverdyou-show-icon"
-                src={coverdyou2}
-                alt="coveredyou icon"
-              />
-            </div>
-            <div className="coveredyou-content">
-              <h1>Fast and Flexible</h1>
-              <p>
-                Explore top services" typically refers to discovering or
-                investigating prominent .
-              </p>
-            </div>
+             <div className="coveredyou-content">
+                 <h1>Expert haircut
+                <br/>
+                starting at 199</h1>
+                 <p>Haircut at home</p>
+                 <button className="covered-book-button">Book now</button>
+             </div>
+             <div className="subflow-image">
+                <img  src={coverdyou2} alt="covered you"/>
+             </div>
           </div>
           <div className="covered-you-sub-flow third-sub">
-            <div className="covered-you-img">
-              <img
-                className="coverdyou-show-icon"
-                src={coverdyou3}
-                alt="coveredyou icon"
-              />
-            </div>
-            <div className="coveredyou-content">
-              <h1>Support when you need it</h1>
-              <p>
-                Explore top services" typically refers to discovering or
-                investigating prominent .
-              </p>
-            </div>
+             <div className="coveredyou-content">
+                 <h1>Relax & rejuvenate<br/>
+                 at home</h1>
+                 <p>Massage for men</p>
+                 <button className="covered-book-button">Book now</button>
+             </div>
+             <div className="subflow-image">
+                <img  src={coverdyou3} alt="covered you"/>
+             </div>
           </div>
+
+         
         </div>
       </div>
     </>

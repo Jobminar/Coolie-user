@@ -32,7 +32,7 @@
 
 .most-booked {
   display: flex;
-  column-gap: 1.5rem;
+  column-gap: 1.3rem;
   overflow-x: auto;
   scroll-snap-type: x;
   /* border: 1px solid black; */
@@ -46,15 +46,18 @@
 }
 
 .sub-booked {
-  min-width: 17rem;
+  min-width: 14rem;
   height: 14rem;
   /* border: 1px solid black; */
   scroll-snap-align: start;
 }
 
 .sub-booked-image {
-  width: 17rem;
+  width: 14rem;
   height: 10rem;
+}
+.sub-booked-image:hover{
+  cursor: pointer;
 }
 
 .sub-booked-image img {
@@ -64,10 +67,11 @@
 
 .most-booked-name {
   font-family: Roboto Condensed;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
-  line-height: 25.09px;
+  line-height: 21.09px;
   text-align: left;
+  
   margin: 0px;
   margin-top: 10px;
   margin-left: 2px;
@@ -75,11 +79,11 @@
 
 .most-booked-price {
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
-  line-height: 25px;
-  text-align: left;
-  margin: 0px;
+  line-height: 22px;
+  text-align: left;  
+  margin: 0.5px;
   margin-left: 2px;
 }
 

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./MOSTBOOKEDSERVICES.css"; // import your styling
+import { useNavigate } from "react-router-dom";
 
 const Mostbookedservices = () => {
+  const navigate = useNavigate()
   const [mostBooked, setMostBooked] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,12 +44,12 @@ const Mostbookedservices = () => {
           <div key={index} className="sub-booked">
             <div className="sub-booked-image">
               <img
-                src={service.image}
+                src={service.image} onClick={()=>navigate('/services')}
               />
             </div>
 
             <h6 className="most-booked-name">{service.name}</h6>
-            {/* <p className='most-booked-price'>Rs : {service.price}</p> */}
+            <p className='most-booked-price'>Rs : {service.price}</p>
           </div>
         ))}
       </div>

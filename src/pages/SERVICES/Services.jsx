@@ -160,9 +160,7 @@ const Services = () => {
               subData.map((subCat) => (
                 <div
                   key={subCat._id}
-                  className={`sub-category-item ${
-                    selectedSubCategoryId === subCat._id ? "active" : ""
-                  }`}
+                  className='sub-category-item'
                   onClick={() => setSelectedSubCategoryId(subCat._id)}
                 >
                   <div className="subcat-icon-container">
@@ -179,9 +177,9 @@ const Services = () => {
               <p>No additional subcategories available.</p>
             )}
           </div>
+      
 
           <div className="services-display">
-            <p></p>
             {serviceData.map((service) => (
               <div key={service._id} className="sub-category-service-item">
                 <div className="service-main-head">
@@ -193,7 +191,7 @@ const Services = () => {
                     />
                   </div>
                   <div className="service-content">
-                    <h3>{service.name}</h3>
+                    <h5>{service.name}</h5>
                     {service.serviceVariants.map((variant) => (
                       <div key={variant._id} className="service-variant">
                         <p>
