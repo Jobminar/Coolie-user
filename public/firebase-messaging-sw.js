@@ -13,13 +13,10 @@ const firebaseConfig = {
   storageBucket: urlParams.get("storageBucket"),
   messagingSenderId: urlParams.get("messagingSenderId"),
   appId: urlParams.get("appId"),
+  measurementId: urlParams.get("measurementId"),
 };
 
-try {
-  firebase.initializeApp(firebaseConfig);
-} catch (error) {
-  console.error("Error initializing Firebase:", error);
-}
+firebase.initializeApp(firebaseConfig);
 
 const messaging = firebase.messaging();
 
