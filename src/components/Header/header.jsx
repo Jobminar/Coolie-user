@@ -35,9 +35,7 @@ const Header = () => {
                       <img src={logo} alt="logo"/>
                    </div>
                    {/* <div className="s-h-content">
-                        <div className="s-h-bottom">
-                           
-                           
+                        <div className="s-h-bottom"> 
                         </div>
                    </div> */}
                    <div className="s-h-s">

@@ -42,7 +42,7 @@ text-align: left;
 }
 .s-h{
     min-height: 6rem;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     padding: 0rem 3rem;
     display: grid;
     grid-template-columns: 15% 80%;
@@ -54,7 +54,7 @@ text-align: left;
    display: flex;
    justify-content: center;
    align-items: center;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 .s-h-logo img{
     width:6rem;
@@ -118,7 +118,7 @@ text-align: left;
     color: white;
 }
 .s-h-bottom{
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: grid;
     grid-template-columns:20% 65% 20% ;
     margin: auto 0rem;
@@ -126,7 +126,7 @@ text-align: left;
     justify-content: space-between;
 }
 .s-h-s{
-    border: 1px solid black;
+    /* border: 1px solid black; */
     display: grid;
     justify-content: space-between;
     grid-template-columns: 30% 45% 20%;
