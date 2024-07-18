@@ -9,6 +9,7 @@ import { AuthProvider } from "./context/AuthContext";
 import LoginComponent from "./components/LoginComponent";
 import ProtectedRoute from "./ProtectedRoute";
 import { OrdersProvider } from "./context/OrdersContext";
+import { MessagingProvider } from "./context/MessagingContext";
 
 const Routing = () => {
   return (
@@ -16,17 +17,19 @@ const Routing = () => {
       <CartProvider>
         <CategoryProvider>
           <OrdersProvider>
-            {" "}
-            {/* Wrap your application with MessagingProvider */}
-            <Router>
-              <Header />
-              <Routes>
-                <Route path="/login" element={<LoginComponent />} />
-                <Route path="/" element={<ProtectedRoute />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/services" element={<Services />} />
-              </Routes>
-            </Router>
+            <MessagingProvider>
+              {" "}
+              {/* Wrap your application with MessagingProvider */}
+              <Router>
+                <Header />
+                <Routes>
+                  <Route path="/login" element={<LoginComponent />} />
+                  <Route path="/" element={<ProtectedRoute />} />
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/services" element={<Services />} />
+                </Routes>
+              </Router>
+            </MessagingProvider>
           </OrdersProvider>
         </CategoryProvider>
       </CartProvider>
