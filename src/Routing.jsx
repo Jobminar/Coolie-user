@@ -8,6 +8,8 @@ import Services from "./pages/SERVICES/Services";
 import { AuthProvider } from "./context/AuthContext";
 import LoginComponent from "./components/LoginComponent";
 import ProtectedRoute from "./ProtectedRoute";
+import Footer from "./components/Footer/footer";
+import Aboutus from "./components/Aboutus/aboutus";
 
 const Routing = () => {
   return (
@@ -21,7 +23,9 @@ const Routing = () => {
             <Route path="/" element={<ProtectedRoute />}/>
             <Route path="/home" element={<Home />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/aboutus" element={<Aboutus/>}/>
           </Routes>
+          <Footer/>
         </Router>
       </CategoryProvider>
     </CartProvider>

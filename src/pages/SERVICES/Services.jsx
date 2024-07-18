@@ -119,37 +119,36 @@ const Services = ({ userId }) => {
 
   return (
     <div className="services">
-      {/* <ScrollableTabs /> */}
+      <ScrollableTabs />
 
       <div className="services-cart-display">
         <div className="subcat-services-dispaly">
-        <div className="sub-category-display">
-          {subData.length > 0 ? (
-            subData.map((subCat) => (
-              <div
-                key={subCat._id}
-                className={`sub-category-item ${selectedSubCategoryId === subCat._id ? 'active' : ''}`}
-                onClick={() => setSelectedSubCategoryId(subCat._id)}
-              >
-                <div className="subcat-icon-container">
-                  <img
-                    src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${subCat.imageKey}`}
-                    alt={subCat.name}
-                    className="tab-image"
-                  />
+          <div className="sub-category-display">
+            {subData.length > 0 ? (
+              subData.map((subCat) => (
+                <div
+                  key={subCat._id}
+                  className='sub-category-item'
+                  onClick={() => setSelectedSubCategoryId(subCat._id)}
+                >
+                  <div className="subcat-icon-container">
+                    <img
+                      src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${subCat.imageKey}`}
+                      alt={subCat.name}
+                      className="tab-image"
+                    />
+                  </div>
+                  <p>{subCat.name}</p>
                 </div>
-                <p>{subCat.name}</p>
-              </div>
-            ))
-          ) : (
-            <p>No additional subcategories available.</p>
-          )}
-        </div>
+              ))
+            ) : (
+              <p>No additional subcategories available.</p>
+            )}
+          </div>
       
 
           {/* Service display */}
           <div className="services-display">
-            <p></p>
             {serviceData.map((service) => (
               <div key={service._id} className="sub-category-service-item">
                 <div className="service-main-head">
@@ -161,7 +160,7 @@ const Services = ({ userId }) => {
                     />
                   </div>
                   <div className="service-content">
-                    <h3>{service.name}</h3>
+                    <h5>{service.name}</h5>
                     {service.serviceVariants.map((variant) => (
                       <div key={variant._id} className="service-variant">
                         <p>

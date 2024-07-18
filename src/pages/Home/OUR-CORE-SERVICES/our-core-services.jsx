@@ -10,7 +10,7 @@ const Ourcoreservices = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://api.coolieno1.in/v1.0/admin/our-core-services",
+          "https://api.coolieno1.in/v1.0/admin/most-booked",
         );
         const data = await response.json();
         setCoreServices(data);
