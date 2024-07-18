@@ -12,7 +12,7 @@ import { useAuth } from "./AuthContext"; // Import the useAuth hook
 
 export const OrdersContext = createContext();
 
-export const OrdersProvider = ({ children }) => {
+export const OrdersProvider = ({ children, activeTab }) => {
   const { cartItems } = useContext(CartContext);
   const { user } = useAuth(); // Get the user from AuthContext
   const [selectedAddressId, setSelectedAddressId] = useState(null);
@@ -20,6 +20,7 @@ export const OrdersProvider = ({ children }) => {
   const [categoryIds, setCategoryIds] = useState([]);
   const [subCategoryIds, setSubCategoryIds] = useState([]);
   const orderDataRef = useRef([]);
+  const hasMountedRef = useRef(false); // Track whether the component has mounted
 
   const updateOrderDetails = (updatedDetails) => {
     setOrderDetails(updatedDetails);
@@ -142,11 +143,16 @@ export const OrdersProvider = ({ children }) => {
 
     setCategoryIds(extractedCategoryIds);
     setSubCategoryIds(extractedSubCategoryIds);
+    hasMountedRef.current = true; // Set the flag to true after initial mount
   }, [cartItems]);
 
   // Show confirmation popup when orderDetails are updated
   useEffect(() => {
-    if (orderDetails.length > 0) {
+    if (
+      hasMountedRef.current &&
+      orderDetails.length > 0 &&
+      activeTab === "schedule"
+    ) {
       confirmAlert({
         title: "Orders updated",
         message: "The service scheduling has been updated successfully.",
@@ -158,7 +164,7 @@ export const OrdersProvider = ({ children }) => {
         ],
       });
     }
-  }, [orderDetails]);
+  }, [orderDetails, activeTab]);
 
   return (
     <OrdersContext.Provider

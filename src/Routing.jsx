@@ -16,6 +16,8 @@ const Routing = () => {
       <CartProvider>
         <CategoryProvider>
           <OrdersProvider>
+            {" "}
+            {/* Wrap your application with MessagingProvider */}
             <Router>
               <Header />
               <Routes>
