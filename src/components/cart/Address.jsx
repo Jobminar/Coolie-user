@@ -127,13 +127,19 @@ const Address = ({ onNext }) => {
           } else {
             setSavedAddresses([addresses]);
           }
+
+          // If there's only one address, select it automatically
+          if (addresses.length === 1) {
+            setSelectedAddress(addresses[0]);
+            updateSelectedAddressId(addresses[0]._id);
+          }
         } catch (error) {
           console.error("Error fetching saved addresses:", error);
         }
       }
     };
     fetchSavedAddresses();
-  }, [user]);
+  }, [user, updateSelectedAddressId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -173,8 +179,8 @@ const Address = ({ onNext }) => {
       console.log("Address Data before save:", addressData);
       const requestBody = { ...addressData, username: addressData.name };
       delete requestBody.name; // Remove the 'name' field as it should be 'username'
-      await saveAddress(requestBody);
-      setSavedAddresses((prevAddresses) => [...prevAddresses, requestBody]);
+      const savedAddress = await saveAddress(requestBody);
+      setSavedAddresses((prevAddresses) => [...prevAddresses, savedAddress]);
     } catch (error) {
       console.error("Error in handleSaveAddress:", error);
     }

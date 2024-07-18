@@ -11,23 +11,30 @@ import ProtectedRoute from "./ProtectedRoute";
 import { OrdersProvider } from "./context/OrdersContext";
 import Footer from "./components/Footer/footer";
 import Aboutus from "./components/Aboutus/aboutus";
+import { MessagingProvider } from "./context/MessagingContext";
 
 const Routing = () => {
   return (
     <AuthProvider>
       <CartProvider>
         <CategoryProvider>
-          <Router>
-            <Header />
-            <Routes>
-              <Route path="/login" element={<LoginComponent />} />
-              <Route path="/" element={<ProtectedRoute />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/aboutus" element={<Aboutus />} />
-            </Routes>
-            <Footer />
-          </Router>
+          <OrdersProvider>
+            <MessagingProvider>
+              {" "}
+              {/* Wrap your application with MessagingProvider */}
+              <Router>
+                <Header />
+                <Routes>
+                  <Route path="/login" element={<LoginComponent />} />
+                  <Route path="/" element={<ProtectedRoute />} />
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/aboutus" element={<Aboutus />} />
+                </Routes>
+                <Footer />
+              </Router>
+            </MessagingProvider>
+          </OrdersProvider>
         </CategoryProvider>
       </CartProvider>
     </AuthProvider>
