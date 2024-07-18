@@ -15,21 +15,21 @@ import Aboutus from "./components/Aboutus/aboutus";
 const Routing = () => {
   return (
     <AuthProvider>
-    <CartProvider>
-      <CategoryProvider>
-        <Router>
-          <Header />
-          <Routes>
-            <Route path="/login" element={<LoginComponent />} />
-            <Route path="/" element={<ProtectedRoute />}/>
-            <Route path="/home" element={<Home />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/aboutus" element={<Aboutus/>}/>
-          </Routes>
-          <Footer/>
-        </Router>
-      </CategoryProvider>
-    </CartProvider>
+      <CartProvider>
+        <CategoryProvider>
+          <Router>
+            <Header />
+            <Routes>
+              <Route path="/login" element={<LoginComponent />} />
+              <Route path="/" element={<ProtectedRoute />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/aboutus" element={<Aboutus />} />
+            </Routes>
+            <Footer />
+          </Router>
+        </CategoryProvider>
+      </CartProvider>
     </AuthProvider>
   );
 };

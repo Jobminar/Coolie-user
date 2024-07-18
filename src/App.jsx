@@ -1,14 +1,16 @@
-import { useState } from 'react'
-import './App.css'
-import Routing from './Routing'
+import { useState } from "react";
+import "./App.css";
+import Routing from "./Routing";
+import { MessagingProvider } from "./context/MessagingContext";
 
 function App() {
-
   return (
     <>
-         <Routing/>
+      <MessagingProvider>
+        <Routing />
+      </MessagingProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
