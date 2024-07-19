@@ -9,12 +9,14 @@ import { CartContext } from "./CartContext";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { useAuth } from "./AuthContext"; // Import the useAuth hook
+import { useMessaging } from "./MessagingContext"; // Import the useMessaging hook
 
 export const OrdersContext = createContext();
 
 export const OrdersProvider = ({ children, activeTab }) => {
   const { cartItems } = useContext(CartContext);
   const { user } = useAuth(); // Get the user from AuthContext
+  const { sendNotification } = useMessaging(); // Get the sendNotification function from MessagingContext
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [orderDetails, setOrderDetails] = useState([]);
   const [categoryIds, setCategoryIds] = useState([]);
@@ -108,7 +110,25 @@ export const OrdersProvider = ({ children, activeTab }) => {
       if (response.ok) {
         const orderResponse = await response.json();
         console.log("Order created successfully:", orderResponse);
-        // Handle order creation success
+
+        // Send notification using MessagingContext
+        sendNotification({
+          title: "Order Created",
+          body: "Your order has been made and looking for service providers.",
+        });
+
+        // Show confirmation alert
+        confirmAlert({
+          title: "Order Created",
+          message:
+            "Your order has been made and looking for service providers.",
+          buttons: [
+            {
+              label: "OK",
+              onClick: () => {},
+            },
+          ],
+        });
       } else {
         console.error("Failed to create order:", response.statusText);
       }
