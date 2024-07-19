@@ -2,7 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { messaging } from "../config/firebase";
 import { getToken, onMessage } from "firebase/messaging";
 import { confirmAlert } from "react-confirm-alert";
-import { useAuth } from "./AuthContext";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 const MessagingContext = createContext();
@@ -11,9 +10,15 @@ export const useMessaging = () => useContext(MessagingContext);
 
 export const MessagingProvider = ({ children }) => {
   const [token, setToken] = useState(null);
-  const { user } = useAuth();
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
+    // Retrieve userId from sessionStorage
+    const storedUserId = sessionStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+
     async function requestPermission() {
       console.log("Requesting notification permission...");
       const permission = await Notification.requestPermission();
@@ -27,7 +32,7 @@ export const MessagingProvider = ({ children }) => {
           if (currentToken) {
             setToken(currentToken);
             console.log("FCM Token retrieved:", currentToken);
-            await sendTokenToServer(currentToken);
+            await sendTokenToServer(currentToken, storedUserId);
           } else {
             console.log(
               "No registration token available. Request permission to generate one.",
@@ -56,7 +61,7 @@ export const MessagingProvider = ({ children }) => {
         ],
       });
     });
-  }, [user]);
+  }, []);
 
   const sendNotification = (notification) => {
     console.log("Sending notification:", notification);
@@ -72,15 +77,15 @@ export const MessagingProvider = ({ children }) => {
     });
   };
 
-  const sendTokenToServer = async (token) => {
-    console.log("Sending FCM token to server:", token);
+  const sendTokenToServer = async (token, userId) => {
+    console.log("Sending FCM token to server:", token, "for user:", userId);
     try {
       const response = await fetch("/api/store-fcm-token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token, userId: user._id }), // Replace with actual user ID
+        body: JSON.stringify({ token, userId }), // Use userId from sessionStorage
       });
       if (!response.ok) {
         throw new Error("Failed to store FCM token");
