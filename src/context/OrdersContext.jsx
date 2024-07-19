@@ -8,21 +8,21 @@ import React, {
 import { CartContext } from "./CartContext";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { useAuth } from "./AuthContext"; // Import the useAuth hook
-import { useMessaging } from "./MessagingContext"; // Import the useMessaging hook
+import { useAuth } from "./AuthContext";
+import { useMessaging } from "./MessagingContext";
 
 export const OrdersContext = createContext();
 
 export const OrdersProvider = ({ children, activeTab }) => {
   const { cartItems } = useContext(CartContext);
-  const { user } = useAuth(); // Get the user from AuthContext
-  const { sendNotification } = useMessaging(); // Get the sendNotification function from MessagingContext
+  const { user } = useAuth();
+  const { token, sendNotification } = useMessaging();
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [orderDetails, setOrderDetails] = useState([]);
   const [categoryIds, setCategoryIds] = useState([]);
   const [subCategoryIds, setSubCategoryIds] = useState([]);
   const orderDataRef = useRef([]);
-  const hasMountedRef = useRef(false); // Track whether the component has mounted
+  const hasMountedRef = useRef(false);
 
   const updateOrderDetails = (updatedDetails) => {
     setOrderDetails(updatedDetails);
@@ -61,7 +61,7 @@ export const OrdersProvider = ({ children, activeTab }) => {
     const selectedMonth =
       item.selectedMonth !== undefined
         ? item.selectedMonth
-        : currentDate.getMonth() + 1; // getMonth() is zero-based
+        : currentDate.getMonth() + 1;
     const selectedYear = currentDate.getFullYear();
     const selectedTime = item.selectedTime || "Default Time";
     return `${selectedDate}-${selectedMonth}-${selectedYear} ${selectedTime}`;
@@ -85,7 +85,7 @@ export const OrdersProvider = ({ children, activeTab }) => {
     );
 
     const orderData = {
-      userId: user._id, // Include user._id in orderData
+      userId: user._id,
       addressId: selectedAddressId,
       categoryIds: categoryIds,
       subCategoryIds: subCategoryIds,
@@ -96,8 +96,15 @@ export const OrdersProvider = ({ children, activeTab }) => {
     console.log("Order Data:", orderData);
 
     try {
+      // Log FCM token before creating order
+      if (token) {
+        console.log("FCM Token:", token);
+      } else {
+        console.log("No FCM Token available");
+      }
+
       const response = await fetch(
-        "https://api.coolieno1.in/v1.0/orders/create",
+        "https://api.coolieno1.in/v1.0/users/order/create-order",
         {
           method: "POST",
           headers: {
@@ -111,13 +118,11 @@ export const OrdersProvider = ({ children, activeTab }) => {
         const orderResponse = await response.json();
         console.log("Order created successfully:", orderResponse);
 
-        // Send notification using MessagingContext
         sendNotification({
           title: "Order Created",
           body: "Your order has been made and looking for service providers.",
         });
 
-        // Show confirmation alert
         confirmAlert({
           title: "Order Created",
           message:
@@ -137,7 +142,6 @@ export const OrdersProvider = ({ children, activeTab }) => {
     }
   };
 
-  // Initialize orderDataRef with cartItems and extract categoryIds and subCategoryIds
   useEffect(() => {
     orderDataRef.current = cartItems;
     setOrderDetails(cartItems);
@@ -163,10 +167,9 @@ export const OrdersProvider = ({ children, activeTab }) => {
 
     setCategoryIds(extractedCategoryIds);
     setSubCategoryIds(extractedSubCategoryIds);
-    hasMountedRef.current = true; // Set the flag to true after initial mount
+    hasMountedRef.current = true;
   }, [cartItems]);
 
-  // Show confirmation popup when orderDetails are updated
   useEffect(() => {
     if (
       hasMountedRef.current &&

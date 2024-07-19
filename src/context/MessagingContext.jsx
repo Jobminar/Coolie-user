@@ -13,7 +13,6 @@ export const MessagingProvider = ({ children }) => {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    // Retrieve userId from sessionStorage
     const storedUserId = sessionStorage.getItem("userId");
     if (storedUserId) {
       setUserId(storedUserId);
@@ -85,7 +84,7 @@ export const MessagingProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token, userId }), // Use userId from sessionStorage
+        body: JSON.stringify({ token, userId }),
       });
       if (!response.ok) {
         throw new Error("Failed to store FCM token");
