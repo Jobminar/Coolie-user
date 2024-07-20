@@ -16,16 +16,15 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import AddressForm from "./AddressForm";
 import { CartContext } from "../../context/CartContext";
-import { OrdersContext } from "../../context/OrdersContext"; // Import OrdersContext
+import { OrdersContext } from "../../context/OrdersContext";
 
 const Address = ({ onNext }) => {
   const { user } = useAuth();
   const { totalItems, totalPrice } = useContext(CartContext);
-  const { updateSelectedAddressId } = useContext(OrdersContext); // Destructure updateSelectedAddressId from OrdersContext
+  const { updateSelectedAddressId } = useContext(OrdersContext);
   const [cookies, setCookie] = useCookies(["location"]);
   const initialLocation = cookies.location || {};
 
-  // Initialize addressData state with user information if available
   const [addressData, setAddressData] = useState({
     bookingType: "self",
     name: "",
@@ -35,8 +34,8 @@ const Address = ({ onNext }) => {
     pincode: initialLocation.pincode || "500072",
     landmark: initialLocation.landmark || "Medchal-Malkajgiri",
     state: initialLocation.state || "Telangana",
-    latitude: initialLocation.latitude || 0,
-    longitude: initialLocation.longitude || 0,
+    latitude: Number(initialLocation.latitude) || 0,
+    longitude: Number(initialLocation.longitude) || 0,
     userId: user?._id || "",
   });
 
@@ -128,7 +127,6 @@ const Address = ({ onNext }) => {
             setSavedAddresses([addresses]);
           }
 
-          // If there's only one address, select it automatically
           if (addresses.length === 1) {
             setSelectedAddress(addresses[0]);
             updateSelectedAddressId(addresses[0]._id);
@@ -168,6 +166,8 @@ const Address = ({ onNext }) => {
       ...addressData,
       userId: user?._id,
       username: addressData.name,
+      latitude: Number(addressData.latitude), // Ensure latitude is a number
+      longitude: Number(addressData.longitude), // Ensure longitude is a number
     };
     delete requestBody.name; // Remove the 'name' field as it should be 'username'
     console.log("Request Body on submit:", requestBody);
@@ -177,7 +177,12 @@ const Address = ({ onNext }) => {
   const handleSaveAddress = async (addressData) => {
     try {
       console.log("Address Data before save:", addressData);
-      const requestBody = { ...addressData, username: addressData.name };
+      const requestBody = {
+        ...addressData,
+        username: addressData.name,
+        latitude: Number(addressData.latitude), // Ensure latitude is a number
+        longitude: Number(addressData.longitude), // Ensure longitude is a number
+      };
       delete requestBody.name; // Remove the 'name' field as it should be 'username'
       const savedAddress = await saveAddress(requestBody);
       setSavedAddresses((prevAddresses) => [...prevAddresses, savedAddress]);
@@ -193,7 +198,7 @@ const Address = ({ onNext }) => {
   const handleRadioChange = (address) => {
     setSelectedAddress(address);
     setAddressData(address);
-    updateSelectedAddressId(address._id); // Store selected address ID in OrdersContext
+    updateSelectedAddressId(address._id);
     console.log("Selected Address:", address);
     console.log("Selected Address ID:", address._id);
   };
@@ -229,8 +234,8 @@ const Address = ({ onNext }) => {
     setAddressData((prevState) => ({
       ...prevState,
       ...parsedAddress,
-      latitude: location.latitude,
-      longitude: location.longitude,
+      latitude: Number(location.latitude), // Ensure latitude is a number
+      longitude: Number(location.longitude), // Ensure longitude is a number
     }));
   };
 
@@ -257,7 +262,6 @@ const Address = ({ onNext }) => {
                 onChange={() => handleRadioChange(address)}
               />
               <p>
-                {" "}
                 <strong>Name:</strong> {address.username} <br />
                 <strong>Mobile:</strong> {address.mobileNumber} <br />
                 <strong>Booking Type:</strong> {address.bookingType} <br />
@@ -325,7 +329,7 @@ const Address = ({ onNext }) => {
           onLocationSelect={handleLocationSelect}
           lat={initialLocation.latitude || 0}
           lng={initialLocation.longitude || 0}
-          initializeMap={true} // Signal to initialize map
+          initializeMap={true}
         />
       )}
     </div>
