@@ -21,7 +21,7 @@ const Services = () => {
     error,
   } = useContext(CategoryContext);
 
-  const { setCartItems, calculateTotalPrice, calculateTotalItems } =
+  const { setCartItems, calculateTotalPrice, calculateTotalItems, fetchCart } =
     useContext(CartContext);
   const { user } = useAuth(); // Get user from AuthContext
 
@@ -119,15 +119,8 @@ const Services = () => {
               );
 
               if (response.ok) {
-                const responseData = await response.json();
-                setCartItems((prevItems) => {
-                  const newItems = [...prevItems, newItem.items[0]];
-                  calculateTotalPrice(newItems);
-                  calculateTotalItems(newItems);
-                  return newItems;
-                });
-                console.log("Item added to cart:", responseData);
-                window.location.reload();
+                await fetchCart(); // Re-fetch cart items after adding new item
+                console.log("Item added to cart");
               } else {
                 console.error(
                   "Failed to add item to cart:",
@@ -160,7 +153,7 @@ const Services = () => {
               subData.map((subCat) => (
                 <div
                   key={subCat._id}
-                  className='sub-category-item'
+                  className="sub-category-item"
                   onClick={() => setSelectedSubCategoryId(subCat._id)}
                 >
                   <div className="subcat-icon-container">
@@ -177,7 +170,6 @@ const Services = () => {
               <p>No additional subcategories available.</p>
             )}
           </div>
-      
 
           <div className="services-display">
             {serviceData.map((service) => (

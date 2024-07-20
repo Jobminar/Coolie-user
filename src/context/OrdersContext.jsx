@@ -149,7 +149,7 @@ export const OrdersProvider = ({ children, activeTab }) => {
     const extractedCategoryIds = [];
     const extractedSubCategoryIds = [];
     cartItems.forEach((cart) => {
-      cart.items.forEach((item) => {
+      (cart.items || []).forEach((item) => {
         if (
           item.categoryId &&
           !extractedCategoryIds.includes(item.categoryId._id)

@@ -40,13 +40,28 @@ export const MessagingProvider = ({ children }) => {
         } catch (error) {
           console.log("An error occurred while retrieving token. ", error);
         }
-      } else {
+      } else if (permission === "denied") {
         console.log("Notification permission denied.");
+        confirmAlert({
+          title: "Notifications Blocked",
+          message:
+            "Please enable notifications in your browser settings to receive updates.",
+          buttons: [
+            {
+              label: "OK",
+              onClick: () => {},
+            },
+          ],
+        });
+      } else {
+        console.log("Notification permission not granted.");
       }
     }
 
     requestPermission();
+  }, []); // Empty dependency array ensures this runs once on mount
 
+  useEffect(() => {
     onMessage(messaging, (payload) => {
       console.log("Message received from backend:", payload);
       confirmAlert({
@@ -79,13 +94,16 @@ export const MessagingProvider = ({ children }) => {
   const sendTokenToServer = async (token, userId) => {
     console.log("Sending FCM token to server:", token, "for user:", userId);
     try {
-      const response = await fetch("/api/store-fcm-token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://api.coolieno1.in/v1.0/users/user-token",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ token, userId }),
         },
-        body: JSON.stringify({ token, userId }),
-      });
+      );
       if (!response.ok) {
         throw new Error("Failed to store FCM token");
       }

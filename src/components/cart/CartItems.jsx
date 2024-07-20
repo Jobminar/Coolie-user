@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, memo } from "react";
 import { CartContext } from "../../context/CartContext";
 import CartFooter from "./CartFooter";
 import deleteIcon from "../../assets/images/Delete.png";
@@ -9,7 +9,8 @@ const CartItems = ({ onNext }) => {
   const { cartItems, removeFromCart, updateQuantity } = useContext(CartContext);
 
   useEffect(() => {
-    console.log("CartItems component - cartItems:", cartItems);
+    // Log cartItems to see updates
+    console.log("CartItems updated:", cartItems);
   }, [cartItems]);
 
   return (
@@ -26,7 +27,7 @@ const CartItems = ({ onNext }) => {
                       <h4>
                         {item.serviceId.serviceVariants[0].serviceTime} min
                       </h4>
-                      <h4> {item.quantity} Item</h4>
+                      <h4>{item.quantity} Item</h4>
                     </span>
                   </div>
                   <div className="item-actions">
@@ -77,4 +78,4 @@ const CartItems = ({ onNext }) => {
   );
 };
 
-export default CartItems;
+export default memo(CartItems);
