@@ -1,9 +1,10 @@
-.main-h{
+.main-h {
     /* border: 1px solid black; */
     margin: 0px;
     padding: 0px;
 }
-.f-h{
+
+.f-h {
     /* border: 1px solid black; */
     height: 2.5rem;
     background-color: #FFB800;
@@ -12,35 +13,41 @@
     align-items: center;
     padding: 0rem 4rem;
 }
-.f-h-icons{
-     display: flex;
-     column-gap: 2rem;
-     /* border: 1px solid black; */
-     height: 2.5rem;
-     align-items: center;
+
+.f-h-icons {
+    display: flex;
+    column-gap: 2rem;
+    /* border: 1px solid black; */
+    height: 2.5rem;
+    align-items: center;
 }
-.f-h-icons img{
+
+.f-h-icons img {
     width: 20px;
     height: 20px;
 }
-.f-h-icons p{
+
+.f-h-icons p {
     font-family: Roboto;
-font-size: 12px;
-font-weight: 600;
-line-height: 14.06px;
-text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 14.06px;
+    text-align: left;
 
 }
-.f-h-last-icons{
+
+.f-h-last-icons {
     display: flex;
     align-items: center;
     column-gap: 1.5rem;
 }
-.f-h-last-icons img{
+
+.f-h-last-icons img {
     width: 25px;
     height: 25px;
 }
-.s-h{
+
+.s-h {
     min-height: 6rem;
     /* border: 1px solid black; */
     padding: 0rem 3rem;
@@ -50,25 +57,27 @@ text-align: left;
 
 
 }
-.s-h-logo{
-   display: flex;
-   justify-content: center;
-   align-items: center;
-    /* border: 1px solid black; */
-}
-.s-h-logo img{
-    width:6rem;
-    height:6rem;
+
+.s-h-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     /* border: 1px solid black; */
 }
 
-.books-button{
-   width: 7rem;
-   background-color: #CD2E28;
-   height: 2.5rem;
-   border-radius: 30px;
-   border: none;
-   font-family: Roboto;
+.s-h-logo img {
+    width: 6rem;
+    height: 6rem;
+    /* border: 1px solid black; */
+}
+
+.books-button {
+    width: 7rem;
+    background-color: #CD2E28;
+    height: 2.5rem;
+    border-radius: 30px;
+    border: none;
+    font-family: Roboto;
     font-size: 13px;
     font-weight: 500;
     line-height: 18.75px;
@@ -77,11 +86,11 @@ text-align: left;
     color: white;
 }
 
-.book-button:hover{
+.book-button:hover {
     cursor: pointer;
 }
 
-.callus{
+.callus {
     font-family: Roboto;
     font-size: 20px;
     font-weight: 500;
@@ -92,11 +101,11 @@ text-align: left;
 
 }
 
-.callus:hover{
+.callus:hover {
     cursor: pointer;
 }
 
-.r-pro{
+.r-pro {
     font-family: Roboto;
     font-size: 16px;
     font-weight: 500;
@@ -105,10 +114,12 @@ text-align: left;
     text-align: left;
 
 }
-.r-pro:hover{
+
+.r-pro:hover {
     cursor: pointer;
 }
-.book-button{
+
+.book-button {
     font-family: Roboto;
     font-size: 16px;
     font-weight: 500;
@@ -117,22 +128,25 @@ text-align: left;
     text-align: center;
     color: white;
 }
-.s-h-bottom{
+
+.s-h-bottom {
     /* border: 1px solid black; */
     display: grid;
-    grid-template-columns:20% 65% 20% ;
+    grid-template-columns: 20% 65% 20%;
     margin: auto 0rem;
     align-items: center;
     justify-content: space-between;
 }
-.s-h-s{
+
+.s-h-s {
     /* border: 1px solid black; */
     display: grid;
     justify-content: space-between;
     grid-template-columns: 30% 45% 20%;
     align-items: center;
 }
-.location{
+
+.location {
     display: flex;
     /* border: 1px solid black; */
     height: 2.5rem;
@@ -146,10 +160,12 @@ text-align: left;
     color: black;
     border-radius: 10px;
 }
-.location img{
+
+.location img {
     width: 1.5rem;
     height: 1.5rem;
 }
+
 .location input {
     font-family: Roboto;
     font-size: 16px;
@@ -158,10 +174,10 @@ text-align: left;
     text-align: left;
     /* background-color: rgba(227, 229, 255, 0.55);  */
     color: #000;
-    border: 1px solid transparent; 
-    outline: none; 
+    border: 1px solid transparent;
+    outline: none;
     width: 100%;
-   
+
 }
 
 .location input:focus {
@@ -170,18 +186,42 @@ text-align: left;
 
 .search-header input {
     margin: 0;
-    padding: 0 auto 10px; /* Correct padding format */
+    padding: 0 auto 10px;
+    /* Correct padding format */
     width: 95%;
     /* background-color: rgba(227, 229, 255, 0.55); */
-    border-radius: 0; /* Change to 0 for no rounding */
+    border-radius: 0;
+    /* Change to 0 for no rounding */
     height: 2.5rem;
-    border: none; /* Default border */
+    border: none;
+    /* Default border */
     border: 1px solid rgba(227, 229, 255, 0.95);
     padding-left: 1rem;
     border-radius: 10px;
 }
 
 .search-header input:focus {
-    border: none; /* Remove all borders on focus */
-    outline: none; /* Remove default outline */
+    border: none;
+    /* Remove all borders on focus */
+    outline: none;
+    /* Remove default outline */
+}
+
+/* Add this to your header.css */
+.helmet-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 10px;
+    margin-left: 10px;
+    background-color: white;
+    /* Adjust as needed */
+    border-radius: 5px;
+    /* Adjust as needed */
+}
+
+.helmet-icon:hover {
+    background-color: #f0f0f0;
+    /* Adjust as needed */
 }
