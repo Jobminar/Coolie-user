@@ -1,53 +1,31 @@
-import React, { useState, useEffect } from "react";
-import "./WorkerComponent.css";
+import React, { useContext, useEffect, useState } from "react";
+import { MessagingContext } from "../context/MessagingContext";
 
-const WorkerComponent = ({ worker }) => {
-  const [timeLeft, setTimeLeft] = useState(215); // 3:35 in seconds
+const WorkerComponent = () => {
+  const { messageRef } = useContext(MessagingContext);
+  const [message, setMessage] = useState(messageRef.current);
 
   useEffect(() => {
-    if (timeLeft > 0) {
-      const timer = setInterval(() => {
-        setTimeLeft(timeLeft - 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [timeLeft]);
+    setMessage(messageRef.current);
+  }, [messageRef.current]);
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-  };
+  const providerDetails = JSON.parse(message.data.providerDetails || "{}");
 
   return (
-    <div className="worker-component">
-      <div className="time-left">
-        Your worker is coming in {formatTime(timeLeft)}
+    <div>
+      <h2>{message.notification.title}</h2>
+      <p>{message.notification.body}</p>
+      <div>
+        <strong>Order ID:</strong> {message.data.orderId}
       </div>
-      <div className="worker-details">
-        <img src={worker.image} alt={worker.name} className="worker-image" />
-        <div>
-          <div className="worker-name">{worker.name}</div>
-          <div className="worker-distance">{worker.distance} (5 mins away)</div>
-          <div className="worker-rating">
-            ⭐ {worker.rating} ({worker.reviews} reviews)
-          </div>
-        </div>
+      <div>
+        <strong>Provider Name:</strong> {providerDetails.name}
       </div>
-      <div className="otp-section">
-        <div>Before Provider start the work</div>
-        <div className="otp-label">Your OTP Pin</div>
-        <div className="otp-inputs">
-          <input type="text" maxLength="1" value="5" readOnly />
-          <input type="text" maxLength="1" value="5" readOnly />
-          <input type="text" maxLength="1" value="9" readOnly />
-          <input type="text" maxLength="1" value="9" readOnly />
-        </div>
+      <div>
+        <strong>Provider Phone:</strong> {providerDetails.phone}
       </div>
-      <div className="actions">
-        <button className="call-button">📞</button>
-        <button className="message-button">💬</button>
-        <button className="cancel-button">Cancel Booking</button>
+      <div>
+        <strong>OTP:</strong> {message.data.otp}
       </div>
     </div>
   );
