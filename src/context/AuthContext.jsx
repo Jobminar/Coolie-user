@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [googleUser, setGoogleUser] = useState(null);
   const [timeoutId, setTimeoutId] = useState(null);
 
+
   useEffect(() => {
     const storedJwtToken = sessionStorage.getItem("jwtToken");
     const storedUserId = sessionStorage.getItem("userId");
@@ -63,7 +64,7 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("Fetched user info:", data);
+        // console.log("Fetched user info:", data);
         return data.user;
       } else {
         const errorData = await response.json();
@@ -201,6 +202,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
+  
   return (
     <AuthContext.Provider
       value={{
@@ -220,3 +223,4 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+export { AuthContext };

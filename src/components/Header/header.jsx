@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./header.css"
 import playstore from "../../assets/images/play-store.svg";
 import apple from "../../assets/images/apple.svg";
@@ -13,7 +14,7 @@ import translate from '../../assets/images/translate.png'
 import profile from '../../assets/images/profile.png'
 
 const Header = () => {
-  const locationname = 'Hyderabad'
+     const navigate = useNavigate()
   return (
     <>
          <div className="main-h">
@@ -27,7 +28,7 @@ const Header = () => {
                   <div className="f-h-last-icons">
                     <img src={help} alt="icon"/>
                     <img src={translate} alt="icon"/>
-                    <img src={profile} alt="icon"/>
+                    <img src={profile} alt="icon" onClick={()=>{navigate('userprofile')}}/>
                   </div>
               </div>
               <div className='s-h'>
