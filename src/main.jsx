@@ -1,18 +1,9 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
+import ReactDOM from "react-dom/client"; // Or ReactDOMClient for React 18+
 import "./index.css";
+import App from "./App";
 
-// Check if root is already created
-let root;
-const container = document.getElementById("root");
-
-if (!container._reactRootContainer) {
-  root = ReactDOM.createRoot(container);
-} else {
-  root = container._reactRootContainer._internalRoot.current.child.stateNode;
-}
-
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <App />

@@ -85,7 +85,7 @@ export const MessagingProvider = ({ children }) => {
       messageRef.current = payload;
       confirmAlert({
         title: payload.notification.title,
-        message: payload.notification.body,
+        message: `${payload.notification.body}\n\nOrder ID: ${payload.data.orderId}`,
         buttons: [
           {
             label: "OK",
