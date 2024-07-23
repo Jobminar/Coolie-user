@@ -13,6 +13,8 @@ import { MessagingProvider } from "./context/MessagingContext";
 import Footer from "./components/Footer/footer";
 import Aboutus from "./components/Aboutus/aboutus";
 import WorkerComponent from "./pages/WorkerComponent";
+import Userprofile from "./pages/USER-PROFILE/user-profile";
+import Addresses from "./pages/ADDRESSES/addresses";
 
 const Routing = () => {
   return (
@@ -32,6 +34,8 @@ const Routing = () => {
                   <Route path="/services" element={<Services />} />
                   <Route path="/aboutus" element={<Aboutus />} />
                   <Route path="/workers" element={<WorkerComponent />} />
+                  <Route path="/userprofile" element={<Userprofile />} />
+                  <Route path="/addresses" element={<Addresses />} />
                 </Routes>
                 <Footer />
               </Router>
