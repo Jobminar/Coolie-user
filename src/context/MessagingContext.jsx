@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { messaging } from "../config/firebase";
 import { getToken, onMessage } from "firebase/messaging";
 import { confirmAlert } from "react-confirm-alert";
@@ -11,6 +17,18 @@ export const useMessaging = () => useContext(MessagingContext);
 export const MessagingProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
+  const messageRef = useRef({
+    from: "",
+    notification: {
+      title: "",
+      body: "",
+    },
+    data: {
+      orderId: "",
+      providerDetails: "",
+      otp: "",
+    },
+  });
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("userId");
@@ -64,6 +82,7 @@ export const MessagingProvider = ({ children }) => {
   useEffect(() => {
     onMessage(messaging, (payload) => {
       console.log("Message received from backend:", payload);
+      messageRef.current = payload;
       confirmAlert({
         title: payload.notification.title,
         message: payload.notification.body,
@@ -114,8 +133,10 @@ export const MessagingProvider = ({ children }) => {
   };
 
   return (
-    <MessagingContext.Provider value={{ token, sendNotification }}>
+    <MessagingContext.Provider value={{ token, sendNotification, messageRef }}>
       {children}
     </MessagingContext.Provider>
   );
 };
+
+export { MessagingContext };

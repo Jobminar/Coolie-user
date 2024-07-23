@@ -11,6 +11,7 @@ export const CartProvider = ({ children, cartId }) => {
   const [totalItems, setTotalItems] = useState(0);
   const [itemIdToRemove, setItemIdToRemove] = useState(null);
   const [cartNotFound, setCartNotFound] = useState(false);
+  const [cartMessage, setCartMessage] = useState(""); // New state variable
   const { user } = useAuth();
 
   useEffect(() => {
@@ -182,10 +183,11 @@ export const CartProvider = ({ children, cartId }) => {
         setCartItems,
         calculateTotalPrice,
         calculateTotalItems,
-        fetchCart, // Ensure fetchCart is available in the context
+        fetchCart,
+        cartMessage, // Make cartMessage available in the context
       }}
     >
-      {cartNotFound && <div>No items in cart</div>}
+      {cartNotFound && <div>{cartMessage}</div>}
       {children}
     </CartContext.Provider>
   );
