@@ -1,23 +1,20 @@
 .main-h {
-    /* border: 1px solid black; */
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
 .f-h {
-    /* border: 1px solid black; */
     height: 2.5rem;
     background-color: #FFB800;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0rem 4rem;
+    padding: 0 4rem;
 }
 
 .f-h-icons {
     display: flex;
     column-gap: 2rem;
-    /* border: 1px solid black; */
     height: 2.5rem;
     align-items: center;
 }
@@ -33,7 +30,6 @@
     font-weight: 600;
     line-height: 14.06px;
     text-align: left;
-
 }
 
 .f-h-last-icons {
@@ -49,26 +45,21 @@
 
 .s-h {
     min-height: 6rem;
-    /* border: 1px solid black; */
-    padding: 0rem 3rem;
+    padding: 0 3rem;
     display: grid;
     grid-template-columns: 15% 80%;
     box-shadow: 0px 4px 4px 0px #00000040;
-
-
 }
 
 .s-h-logo {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid black; */
 }
 
 .s-h-logo img {
     width: 6rem;
     height: 6rem;
-    /* border: 1px solid black; */
 }
 
 .books-button {
@@ -98,7 +89,6 @@
     letter-spacing: -0.03em;
     text-align: left;
     color: #039F54;
-
 }
 
 .callus:hover {
@@ -112,7 +102,6 @@
     line-height: 18.75px;
     letter-spacing: -0.03em;
     text-align: left;
-
 }
 
 .r-pro:hover {
@@ -130,16 +119,13 @@
 }
 
 .s-h-bottom {
-    /* border: 1px solid black; */
     display: grid;
     grid-template-columns: 20% 65% 20%;
-    margin: auto 0rem;
     align-items: center;
     justify-content: space-between;
 }
 
 .s-h-s {
-    /* border: 1px solid black; */
     display: grid;
     justify-content: space-between;
     grid-template-columns: 30% 45% 20%;
@@ -148,17 +134,14 @@
 
 .location {
     display: flex;
-    /* border: 1px solid black; */
     height: 2.5rem;
     align-items: center;
     justify-content: left;
-    padding: 0rem 1rem;
+    padding: 0 1rem;
     border: 1px solid rgba(227, 229, 255, 0.95);
-    /* background-color: #E3E5FF; */
-    /* opacity: 55%; */
-    column-gap: 0.5rem;
     color: black;
     border-radius: 10px;
+    column-gap: 0.5rem;
 }
 
 .location img {
@@ -172,12 +155,10 @@
     font-weight: 400;
     line-height: 18.75px;
     text-align: left;
-    /* background-color: rgba(227, 229, 255, 0.55);  */
     color: #000;
     border: 1px solid transparent;
     outline: none;
     width: 100%;
-
 }
 
 .location input:focus {
@@ -186,15 +167,10 @@
 
 .search-header input {
     margin: 0;
-    padding: 0 auto 10px;
-    /* Correct padding format */
+    padding: 0 0 10px;
     width: 95%;
-    /* background-color: rgba(227, 229, 255, 0.55); */
-    border-radius: 0;
-    /* Change to 0 for no rounding */
     height: 2.5rem;
     border: none;
-    /* Default border */
     border: 1px solid rgba(227, 229, 255, 0.95);
     padding-left: 1rem;
     border-radius: 10px;
@@ -202,13 +178,11 @@
 
 .search-header input:focus {
     border: none;
-    /* Remove all borders on focus */
     outline: none;
-    /* Remove default outline */
 }
 
-/* Add this to your header.css */
-.helmet-icon {
+/* User icon styling */
+.user-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -216,12 +190,9 @@
     padding: 10px;
     margin-left: 10px;
     background-color: white;
-    /* Adjust as needed */
     border-radius: 5px;
-    /* Adjust as needed */
 }
 
-.helmet-icon:hover {
+.user-icon:hover {
     background-color: #f0f0f0;
-    /* Adjust as needed */
 }
