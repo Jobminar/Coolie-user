@@ -33,7 +33,7 @@ const Userprofile = () => {
                           <p>Coupons</p>
                           <img src={rightarrow} alt='rightarrow' className='rightarrow'/>
                           </div>
-                          <div className='u-p-sublink'>
+                          <div className='u-p-sublink' onClick={()=>navigate('/bookings')}>
                           <img src={mybookings} alt='savedaddresses'/>
                           <p>My Bookings</p>
                           <img src={rightarrow} alt='rightarrow' className='rightarrow'/>

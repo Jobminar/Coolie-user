@@ -15,8 +15,8 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [googleUser, setGoogleUser] = useState(null);
   const [timeoutId, setTimeoutId] = useState(null);
-  const [captchaVerified, setCaptchaVerified] = useState(false); // State to track CAPTCHA verification
-
+  const [captchaVerified, setCaptchaVerified] = useState(false);
+  const [userId,setUserId]=useState(null)
   // Get user location using the custom hook
   const {
     location: userLocation,
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     const storedJwtToken = sessionStorage.getItem("jwtToken");
     const storedUserId = sessionStorage.getItem("userId");
     const storedExpirationTime = sessionStorage.getItem("expirationTime");
-
+   setUserId(storedUserId)
     if (storedJwtToken && storedUserId && storedExpirationTime) {
       const currentTime = Date.now();
 
@@ -231,6 +231,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
+ 
 
   
   return (

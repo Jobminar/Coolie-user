@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import './addresses.css'
-import rightarrow from '../../assets/images/right-arrow.svg'
-import AddressForm from '../../components/cart/AddressForm';
+import rightarrow from '../../../assets/images/right-arrow.svg'
+import AddressForm from '../../../components/cart/AddressForm';
 import Userprofileaddressform from './userprofileaddressform';
 
 
 const Addresses = () => {
   const [userId, setStoredUserId] = useState(null);
   const [addressData, setAddressesData] = useState([]);
+  const [isAddressFormVisible, setIsAddressFormVisible] = useState(false);
+
+  const toggleAddressForm = () => {
+    setIsAddressFormVisible(!isAddressFormVisible);
+  };
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("userId");
@@ -39,12 +44,12 @@ const Addresses = () => {
 
   return (
     <div>
-      <div className='add-address'>
-          + Add Address 
-          <img  src={rightarrow} alt='right arrow'/>
+       <div className='add-address' onClick={toggleAddressForm}>
+        + Add Address 
+        <img src={rightarrow} alt='right arrow' />
       </div>
-      <div className='addresses-post'>
-              <Userprofileaddressform/>
+      <div className='addresses-post' style={{ display: isAddressFormVisible ? 'block' : 'none' }}>
+        <Userprofileaddressform />
       </div>
       <h2 className='add-head'>Saved Addresses</h2>
   

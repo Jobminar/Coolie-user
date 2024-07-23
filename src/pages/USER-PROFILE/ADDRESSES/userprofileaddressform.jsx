@@ -3,12 +3,17 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
-import location from '../../assets/images/location-marker.png'
-import LocationModal from "../../components/cart/LocationModal";
+import location from '../../../assets/images/location-marker.png'
+import LocationModal from "../../../components/cart/LocationModal";
 
 const Userprofileaddressform = ({ userId }) => {
     // const userid = sessionStorage('userId')
     // console.log(userid, 'user id in addresses form')
+    const [isFormVisible, setIsFormVisible] = useState(false);
+
+    const chooseCurrentLocation = () => {
+      setIsFormVisible(!isFormVisible);
+    };
   const [formData, setFormData] = useState({
     name: "",
     mobileNumber: "",
@@ -188,9 +193,9 @@ const Userprofileaddressform = ({ userId }) => {
           <span className="error-message">{formData.errors.state}</span>
         )}
       </div>
-      <img src={location} alt="choose-location" onClick={chooseCurrentlocation}/>
-      <div>
-        <LocationModal/>
+      <img src={location} alt="choose-location" onClick={chooseCurrentLocation} />
+      <div className="location-form" style={{ display: isFormVisible ? 'block' : 'none' }}>
+        <LocationModal />
       </div>
       <button className="save-address-btn" onClick={handleSave}>
         <FontAwesomeIcon icon={faSave} /> <span>SAVE ADDRESS</span>
