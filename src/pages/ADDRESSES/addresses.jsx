@@ -8,6 +8,11 @@ import Userprofileaddressform from './userprofileaddressform';
 const Addresses = () => {
   const [userId, setStoredUserId] = useState(null);
   const [addressData, setAddressesData] = useState([]);
+  const [isAddressFormVisible, setIsAddressFormVisible] = useState(false);
+
+  const handleAddAddressClick = () => {
+    setIsAddressFormVisible(!isAddressFormVisible);
+  };
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("userId");
@@ -39,12 +44,12 @@ const Addresses = () => {
 
   return (
     <div>
-      <div className='add-address'>
-          + Add Address 
-          <img  src={rightarrow} alt='right arrow'/>
+     <div className='add-address' onClick={handleAddAddressClick} style={{ cursor: 'pointer' }}>
+        + Add Address 
+        <img src={rightarrow} alt='right arrow' />
       </div>
-      <div className='addresses-post'>
-              <Userprofileaddressform/>
+      <div className='addresses-post' style={{ display: isAddressFormVisible ? 'block' : 'none' }}>
+        <Userprofileaddressform />
       </div>
       <h2 className='add-head'>Saved Addresses</h2>
   

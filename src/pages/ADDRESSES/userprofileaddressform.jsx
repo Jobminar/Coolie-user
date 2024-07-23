@@ -19,6 +19,11 @@ const Userprofileaddressform = ({ userId }) => {
     landmark: "",
     errors: {},
   });
+  const [isLocationVisible, setIsLocationVisible] = useState(false);
+
+  const handleCurrLocation = () => {
+    setIsLocationVisible(!isLocationVisible);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -188,9 +193,14 @@ const Userprofileaddressform = ({ userId }) => {
           <span className="error-message">{formData.errors.state}</span>
         )}
       </div>
-      <img src={location} alt="choose-location" onClick={chooseCurrentlocation}/>
-      <div>
-        <LocationModal/>
+      <img 
+        src={location} 
+        alt="choose-location" 
+        onClick={handleCurrLocation} 
+        style={{ cursor: 'pointer' }} 
+      />
+      <div className="current-location" style={{ display: isLocationVisible ? 'block' : 'none' }}>
+        <LocationModal />
       </div>
       <button className="save-address-btn" onClick={handleSave}>
         <FontAwesomeIcon icon={faSave} /> <span>SAVE ADDRESS</span>
