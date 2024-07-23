@@ -126,7 +126,7 @@ export const OrdersProvider = ({ children, activeTab }) => {
         confirmAlert({
           title: "Order Created",
           message:
-            "Your order has been made and looking for service providers.",
+            "We will comeback to you once a service provider accepts the service.",
           buttons: [
             {
               label: "OK",
@@ -169,25 +169,6 @@ export const OrdersProvider = ({ children, activeTab }) => {
     setSubCategoryIds(extractedSubCategoryIds);
     hasMountedRef.current = true;
   }, [cartItems]);
-
-  useEffect(() => {
-    if (
-      hasMountedRef.current &&
-      orderDetails.length > 0 &&
-      activeTab === "schedule"
-    ) {
-      confirmAlert({
-        title: "Orders updated",
-        message: "The service scheduling has been updated successfully.",
-        buttons: [
-          {
-            label: "OK",
-            onClick: () => {},
-          },
-        ],
-      });
-    }
-  }, [orderDetails, activeTab]);
 
   return (
     <OrdersContext.Provider

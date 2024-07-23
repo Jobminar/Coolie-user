@@ -2,11 +2,10 @@ import React, { useContext, useState } from "react";
 import { OrdersContext } from "../../context/OrdersContext"; // Import OrdersContext
 import calendarIcon from "../../assets/images/calender.svg";
 import DurationLogo from "../../assets/images/timer.svg";
-import ScheduleFooter from "./ScheduleFooter";
 import Calendar from "./Calendar"; // Ensure Calendar is imported correctly
 import "./ItemSchedule.css"; // Ensure you have appropriate CSS styles
 
-const ItemSchedule = ({ onNext }) => {
+const ItemSchedule = () => {
   const { orderDetails, updateItemSchedule } = useContext(OrdersContext); // Use updateItemSchedule from OrdersContext
   const [editingItemId, setEditingItemId] = useState(null); // State to track which item's calendar is being edited
 

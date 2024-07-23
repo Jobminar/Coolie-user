@@ -20,4 +20,4 @@ const auth = getAuth(app);
 const analytics = getAnalytics(app);
 const messaging = getMessaging(app);
 
-export { auth, analytics, messaging };
+export { app, auth, analytics, messaging };

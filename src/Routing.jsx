@@ -21,8 +21,8 @@ const Routing = () => {
     <AuthProvider>
       <CartProvider>
         <CategoryProvider>
-          <OrdersProvider>
-            <MessagingProvider>
+          <MessagingProvider>
+            <OrdersProvider>
               {" "}
               {/* Wrap your application with MessagingProvider */}
               <Router>
@@ -39,8 +39,8 @@ const Routing = () => {
                 </Routes>
                 <Footer />
               </Router>
-            </MessagingProvider>
-          </OrdersProvider>
+            </OrdersProvider>
+          </MessagingProvider>
         </CategoryProvider>
       </CartProvider>
     </AuthProvider>

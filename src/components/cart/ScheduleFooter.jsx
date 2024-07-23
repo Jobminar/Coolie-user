@@ -11,34 +11,19 @@ const ScheduleFooter = ({ onNext }) => {
     useContext(OrdersContext);
 
   const handleProceedToCheckout = () => {
-    const message = orderDetails
-      .map((cart) =>
-        cart.items
-          .map((item) => {
-            const scheduledDate =
-              `${item.selectedDate} of this month at ${item.selectedTime}` ||
-              item.scheduledDate;
-
-            return `
-              <p>
-                <strong>${item.serviceId.name}</strong> has been scheduled on 
-                ${scheduledDate}
-              </p>
-            `;
-          })
-          .join(""),
-      )
-      .join("");
+    const defaultDate = new Date().getDate().toString().padStart(2, "0");
+    const defaultTime = "9AM - 10AM";
+    const defaultMonth = new Date().getMonth();
 
     const items = orderDetails.flatMap((cart) =>
       cart.items.map((item) => ({
         ...item,
-        scheduledDate:
-          `${item.selectedDate}-${item.selectedMonth}-${item.selectedTime}` ||
-          "Default Scheduled Date",
-        selectedDate: item.selectedDate || "Default Date",
-        selectedTime: item.selectedTime || "Default Time",
-        selectedMonth: item.selectedMonth || "Default Month",
+        scheduledDate: `${item.selectedDate || defaultDate}-${
+          item.selectedMonth || defaultMonth
+        }-${item.selectedTime || defaultTime}`,
+        selectedDate: item.selectedDate || defaultDate,
+        selectedTime: item.selectedTime || defaultTime,
+        selectedMonth: item.selectedMonth || defaultMonth,
       })),
     );
 
@@ -53,7 +38,18 @@ const ScheduleFooter = ({ onNext }) => {
 
     confirmAlert({
       title: "Confirm to proceed",
-      message: <div dangerouslySetInnerHTML={{ __html: message }} />,
+      message: `Your selected items:\n${orderDetails
+        .map((cart) =>
+          cart.items
+            .map(
+              (item) =>
+                `${item.serviceId.name}: ${item.selectedDate || defaultDate}-${
+                  item.selectedMonth || defaultMonth
+                }-${item.selectedTime || defaultTime}\n`,
+            )
+            .join(""),
+        )
+        .join("")}`,
       buttons: [
         {
           label: "Confirm",

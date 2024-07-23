@@ -16,7 +16,6 @@ const Calendar = ({ itemId, onDateTimeSelect }) => {
   const initialDate = itemSchedule?.selectedDate || todayDate;
   const initialTime = itemSchedule?.selectedTime || "9AM - 10AM";
   const initialMonth = itemSchedule?.selectedMonth || todayMonth;
-
   const [selectedDate, setSelectedDate] = React.useState(initialDate);
   const [selectedTime, setSelectedTime] = React.useState(initialTime);
   const [currentOffset, setCurrentOffset] = React.useState(0);
@@ -26,6 +25,16 @@ const Calendar = ({ itemId, onDateTimeSelect }) => {
     setSelectedDate(initialDate);
     setSelectedTime(initialTime);
     setSelectedMonth(initialMonth);
+
+    // Trigger onDateTimeSelect with default values
+    if (onDateTimeSelect) {
+      onDateTimeSelect({
+        itemId,
+        selectedDate: initialDate,
+        selectedTime: initialTime,
+        selectedMonth: initialMonth,
+      });
+    }
   }, [itemId]);
 
   const months = [
