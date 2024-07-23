@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './addresses.css'
-import rightarrow from '../../assets/images/right-arrow.svg'
-import AddressForm from '../../components/cart/AddressForm';
+import rightarrow from '../../../assets/images/right-arrow.svg'
+import AddressForm from '../../../components/cart/AddressForm';
 import Userprofileaddressform from './userprofileaddressform';
 
 
