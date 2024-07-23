@@ -1,9 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./header.css";
 import playstore from "../../assets/images/play-store.svg";
 import apple from "../../assets/images/apple.svg";
 import Person2OutlinedIcon from "@mui/icons-material/Person2Outlined";
-import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/coolie-logo.png";
 import help from "../../assets/images/help.png";
 import translate from "../../assets/images/translate.png";
@@ -28,7 +28,13 @@ const Header = () => {
         <div className="f-h-last-icons">
           <img src={help} alt="help-icon" />
           <img src={translate} alt="translate-icon" />
-          <img src={profile} alt="profile-icon" />
+          <img
+            src={profile}
+            alt="profile-icon"
+            onClick={() => {
+              navigate("userprofile");
+            }}
+          />
         </div>
       </div>
       <div className="s-h">
