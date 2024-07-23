@@ -7,6 +7,8 @@ import LoginComponent from "./components/LoginComponent";
 import ProtectedRoute from "./ProtectedRoute";
 import Footer from "./components/Footer/footer";
 import Aboutus from "./components/Aboutus/aboutus";
+import Userprofile from "./pages/USER-PROFILE/user-profile";
+import Addresses from "./pages/ADDRESSES/addresses";
 
 const App = () => {
   return (
@@ -18,6 +20,8 @@ const App = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/services" element={<Services />} />
         <Route path="/aboutus" element={<Aboutus />} />
+        <Route path="/userprofile" element={<Userprofile />}/>
+        <Route path="/addresses" element={<Addresses />}/>
       </Routes>
       <Footer />
     </Router>

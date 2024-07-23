@@ -52,6 +52,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
   useEffect(() => {
     const storedJwtToken = sessionStorage.getItem("jwtToken");
     const storedUserId = sessionStorage.getItem("userId");
@@ -230,6 +231,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
+  
   return (
     <AuthContext.Provider
       value={{
@@ -252,3 +255,4 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+export { AuthContext };
