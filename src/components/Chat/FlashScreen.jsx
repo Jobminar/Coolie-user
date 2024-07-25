@@ -1,6 +1,5 @@
-// FlashScreen.jsx
 import React, { useEffect } from "react";
-import "./FlashScreen.css";
+import flashscreen from "../../assets/images/Flashscreen-bot.svg"; // Import the SVG
 
 const FlashScreen = ({ onDismiss }) => {
   useEffect(() => {
@@ -10,7 +9,11 @@ const FlashScreen = ({ onDismiss }) => {
 
   return (
     <div className="flash-screen">
-      <h1>Welcome to Our Chatbot</h1>
+      <img
+        src={flashscreen}
+        alt="Flash Screen Background"
+        className="flash-screen-background"
+      />
     </div>
   );
 };

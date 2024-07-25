@@ -69,7 +69,7 @@
 
 /* FlashScreen.css */
 .flash-screen {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -79,9 +79,27 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .flash-screen h1 {
     font-family: 'Roboto', sans-serif;
     color: #000;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 5px;
+    position: relative;
+    z-index: 1001;
+}
+
+.flash-screen-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    z-index: 1000;
+    border-radius: 5px;
 }
