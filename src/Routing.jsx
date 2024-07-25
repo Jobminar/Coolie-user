@@ -16,6 +16,10 @@ import WorkerComponent from "./pages/WorkerComponent";
 import Userprofile from "./pages/USER-PROFILE/user-profile";
 import Addresses from "./pages/USER-PROFILE/ADDRESSES/addresses";
 import Bookings from "./pages/USER-PROFILE/BOOKINGS/Bookings.jsx";
+import { Wallet } from "@mui/icons-material";
+import Invite from "./pages/USER-PROFILE/INVITEAFRIEND/invite.jsx";
+import Coupons from "./pages/USER-PROFILE/COUPONS/coupons.jsx";
+import Rewards from "./pages/USER-PROFILE/MY-REWARDS/rewards.jsx";
 
 const Routing = () => {
   return (
@@ -38,6 +42,10 @@ const Routing = () => {
                   <Route path="/userprofile" element={<Userprofile />} />
                   <Route path="/addresses" element={<Addresses />} />
                   <Route path="/bookings" element={<Bookings/>} />
+                  <Route path="/wallet" element={<Wallet/>} />
+                  <Route path="/invite" element={<Invite/>} />
+                  <Route path="/coupons" element={<Coupons/>} />
+                  <Route path="/rewards" element={<Rewards/>} />
                 </Routes>
                 <Footer />
               </Router>
