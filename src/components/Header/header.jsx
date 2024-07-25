@@ -9,12 +9,14 @@ import help from "../../assets/images/help.png";
 import translate from "../../assets/images/translate.png";
 import profile from "../../assets/images/profile.png";
 import location from "../../assets/images/location-marker.png";
-import LoginComponent from "../LoginComponent"; // Ensure the correct path
+import LoginComponent from "../LoginComponent";
+import ChatbotComponent from "../Chat/ChatbotComponent";
 
 const Header = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const [isLoginVisible, setLoginVisible] = useState(false);
+  const [isChatbotVisible, setIsChatbotVisible] = useState(false);
 
   const handleProfileClick = () => {
     if (!isAuthenticated) {
@@ -28,6 +30,10 @@ const Header = () => {
     setLoginVisible(false);
   };
 
+  const toggleChatbot = () => {
+    setIsChatbotVisible(!isChatbotVisible);
+  };
+
   return (
     <>
       <div className="main-h">
@@ -38,7 +44,7 @@ const Header = () => {
             <p>Download Mobile App</p>
           </div>
           <div className="f-h-last-icons">
-            <img src={help} alt="icon" />
+            <img src={help} alt="icon" onClick={toggleChatbot} />
             <img src={translate} alt="icon" />
             <img src={profile} alt="icon" onClick={handleProfileClick} />
           </div>
@@ -53,7 +59,7 @@ const Header = () => {
               <input placeholder="Hyderabad" />
             </div>
             <div className="search-header">
-              <input placeholder="search for a service ex: Room cleaning , kitchen cleaning " />
+              <input placeholder="search for a service ex: Room cleaning, kitchen cleaning" />
             </div>
             <button className="books-button">Book a Service</button>
           </div>
@@ -69,6 +75,7 @@ const Header = () => {
           </div>
         </div>
       )}
+      {isChatbotVisible && <ChatbotComponent />}
     </>
   );
 };
