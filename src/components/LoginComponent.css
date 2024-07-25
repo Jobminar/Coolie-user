@@ -7,6 +7,17 @@
     padding: 1px;
 }
 
+
+input {
+    outline: 0;
+    border-width: 0 0 2px;
+    border-color: transparent;
+}
+
+input:focus {
+    border-color: rgb(0, 0, 0);
+}
+
 .login-box {
     background-color: white;
     padding: 20px;
@@ -23,12 +34,17 @@
     justify-content: space-between;
     margin-bottom: 20px;
     position: relative;
+    max-width: 18rem;
+}
+
+.login-box-header h4 {
+    margin-left: 1.35rem;
 }
 
 .coolie-logo {
-    width: 40px;
+    width: 45px;
     position: absolute;
-    top: 0;
+    top: 10px;
     right: 0;
 }
 
@@ -45,11 +61,14 @@
 }
 
 .input-group input {
-    width: calc(100% - 100px);
-    padding: 10px;
+    width: calc(100% - 40px);
+    padding: 10px 5px 5px 5px;
+    /* Added top padding to create space for the placeholder */
     border: none;
     border-bottom: 2px solid #ccc;
     margin-right: 10px;
+    box-sizing: border-box;
+    /* Ensures padding is included in the width calculation */
 }
 
 .input-group button {
@@ -59,7 +78,7 @@
     bottom: 0;
     background-color: transparent;
     border: none;
-    color: #007bff;
+    color: #808080;
     cursor: pointer;
     padding: 10px;
 }
@@ -68,10 +87,10 @@
     background-color: #001f3f;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 5px 25px;
     border-radius: 5px;
     cursor: pointer;
-    width: 80%;
+    width: 88%;
     margin: 0 auto;
 }
 
@@ -81,14 +100,28 @@
     margin-top: 20px;
 }
 
-.social-login button {
+.oval-shaped-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 30px;
+    margin: 0 auto;
+    background-color: transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 1px solid rgb(200, 200, 200)
+}
+
+.google-login-button {
     background-color: transparent;
     border: none;
     cursor: pointer;
 }
 
-.social-login img {
-    width: 50px;
+.google-logo {
+    width: 30px;
+    margin-top: 0.1rem;
 }
 
 p {
@@ -96,6 +129,6 @@ p {
 }
 
 p a {
-    color: #007bff;
+    color: #000000;
     text-decoration: none;
 }

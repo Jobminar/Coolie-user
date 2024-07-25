@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "./LoginComponent.css";
 import googleLogo from "../assets/images/google-logo.png";
-import coolieLogo from "../assets/images/coolie-logo.png"
+import coolieLogo from "../assets/images/coolie-logo.png";
 
 const LoginComponent = () => {
   const [phone, setPhone] = useState("");
@@ -34,7 +34,7 @@ const LoginComponent = () => {
     <div className="login-container">
       <div className="login-box">
         <div className="login-box-header">
-          <h2>Signup</h2>
+          <h4>Login</h4>
           <img src={coolieLogo} alt="Coolie Logo" className="coolie-logo" />
         </div>
         {googleLoginSuccess && (
@@ -65,14 +65,15 @@ const LoginComponent = () => {
         <button className="login-button" onClick={handleLogin}>
           Login
         </button>
-        <div className="social-login">
-          <button onClick={handleGoogleLogin}>
-            <img src={googleLogo} alt="Google" />
-          </button>
-        </div>
+
         <p>
           Don't have an account? <a href="/signup">signup</a>
         </p>
+        <div className="oval-shaped-div">
+          <button className="google-login-button" onClick={handleGoogleLogin}>
+            <img src={googleLogo} alt="Google" className="google-logo" />
+          </button>
+        </div>
       </div>
     </div>
   );
