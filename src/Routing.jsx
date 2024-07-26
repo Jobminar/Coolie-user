@@ -24,6 +24,7 @@ import Wallet from "./pages/USER-PROFILE/WALLET/wallet.jsx";
 import Invite from "./pages/USER-PROFILE/INVITEAFRIEND/invite.jsx";
 import Coupons from "./pages/USER-PROFILE/COUPONS/coupons.jsx";
 import Rewards from "./pages/USER-PROFILE/MY-REWARDS/rewards.jsx";
+import OrderTracking from "./pages/OrderTracking/OrderTracking.jsx";
 
 const Routing = () => {
   return (
@@ -40,6 +41,7 @@ const Routing = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="/home" element={<Home />} />
                   <Route path="/services" element={<Services />} />
+                  <Route path="/ordertracking" element={<OrderTracking />} />
                   <Route element={<ProtectedRoute />}>
                     <Route path="/aboutus" element={<Aboutus />} />
                     <Route path="/workers" element={<WorkerComponent />} />

@@ -3,6 +3,7 @@ import { auth } from "../config/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import { toast, Toaster } from "react-hot-toast";
 import useUserLocation from "../hooks/useUserLocation"; // Import the custom hook
 import CaptchaComponent from "../components/Security/CaptchaComponent"; // Import CaptchaComponent
 
@@ -37,6 +38,7 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         const data = await response.json();
+        toast.success("User info fetched successfully.");
         return data.user;
       } else {
         const errorData = await response.json();
@@ -46,9 +48,11 @@ export const AuthProvider = ({ children }) => {
           response.statusText,
           errorData,
         );
+        toast.error("Failed to fetch user info.");
       }
     } catch (error) {
       console.error("Error fetching user info:", error);
+      toast.error("Error fetching user info.");
     }
   };
 
@@ -90,12 +94,15 @@ export const AuthProvider = ({ children }) => {
         console.log("OTP sent successfully:", data);
         setUser({ ...userInfo, phone: data.phone });
         sessionStorage.setItem("phone", data.phone);
+        toast.success("OTP sent successfully.");
       } else {
         const errorData = await response.json();
         console.error("Failed to send OTP:", errorData);
+        toast.error("Failed to send OTP.");
       }
     } catch (error) {
       console.error("Error during OTP sending:", error);
+      toast.error("Error during OTP sending.");
     }
   };
 
@@ -143,6 +150,7 @@ export const AuthProvider = ({ children }) => {
         setSessionTimeout(60 * 60 * 1000);
         setUser(data.user);
         setIsAuthenticated(true);
+        toast.success("Login successful.");
 
         console.log("User location:", userLocation);
 
@@ -155,9 +163,11 @@ export const AuthProvider = ({ children }) => {
           response.statusText,
           errorData,
         );
+        toast.error("Login failed.");
       }
     } catch (error) {
       console.error("Error during login:", error);
+      toast.error("Error during login.");
     }
     return false;
   };
@@ -170,6 +180,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     if (timeoutId) clearTimeout(timeoutId);
+    toast.success("Logged out successfully.");
   };
 
   const setSessionTimeout = (expiresIn) => {
@@ -196,6 +207,7 @@ export const AuthProvider = ({ children }) => {
               const newExpirationTime = Date.now() + 60 * 60 * 1000;
               sessionStorage.setItem("expirationTime", newExpirationTime);
               setSessionTimeout(60 * 60 * 1000);
+              toast.success("CAPTCHA verified. Session extended.");
             }
           }}
         />
@@ -225,8 +237,10 @@ export const AuthProvider = ({ children }) => {
       };
 
       setGoogleUser(userInfo);
+      toast.success("Google Sign-In successful.");
     } catch (error) {
       console.error("Google Sign-In error:", error);
+      toast.error("Google Sign-In error.");
     }
   };
 
@@ -247,6 +261,7 @@ export const AuthProvider = ({ children }) => {
     >
       {children}
       {locationError && <p>{locationError}</p>}
+      <Toaster />
     </AuthContext.Provider>
   );
 };

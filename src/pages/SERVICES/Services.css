@@ -119,13 +119,15 @@
     width: 2.5rem;
     height: 2.5rem;
 }
+
 .subcat-icon-container:hover {
     width: 3rem;
-    height: 3rem; 
+    height: 3rem;
     border-radius: 50%;
     background: linear-gradient(180deg, #570559 0%, #781C1C 100%);
 
 }
+
 .subcat-icon-container img {
     width: 100%;
     height: 100%;
@@ -164,7 +166,7 @@
     /* border: 1px solid black; */
 }
 
-.service-content h5{
+.service-content h5 {
     font-family: Roboto;
     font-size: 15px;
     font-weight: 700;

@@ -16,6 +16,7 @@ export const CartProvider = ({ children, cartId, showLogin }) => {
   const { user } = useAuth();
 
   useEffect(() => {
+    console.log("CartProvider useEffect [user, cartId]", { user, cartId });
     if (user && user._id) {
       fetchCart();
     }
@@ -27,7 +28,10 @@ export const CartProvider = ({ children, cartId, showLogin }) => {
   }, [cartItems]);
 
   const fetchCart = useCallback(async () => {
-    if (!user || !user._id) return;
+    if (!user || !user._id) {
+      console.warn("fetchCart: user or user._id is undefined");
+      return;
+    }
 
     try {
       const response = await fetch(
@@ -156,7 +160,7 @@ export const CartProvider = ({ children, cartId, showLogin }) => {
   useEffect(() => {
     if (itemIdToRemove !== null) {
       fetch(
-        `https://api.coolieno1.in/v1.0/users/cart/${user._id}/${itemIdToRemove}`,
+        `https://api.coolieno1.in/v1.0/users/cart/${user?._id}/${itemIdToRemove}`,
         {
           method: "DELETE",
         },
