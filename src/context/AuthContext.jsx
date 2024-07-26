@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [googleUser, setGoogleUser] = useState(null);
   const [timeoutId, setTimeoutId] = useState(null);
   const [captchaVerified, setCaptchaVerified] = useState(false);
-  const [userId,setUserId]=useState(null)
+  const [userId, setUserId] = useState(null);
   // Get user location using the custom hook
   const {
     location: userLocation,
@@ -52,12 +52,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-
   useEffect(() => {
     const storedJwtToken = sessionStorage.getItem("jwtToken");
     const storedUserId = sessionStorage.getItem("userId");
     const storedExpirationTime = sessionStorage.getItem("expirationTime");
-   setUserId(storedUserId)
+    setUserId(storedUserId);
     if (storedJwtToken && storedUserId && storedExpirationTime) {
       const currentTime = Date.now();
 
@@ -117,7 +116,7 @@ export const AuthProvider = ({ children }) => {
       name: name || userInfo.name,
       displayName: displayName || userInfo.displayName,
       photoURL: photoURL || userInfo.photoURL,
-      providerId: providerId || userInfo.providerId,
+      providerId: providerId || userInfo.providerId, //Google provider
     };
 
     try {
@@ -231,10 +230,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-
- 
-
-  
   return (
     <AuthContext.Provider
       value={{
