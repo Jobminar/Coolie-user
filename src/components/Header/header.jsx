@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { CartProvider } from "../../context/CartContext"; // Import CartProvider
 import "./header.css";
 import playstore from "../../assets/images/play-store.svg";
 import apple from "../../assets/images/apple.svg";
@@ -12,7 +13,7 @@ import location from "../../assets/images/location-marker.png";
 import LoginComponent from "../LoginComponent";
 import ChatbotComponent from "../Chat/ChatbotComponent";
 
-const Header = () => {
+const Header = ({ children }) => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const [isLoginVisible, setLoginVisible] = useState(false);
@@ -35,7 +36,7 @@ const Header = () => {
   };
 
   return (
-    <>
+    <CartProvider showLogin={setLoginVisible}>
       <div className="main-h">
         <div className="f-h">
           <div className="f-h-icons">
@@ -76,7 +77,8 @@ const Header = () => {
         </div>
       )}
       {isChatbotVisible && <ChatbotComponent />}
-    </>
+      {children} {/* Render children to include other components */}
+    </CartProvider>
   );
 };
 

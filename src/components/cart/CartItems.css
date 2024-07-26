@@ -8,10 +8,30 @@
 }
 
 .cart-items-container {
+    margin-top: 1rem;
     max-height: 300px;
-    /* Set the max-height to your desired value */
     overflow-y: auto;
     /* Enable vertical scrolling */
+}
+
+/* Scrollbar styling for WebKit-based browsers */
+.cart-items-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.cart-items-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.cart-items-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid #f1f1f1;
+}
+
+.cart-items-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
 }
 
 .cart-item {
@@ -20,7 +40,6 @@
     align-items: center;
     padding: 15px;
     background-color: #fff;
-    margin: 0;
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
     margin: 0.2rem;
@@ -35,28 +54,20 @@
 .duration-items {
     display: flex;
     align-items: center;
-    /* Aligns items vertically in the center */
     justify-content: flex-start;
-    /* Aligns items to the start of the flex container */
     margin: 0;
-    /* Removes any default margin */
 }
 
 .duration-items h4 {
     color: #666;
     margin: 0 10px 0 0;
-    /* Adds spacing to the right of each h4 */
     white-space: nowrap;
-    /* Ensures the text doesn't wrap */
 }
 
 .duration-items img {
     width: 18px;
-    /* Adjust width as needed */
     height: auto;
-    /* Maintains aspect ratio */
     margin-right: 5px;
-    /* Space between the image and the text */
 }
 
 #service-name {
@@ -71,7 +82,7 @@
     display: grid;
     grid-template-columns: 3fr 1fr;
     padding: 0;
-    position: relative
+    position: relative;
 }
 
 .item-details {
@@ -107,7 +118,6 @@
     left: 0;
     bottom: 0;
     margin-bottom: 0.9rem;
-    /* Add space below the price */
 }
 
 .quantity {
@@ -134,7 +144,7 @@
     justify-content: center;
     font-size: 18px;
     line-height: 1;
-    margin: 0 0.2rem
+    margin: 0 0.2rem;
 }
 
 .quantity span {
@@ -150,8 +160,7 @@
     cursor: pointer;
     position: absolute;
     left: 60%;
-    bottom: 0
-        /* Add space above the delete button */
+    bottom: 0;
 }
 
 .delete-btn img {
@@ -183,12 +192,10 @@
     width: 95%;
     display: grid;
     grid-template-columns: 1fr 3fr;
-    /* Adjusted column widths for 1/4 and 3/4 */
     align-items: center;
     padding: 20px;
     margin: 10px;
     grid-gap: 0px;
-    /* Adjust the gap between columns */
 }
 
 .cart-total-info {
@@ -220,7 +227,6 @@
     width: 100%;
     font-weight: 500;
     font-size: 0.9rem;
-    /* Button takes 75% of the column width */
 }
 
 .go-to-address-btn:hover {

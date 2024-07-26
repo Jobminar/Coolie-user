@@ -5,9 +5,8 @@ import { CategoryContext } from "../../context/CategoryContext";
 import dropdown from "../../assets/images/dropdown.png";
 import CartSummary from "../../components/cart/CartSummary";
 import { CartContext } from "../../context/CartContext";
-import { useAuth } from "../../context/AuthContext"; // Import AuthContext
-import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
+import { useAuth } from "../../context/AuthContext";
+import LoginComponent from "../../components/LoginComponent"; // Import LoginComponent
 import { TailSpin } from "react-loader-spinner";
 
 const Services = () => {
@@ -21,15 +20,15 @@ const Services = () => {
     error,
   } = useContext(CategoryContext);
 
-  const { setCartItems, calculateTotalPrice, calculateTotalItems, fetchCart } =
-    useContext(CartContext);
-  const { user } = useAuth(); // Get user from AuthContext
+  const { handleCart } = useContext(CartContext);
+  const { isAuthenticated } = useAuth(); // Get authentication status
 
   const [data, setData] = useState([]);
   const [subData, setSubData] = useState([]);
   const [serviceData, setServiceData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [descriptionVisibility, setDescriptionVisibility] = useState({});
+  const [isLoginVisible, setLoginVisible] = useState(false); // State to manage login modal visibility
 
   useEffect(() => {
     if (categoryData) {
@@ -40,7 +39,7 @@ const Services = () => {
       if (selectedCategory && selectedCategory.subcategories) {
         setData(selectedCategory.subcategories);
       } else {
-        setData([]); // Clear data if no subcategories are found
+        setData([]);
       }
       setLoading(false);
     }
@@ -74,72 +73,16 @@ const Services = () => {
     }));
   };
 
-  const handleCart = (serviceId, categoryId, subCategoryId) => {
-    confirmAlert({
-      title: "Confirm to add",
-      message: "Are you sure you want to add this item to the cart?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: async () => {
-            if (!user) {
-              console.error("User not authenticated");
-              return;
-            }
+  const handleAddToCart = (serviceId, categoryId, subCategoryId) => {
+    if (!isAuthenticated) {
+      setLoginVisible(true); // Show login modal if not authenticated
+      return;
+    }
+    handleCart(serviceId, categoryId, subCategoryId);
+  };
 
-            setLoading(true);
-            console.log(
-              serviceId,
-              categoryId,
-              selectedCategoryId,
-              "ids from services.jsx to send cartdata",
-            );
-            const newItem = {
-              userId: user._id, // Use user ID from context
-              items: [
-                {
-                  serviceId,
-                  categoryId,
-                  subCategoryId,
-                  quantity: 1,
-                },
-              ],
-            };
-
-            try {
-              const response = await fetch(
-                "https://api.coolieno1.in/v1.0/users/cart/create-cart",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(newItem),
-                },
-              );
-
-              if (response.ok) {
-                await fetchCart(); // Re-fetch cart items after adding new item
-                console.log("Item added to cart");
-              } else {
-                console.error(
-                  "Failed to add item to cart:",
-                  response.statusText,
-                );
-              }
-            } catch (error) {
-              console.error("Error adding item to cart:", error);
-            } finally {
-              setLoading(false);
-            }
-          },
-        },
-        {
-          label: "No",
-          onClick: () => console.log("Add to cart canceled"),
-        },
-      ],
-    });
+  const closeModal = () => {
+    setLoginVisible(false);
   };
 
   return (
@@ -218,7 +161,7 @@ const Services = () => {
                   ))}
                   <button
                     onClick={() =>
-                      handleCart(
+                      handleAddToCart(
                         service._id,
                         service.categoryId._id,
                         service.subCategoryId._id,
@@ -248,6 +191,16 @@ const Services = () => {
             wrapperClass=""
             visible={true}
           />
+        </div>
+      )}
+      {isLoginVisible && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-button" onClick={closeModal}>
+              &times;
+            </button>
+            <LoginComponent onLoginSuccess={closeModal} />
+          </div>
         </div>
       )}
     </div>

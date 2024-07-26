@@ -1,17 +1,18 @@
 import React, { createContext, useState, useEffect, useCallback } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { useAuth } from "./AuthContext";
 
 export const CartContext = createContext();
 
-export const CartProvider = ({ children, cartId }) => {
+export const CartProvider = ({ children, cartId, showLogin }) => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [itemIdToRemove, setItemIdToRemove] = useState(null);
   const [cartNotFound, setCartNotFound] = useState(false);
-  const [cartMessage, setCartMessage] = useState(""); // New state variable
+  const [cartMessage, setCartMessage] = useState("");
   const { user } = useAuth();
 
   useEffect(() => {
@@ -43,6 +44,7 @@ export const CartProvider = ({ children, cartId }) => {
       setCartItems(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
+      toast.error("Failed to fetch cart data");
     }
   }, [user]);
 
@@ -71,44 +73,65 @@ export const CartProvider = ({ children, cartId }) => {
   }, []);
 
   const addToCart = async (item) => {
-    confirmAlert({
-      title: "Confirm to add",
-      message: "Are you sure you want to add this item to the cart?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: async () => {
-            try {
-              const response = await fetch(
-                "https://api.coolieno1.in/v1.0/users/cart/create-cart",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(item),
-                },
-              );
+    if (!user) {
+      toast.error("User not authenticated");
+      if (showLogin) {
+        showLogin(true);
+      }
+      return;
+    }
 
-              if (response.ok) {
-                await fetchCart(); // Re-fetch cart items after adding new item
-              } else {
-                console.error(
-                  "Failed to add item to cart:",
-                  response.statusText,
-                );
-              }
-            } catch (error) {
-              console.error("Error adding item to cart:", error);
-            }
-          },
-        },
+    try {
+      const response = await fetch(
+        "https://api.coolieno1.in/v1.0/users/cart/create-cart",
         {
-          label: "No",
-          onClick: () => console.log("Add to cart canceled"),
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(item),
+        },
+      );
+
+      if (response.ok) {
+        await fetchCart(); // Re-fetch cart items after adding new item
+        toast.success("Item added to cart");
+      } else {
+        console.error("Failed to add item to cart:", response.statusText);
+        toast.error("Failed to add item to cart");
+      }
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      toast.error("Error adding item to cart");
+    }
+  };
+
+  const handleCart = async (serviceId, categoryId, subCategoryId) => {
+    if (!user || !user._id) {
+      toast.error("User not authenticated");
+      if (showLogin) {
+        showLogin(true);
+      }
+      return;
+    }
+
+    const newItem = {
+      userId: user._id,
+      items: [
+        {
+          serviceId,
+          categoryId,
+          subCategoryId,
+          quantity: 1,
         },
       ],
-    });
+    };
+
+    try {
+      await addToCart(newItem);
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+    }
   };
 
   const removeFromCart = (itemId) => {
@@ -151,11 +174,16 @@ export const CartProvider = ({ children, cartId }) => {
                 .filter((cart) => cart.items.length > 0);
               return newItems;
             });
+            toast.success("Item removed from cart");
           } else {
             console.error("Error deleting cart item:", response.statusText);
+            toast.error("Error deleting cart item");
           }
         })
-        .catch((error) => console.error("Error deleting cart item:", error));
+        .catch((error) => {
+          console.error("Error deleting cart item:", error);
+          toast.error("Error deleting cart item");
+        });
     }
   }, [itemIdToRemove, user]);
 
@@ -184,11 +212,13 @@ export const CartProvider = ({ children, cartId }) => {
         calculateTotalPrice,
         calculateTotalItems,
         fetchCart,
-        cartMessage, // Make cartMessage available in the context
+        handleCart,
+        cartMessage,
       }}
     >
       {cartNotFound && <div>{cartMessage}</div>}
       {children}
+      <Toaster />
     </CartContext.Provider>
   );
 };
