@@ -87,7 +87,7 @@
 }
 
 .scrollable-tab:hover {
-    background-color: #f9f9f9;
+    background-color: transparent;
     transform: scale(1.05);
 }
 

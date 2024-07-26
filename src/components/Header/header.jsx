@@ -12,6 +12,8 @@ import profile from "../../assets/images/profile.png";
 import location from "../../assets/images/location-marker.png";
 import LoginComponent from "../LoginComponent";
 import ChatbotComponent from "../Chat/ChatbotComponent";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 const Header = ({ children }) => {
   const navigate = useNavigate();
@@ -39,6 +41,10 @@ const Header = ({ children }) => {
     navigate("/services"); // Navigate to /services when button is clicked
   };
 
+  const handleCartClick = () => {
+    navigate("/cart"); // Navigate to /cart when cart icon is clicked
+  };
+
   return (
     <CartProvider showLogin={setLoginVisible}>
       <div className="main-h">
@@ -51,6 +57,7 @@ const Header = ({ children }) => {
           <div className="f-h-last-icons">
             <img src={help} alt="icon" onClick={toggleChatbot} />
             <img src={translate} alt="icon" />
+            <FontAwesomeIcon icon={faCartShopping} onClick={handleCartClick} />
             <img src={profile} alt="icon" onClick={handleProfileClick} />
           </div>
         </div>

@@ -25,6 +25,7 @@ import Invite from "./pages/USER-PROFILE/INVITEAFRIEND/invite.jsx";
 import Coupons from "./pages/USER-PROFILE/COUPONS/coupons.jsx";
 import Rewards from "./pages/USER-PROFILE/MY-REWARDS/rewards.jsx";
 import OrderTracking from "./pages/OrderTracking/OrderTracking.jsx";
+import CartPage from "./pages/CartPage.jsx";
 
 const Routing = () => {
   return (
@@ -52,6 +53,7 @@ const Routing = () => {
                     <Route path="/invite" element={<Invite />} />
                     <Route path="/coupons" element={<Coupons />} />
                     <Route path="/rewards" element={<Rewards />} />
+                    <Route path="/cart" element={<CartPage />} />
                   </Route>
                   <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
