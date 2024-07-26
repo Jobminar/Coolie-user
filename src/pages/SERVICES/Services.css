@@ -1,7 +1,7 @@
 .services {
     display: flex;
     flex-direction: column;
-
+  /* border: 1px solid black; */
     align-items: center;
 
 }
@@ -47,7 +47,6 @@
     display: grid;
     grid-template-columns: 45% 55%;
 }
-
 .services-display {
     background-color: #E3E4EA;
     /* opacity: 33%; */
@@ -57,7 +56,7 @@
     justify-content: top;
     align-items: center;
     /* row-gap: 1rem; */
-    /* border: 1px solid #0000001A; */
+    /* border: 1px solid black; */
 
 
 }
@@ -138,9 +137,10 @@
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 20% 55% 25%;
+   margin: 0.5rem auto;
+   padding: 15px 0px;
 
 }
 
@@ -150,20 +150,36 @@
 
 .service-icon-container {
     width: auto;
-    height: 4rem;
+    height: auto;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid black; */
 }
-
+.service-icon-container img{
+    /* border: 1px solid black; */
+}
 .service-main-head {
     display: grid;
     height: 4rem;
     grid-template-columns: 20% 65% 15%;
     align-items: center;
+    /* border: 1px solid black; */
 }
 
 .service-main-head div {
     /* border: 1px solid black; */
 }
 
+
+.service-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+}
 .service-content h5{
     font-family: Roboto;
     font-size: 15px;
@@ -172,7 +188,11 @@
     text-align: left;
     margin: 10px 0px;
 }
-
+.service-variant{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
 .service-variant p {
     margin: 0px;
     padding: 0px;
@@ -181,9 +201,17 @@
     font-weight: 300;
     line-height: 15.23px;
     text-align: left;
+    /* border: 1px solid black; */
 
 }
-
+.dropdown-button{
+    display: grid;
+    margin-right: 10px;
+    grid-template-rows: 50% 50%;
+    /* border: 1px solid black; */
+    justify-content: center;
+    align-items: center;
+}
 .dropdown {
     /* border: 1px solid black; */
     margin-right: 1rem;
@@ -225,7 +253,6 @@
     font-weight: 200;
     line-height: 17px;
     text-align: left;
-    /* border: 1px solid black; */
     padding-left: 3rem;
     padding-top: 1rem
 }

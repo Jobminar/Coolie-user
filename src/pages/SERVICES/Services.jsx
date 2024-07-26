@@ -5,7 +5,7 @@ import { CategoryContext } from "../../context/CategoryContext";
 import dropdown from "../../assets/images/dropdown.png";
 import CartSummary from "../../components/cart/CartSummary";
 import { CartContext } from "../../context/CartContext";
-import { useAuth } from "../../context/AuthContext"; // Import AuthContext
+import { useAuth } from "../../context/AuthContext"; 
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { TailSpin } from "react-loader-spinner";
@@ -74,6 +74,7 @@ const Services = () => {
     }));
   };
 
+  // handle cart
   const handleCart = (serviceId, categoryId, subCategoryId) => {
     confirmAlert({
       title: "Confirm to add",
@@ -174,48 +175,36 @@ const Services = () => {
           <div className="services-display">
             {serviceData.map((service) => (
               <div key={service._id} className="sub-category-service-item">
-                <div className="service-main-head">
-                  <div className="service-icon-container">
-                    <img
-                      src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${service.subCategoryId.imageKey}`}
-                      alt={service.subCategoryId.name}
-                      className="tab-image"
-                    />
-                  </div>
-                  <div className="service-content">
-                    <h5>{service.name}</h5>
-                    {service.serviceVariants.map((variant) => (
-                      <div key={variant._id} className="service-variant">
-                        <p>
-                          ({variant.min} to {variant.max} {variant.metric})
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+                <div className="service-icon-container">
+                  <img
+                    src={`https://coolie1-dev.s3.ap-south-1.amazonaws.com/${service.subCategoryId.imageKey}`}
+                    alt={service.subCategoryId.name}
+                    className="tab-image"
+                  />
+                </div>
+                <div className="service-content">
+                  <h5>{service.name}</h5>
+                  {service.serviceVariants.map((variant) => (
+                    <div key={variant._id} className="service-variant">
+                      <p>
+                        ({variant.min} to {variant.max} {variant.metric})
+                      </p>
+                      <p>&#8377; {variant.price}</p>
+                    </div>
+
+
+                  ))}
+                </div>
+
+
+
+                <div className="dropdown-button">
                   <div
                     className="dropdown"
                     onClick={() => toggleDescription(service._id)}
                   >
                     <img src={dropdown} alt="dropdown" />
                   </div>
-                </div>
-                <div
-                  className="description"
-                  style={{
-                    display: descriptionVisibility[service._id]
-                      ? "block"
-                      : "none",
-                  }}
-                >
-                  {service.description}
-                </div>
-                <div className="price">
-                  <p></p>
-                  {service.serviceVariants.map((variant) => (
-                    <div key={variant._id}>
-                      <p>&#8377; {variant.price}</p>
-                    </div>
-                  ))}
                   <button
                     onClick={() =>
                       handleCart(
@@ -227,6 +216,18 @@ const Services = () => {
                   >
                     ADD
                   </button>
+                </div>
+                <div>
+                </div>
+                <div
+                  className="description"
+                  style={{
+                    display: descriptionVisibility[service._id]
+                      ? "block"
+                      : "none",
+                  }}
+                >
+                  {service.description}
                 </div>
               </div>
             ))}
