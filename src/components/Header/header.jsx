@@ -35,6 +35,10 @@ const Header = ({ children }) => {
     setIsChatbotVisible(!isChatbotVisible);
   };
 
+  const handleBookServiceClick = () => {
+    navigate("/services"); // Navigate to /services when button is clicked
+  };
+
   return (
     <CartProvider showLogin={setLoginVisible}>
       <div className="main-h">
@@ -62,7 +66,10 @@ const Header = ({ children }) => {
             <div className="search-header">
               <input placeholder="search for a service ex: Room cleaning, kitchen cleaning" />
             </div>
-            <button className="books-button">Book a Service</button>
+            <button className="books-button" onClick={handleBookServiceClick}>
+              Book a Service
+            </button>{" "}
+            {/* Add onClick handler */}
           </div>
         </div>
       </div>
