@@ -13,11 +13,11 @@ export const CartProvider = ({ children, cartId, showLogin }) => {
   const [itemIdToRemove, setItemIdToRemove] = useState(null);
   const [cartNotFound, setCartNotFound] = useState(false);
   const [cartMessage, setCartMessage] = useState("");
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   useEffect(() => {
     console.log("CartProvider useEffect [user, cartId]", { user, cartId });
-    if (user && user._id) {
+    if ((user && user._id) || sessionStorage.getItem("userId")) {
       fetchCart();
     }
   }, [user, cartId]);
@@ -28,14 +28,16 @@ export const CartProvider = ({ children, cartId, showLogin }) => {
   }, [cartItems]);
 
   const fetchCart = useCallback(async () => {
-    if (!user || !user._id) {
-      console.warn("fetchCart: user or user._id is undefined");
+    const userId = user?._id || sessionStorage.getItem("userId");
+
+    if (!userId) {
+      console.warn("fetchCart: user or userId is undefined");
       return;
     }
 
     try {
       const response = await fetch(
-        `https://api.coolieno1.in/v1.0/users/cart/${user._id}`,
+        `https://api.coolieno1.in/v1.0/users/cart/${userId}`,
       );
 
       if (!response.ok) {
@@ -77,7 +79,7 @@ export const CartProvider = ({ children, cartId, showLogin }) => {
   }, []);
 
   const addToCart = async (item) => {
-    if (!user) {
+    if (!isAuthenticated) {
       toast.error("User not authenticated");
       if (showLogin) {
         showLogin(true);
@@ -111,7 +113,9 @@ export const CartProvider = ({ children, cartId, showLogin }) => {
   };
 
   const handleCart = async (serviceId, categoryId, subCategoryId) => {
-    if (!user || !user._id) {
+    const userId = user?._id || sessionStorage.getItem("userId");
+
+    if (!userId) {
       toast.error("User not authenticated");
       if (showLogin) {
         showLogin(true);
@@ -120,7 +124,7 @@ export const CartProvider = ({ children, cartId, showLogin }) => {
     }
 
     const newItem = {
-      userId: user._id,
+      userId,
       items: [
         {
           serviceId,
@@ -159,8 +163,10 @@ export const CartProvider = ({ children, cartId, showLogin }) => {
 
   useEffect(() => {
     if (itemIdToRemove !== null) {
+      const userId = user?._id || sessionStorage.getItem("userId");
+
       fetch(
-        `https://api.coolieno1.in/v1.0/users/cart/${user?._id}/${itemIdToRemove}`,
+        `https://api.coolieno1.in/v1.0/users/cart/${userId}/${itemIdToRemove}`,
         {
           method: "DELETE",
         },
